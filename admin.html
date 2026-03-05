@@ -1,0 +1,2124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>JDP Go — Admin Panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=JetBrains+Mono:wght@400;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:       #080c10;
+  --surface:  #0d1117;
+  --card:     #111820;
+  --border:   rgba(255,255,255,.07);
+  --border2:  rgba(255,255,255,.12);
+  --text:     #e8edf2;
+  --muted:    #6b7a8d;
+  --green:    #00e676;
+  --yellow:   #ffd600;
+  --red:      #ff4757;
+  --blue:     #2979ff;
+  --purple:   #aa00ff;
+  --orange:   #ff6d00;
+  --cyan:     #00e5ff;
+  --accent:   #00e676;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══════════════════════════════════
+   LOGIN SCREEN
+═══════════════════════════════════ */
+#loginScreen {
+  position: fixed; inset: 0;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+.login-box {
+  width: 100%; max-width: 400px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 24px;
+  padding: 40px 36px;
+  position: relative;
+  overflow: hidden;
+}
+.login-box::before {
+  content: '';
+  position: absolute; top: -60px; right: -60px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(0,230,118,.15), transparent 70%);
+  pointer-events: none;
+}
+.login-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 900;
+  font-size: 1.6rem;
+  color: var(--green);
+  letter-spacing: -.02em;
+  margin-bottom: 4px;
+}
+.login-sub {
+  font-size: .75rem;
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin-bottom: 36px;
+}
+.login-label {
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: 8px;
+}
+.login-input {
+  width: 100%;
+  background: rgba(255,255,255,.04);
+  border: 1.5px solid var(--border2);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: .95rem;
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  outline: none;
+  transition: border-color .2s;
+  margin-bottom: 20px;
+}
+.login-input:focus { border-color: var(--green); }
+.login-btn {
+  width: 100%;
+  padding: 15px;
+  background: var(--green);
+  color: #000;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 900;
+  font-size: 1rem;
+  cursor: pointer;
+  letter-spacing: .02em;
+  transition: transform .1s, box-shadow .2s;
+  box-shadow: 0 6px 28px rgba(0,230,118,.3);
+}
+.login-btn:active { transform: scale(.97); }
+.login-btn:hover { box-shadow: 0 8px 36px rgba(0,230,118,.45); }
+.login-err {
+  color: var(--red);
+  font-size: .78rem;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 12px;
+  display: none;
+}
+.login-attempts {
+  font-size: .68rem;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* ═══════════════════════════════════
+   MAIN LAYOUT
+═══════════════════════════════════ */
+#app {
+  display: none;
+  height: 100vh;
+  display: none;
+  flex-direction: column;
+}
+#app.visible { display: flex; }
+
+/* Top nav */
+.topnav {
+  height: 56px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  padding: 0 20px;
+  gap: 16px;
+  flex-shrink: 0;
+  position: sticky; top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 900;
+  font-size: 1.1rem;
+  color: var(--green);
+  letter-spacing: -.02em;
+  flex-shrink: 0;
+}
+.nav-badge {
+  font-size: .6rem;
+  font-weight: 800;
+  background: rgba(0,230,118,.15);
+  color: var(--green);
+  border: 1px solid rgba(0,230,118,.25);
+  border-radius: 99px;
+  padding: 3px 9px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.nav-live {
+  display: flex; align-items: center; gap: 6px;
+  font-size: .7rem; font-weight: 700; color: var(--muted);
+  margin-left: auto;
+}
+.live-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  animation: livepulse 1.5s ease-in-out infinite;
+}
+@keyframes livepulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .6; transform: scale(.85); }
+}
+.nav-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .72rem;
+  color: var(--muted);
+}
+.nav-logout {
+  padding: 6px 14px;
+  background: rgba(255,71,87,.1);
+  color: var(--red);
+  border: 1px solid rgba(255,71,87,.2);
+  border-radius: 8px;
+  font-size: .72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s;
+}
+.nav-logout:hover { background: rgba(255,71,87,.18); }
+
+/* Tab bar */
+.tabbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  padding: 0 20px;
+  flex-shrink: 0;
+  overflow-x: auto;
+}
+.tabbar::-webkit-scrollbar { display: none; }
+.tab {
+  padding: 14px 16px;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: color .15s, border-color .15s;
+  display: flex; align-items: center; gap: 6px;
+}
+.tab:hover { color: var(--text); }
+.tab.active {
+  color: var(--green);
+  border-bottom-color: var(--green);
+}
+
+/* Page content */
+.page { display: none; flex: 1; overflow-y: auto; padding: 20px; }
+.page.active { display: block; }
+.page::-webkit-scrollbar { width: 4px; }
+.page::-webkit-scrollbar-track { background: transparent; }
+.page::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+
+/* ═══════════════════════════════════
+   CARDS & GRIDS
+═══════════════════════════════════ */
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: .7rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color .2s;
+}
+.stat-card:hover { border-color: var(--border2); }
+.stat-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+}
+.stat-card.green::before  { background: var(--green); }
+.stat-card.yellow::before { background: var(--yellow); }
+.stat-card.red::before    { background: var(--red); }
+.stat-card.blue::before   { background: var(--blue); }
+.stat-card.purple::before { background: var(--purple); }
+.stat-card.orange::before { background: var(--orange); }
+.stat-card.cyan::before   { background: var(--cyan); }
+
+.stat-val {
+  font-family: 'Syne', sans-serif;
+  font-weight: 900;
+  font-size: 1.9rem;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.stat-lbl {
+  font-size: .65rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.stat-sub {
+  font-size: .62rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.stat-delta {
+  font-size: .68rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-top: 4px;
+}
+.stat-delta.up { color: var(--green); }
+.stat-delta.dn { color: var(--red); }
+
+/* ═══════════════════════════════════
+   TABLE / LIST ROWS
+═══════════════════════════════════ */
+.list-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.list-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.list-header-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: .88rem;
+}
+.row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--border);
+  transition: background .1s;
+}
+.row:last-child { border-bottom: none; }
+.row:hover { background: rgba(255,255,255,.02); }
+.row-icon {
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+.row-info { flex: 1; min-width: 0; }
+.row-name {
+  font-weight: 700;
+  font-size: .88rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.row-sub {
+  font-size: .68rem;
+  color: var(--muted);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.row-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+/* ═══════════════════════════════════
+   BADGES
+═══════════════════════════════════ */
+.badge {
+  font-size: .58rem;
+  font-weight: 800;
+  border-radius: 99px;
+  padding: 3px 8px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  white-space: nowrap;
+}
+.badge-green  { background: rgba(0,230,118,.12); color: var(--green); border: 1px solid rgba(0,230,118,.2); }
+.badge-red    { background: rgba(255,71,87,.12);  color: var(--red);   border: 1px solid rgba(255,71,87,.2); }
+.badge-yellow { background: rgba(255,214,0,.12);  color: var(--yellow); border: 1px solid rgba(255,214,0,.2); }
+.badge-blue   { background: rgba(41,121,255,.12); color: var(--blue);  border: 1px solid rgba(41,121,255,.2); }
+.badge-purple { background: rgba(170,0,255,.12);  color: #cc44ff;      border: 1px solid rgba(170,0,255,.2); }
+.badge-muted  { background: rgba(255,255,255,.06); color: var(--muted); border: 1px solid var(--border); }
+
+/* ═══════════════════════════════════
+   ACTION BUTTONS
+═══════════════════════════════════ */
+.btn {
+  padding: 7px 14px;
+  border-radius: 9px;
+  font-size: .72rem;
+  font-weight: 800;
+  cursor: pointer;
+  border: none;
+  transition: transform .1s, opacity .15s;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: .01em;
+  white-space: nowrap;
+}
+.btn:active { transform: scale(.95); }
+.btn-green  { background: rgba(0,230,118,.15); color: var(--green); border: 1px solid rgba(0,230,118,.25); }
+.btn-red    { background: rgba(255,71,87,.12); color: var(--red);   border: 1px solid rgba(255,71,87,.2); }
+.btn-blue   { background: rgba(41,121,255,.12); color: #5b9bff;    border: 1px solid rgba(41,121,255,.2); }
+.btn-yellow { background: rgba(255,214,0,.12); color: var(--yellow); border: 1px solid rgba(255,214,0,.2); }
+.btn-purple { background: rgba(170,0,255,.12); color: #cc44ff;     border: 1px solid rgba(170,0,255,.2); }
+.btn-muted  { background: rgba(255,255,255,.05); color: var(--muted); border: 1px solid var(--border); }
+.btn-primary {
+  background: var(--green); color: #000; font-family: 'Syne', sans-serif; font-weight: 900;
+  box-shadow: 0 4px 20px rgba(0,230,118,.25);
+}
+.btn-big {
+  width: 100%; padding: 14px;
+  border-radius: 12px;
+  font-size: .9rem;
+  margin-bottom: 8px;
+}
+
+/* ═══════════════════════════════════
+   INPUTS
+═══════════════════════════════════ */
+.input {
+  background: rgba(255,255,255,.04);
+  border: 1.5px solid var(--border2);
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: .88rem;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  width: 100%;
+  transition: border-color .2s;
+  margin-bottom: 10px;
+}
+.input:focus { border-color: rgba(0,230,118,.5); }
+.input-label {
+  font-size: .65rem; font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* Toggle switch */
+.sw-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  margin-bottom: 8px;
+  background: var(--card);
+}
+.sw-info { flex: 1; }
+.sw-name { font-weight: 700; font-size: .88rem; }
+.sw-desc { font-size: .66rem; color: var(--muted); margin-top: 2px; }
+.toggle {
+  width: 44px; height: 24px;
+  background: rgba(255,255,255,.1);
+  border-radius: 99px;
+  cursor: pointer;
+  position: relative;
+  transition: background .25s;
+  flex-shrink: 0;
+  border: none;
+}
+.toggle::after {
+  content: '';
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--muted);
+  transition: transform .25s, background .25s;
+}
+.toggle.on { background: rgba(0,230,118,.25); }
+.toggle.on::after { transform: translateX(20px); background: var(--green); }
+
+/* ═══════════════════════════════════
+   HEALTH MONITOR
+═══════════════════════════════════ */
+.health-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.health-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  display: flex; align-items: center; gap: 12px;
+}
+.health-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.health-name { font-weight: 700; font-size: .82rem; }
+.health-val  { font-size: .65rem; color: var(--muted); margin-top: 2px; }
+
+/* ═══════════════════════════════════
+   SEARCH BAR
+═══════════════════════════════════ */
+.search-bar {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+}
+.search-bar input {
+  background: none; border: none; outline: none;
+  color: var(--text); font-size: .88rem;
+  font-family: 'DM Sans', sans-serif;
+  flex: 1;
+}
+.search-bar span { color: var(--muted); font-size: 1rem; }
+
+/* ═══════════════════════════════════
+   CHART BAR
+═══════════════════════════════════ */
+.mini-chart {
+  display: flex; align-items: flex-end; gap: 4px;
+  height: 48px;
+  margin-top: 10px;
+}
+.chart-bar {
+  flex: 1;
+  background: rgba(0,230,118,.25);
+  border-radius: 4px 4px 0 0;
+  transition: background .2s;
+  cursor: pointer;
+  min-width: 0;
+}
+.chart-bar:hover { background: rgba(0,230,118,.5); }
+.chart-bar.today { background: var(--green); }
+
+/* ═══════════════════════════════════
+   TOAST
+═══════════════════════════════════ */
+#toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-weight: 700;
+  font-size: .84rem;
+  z-index: 99999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .25s;
+  box-shadow: 0 8px 32px rgba(0,0,0,.6);
+  white-space: nowrap;
+  max-width: 90vw;
+}
+#toast.show { opacity: 1; }
+
+/* ═══════════════════════════════════
+   MODAL
+═══════════════════════════════════ */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.85);
+  backdrop-filter: blur(8px);
+  z-index: 9000;
+  display: none; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.open { display: flex; animation: fadeIn .2s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.modal-box {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 24px;
+  width: 100%; max-width: 460px;
+  max-height: 85vh; overflow-y: auto;
+}
+.modal-box::-webkit-scrollbar { display: none; }
+.modal-title {
+  font-family: 'Syne', sans-serif; font-weight: 900; font-size: 1.05rem;
+  margin-bottom: 18px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.modal-close {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(255,255,255,.08); border: none;
+  color: var(--muted); cursor: pointer; font-size: .9rem;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ═══════════════════════════════════
+   MISC UTILITIES
+═══════════════════════════════════ */
+.empty-state {
+  text-align: center; padding: 40px 20px;
+  color: var(--muted); font-size: .82rem;
+}
+.empty-state-icon { font-size: 2.5rem; margin-bottom: 10px; }
+.divider { height: 1px; background: var(--border); margin: 20px 0; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.text-green  { color: var(--green); }
+.text-red    { color: var(--red); }
+.text-yellow { color: var(--yellow); }
+.text-blue   { color: #5b9bff; }
+.text-muted  { color: var(--muted); }
+.fw9 { font-weight: 900; font-family: 'Syne', sans-serif; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.mb8  { margin-bottom: 8px; }
+.mb16 { margin-bottom: 16px; }
+.mb24 { margin-bottom: 24px; }
+.loading { text-align: center; padding: 30px; color: var(--muted); font-size: .82rem; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+
+/* Filter chips */
+.chips { display: flex; gap: 7px; margin-bottom: 14px; flex-wrap: wrap; }
+.chip {
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-size: .7rem; font-weight: 700;
+  cursor: pointer;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--muted);
+  transition: all .15s;
+}
+.chip.active { background: rgba(0,230,118,.15); color: var(--green); border-color: rgba(0,230,118,.3); }
+
+/* Revenue section */
+.revenue-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: .82rem;
+}
+.revenue-row:last-child { border-bottom: none; }
+
+/* KYC doc display */
+.kyc-section { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 10px; }
+.kyc-field { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: .82rem; }
+.kyc-field:last-child { border-bottom: none; }
+.kyc-field-label { color: var(--muted); font-weight: 600; }
+.kyc-field-val { font-weight: 700; text-align: right; }
+
+/* Broadcast input */
+.broadcast-box { position: relative; }
+.broadcast-box textarea {
+  width: 100%; min-height: 80px; resize: none;
+  background: rgba(255,255,255,.04);
+  border: 1.5px solid var(--border2);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: .88rem; color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color .2s;
+}
+.broadcast-box textarea:focus { border-color: rgba(0,230,118,.4); }
+
+/* Fare grid */
+.fare-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px;
+}
+.fare-row {
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 10px; align-items: center; margin-bottom: 10px;
+}
+.fare-input {
+  background: rgba(255,255,255,.06); border: 1.5px solid var(--border2);
+  border-radius: 9px; padding: 9px 12px;
+  font-size: .9rem; color: var(--text); font-family: 'JetBrains Mono', monospace;
+  outline: none; width: 90px; text-align: right;
+  transition: border-color .2s;
+}
+.fare-input:focus { border-color: rgba(0,230,118,.5); }
+
+/* Rider detail modal */
+.rider-stat {
+  background: rgba(255,255,255,.04); border-radius: 10px; padding: 12px;
+  text-align: center;
+}
+.rider-stat-val { font-family: 'Syne', sans-serif; font-weight: 900; font-size: 1.3rem; }
+.rider-stat-lbl { font-size: .6rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-top: 3px; }
+
+/* Live ride card */
+.live-ride-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 10px;
+  transition: border-color .2s;
+}
+.live-ride-card:hover { border-color: var(--border2); }
+.live-ride-route {
+  display: flex; align-items: center; gap: 8px;
+  font-size: .82rem; font-weight: 700;
+  margin-bottom: 8px;
+}
+
+/* Revenue chart day labels */
+.chart-label { font-size: .55rem; color: var(--muted); text-align: center; margin-top: 4px; }
+.chart-labels { display: flex; gap: 4px; }
+.chart-labels span { flex: 1; text-align: center; font-size: .55rem; color: var(--muted); min-width: 0; }
+
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .health-grid { grid-template-columns: 1fr; }
+  .grid-2 { grid-template-columns: 1fr; }
+  .grid-3 { grid-template-columns: 1fr 1fr; }
+  .topnav { padding: 0 14px; gap: 10px; }
+  .page { padding: 14px; }
+}
+
+/* Shimmer loader */
+.shimmer {
+  background: linear-gradient(90deg, rgba(255,255,255,.04) 25%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.04) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+  height: 14px;
+}
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+/* Scrolling marquee for announcements */
+.marquee-wrap { overflow: hidden; background: rgba(0,230,118,.06); border: 1px solid rgba(0,230,118,.15); border-radius: 10px; padding: 8px 14px; margin-bottom: 16px; }
+.marquee-inner { white-space: nowrap; font-size: .72rem; font-weight: 700; color: var(--green); animation: marquee 20s linear infinite; display: inline-block; }
+@keyframes marquee { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
+</style>
+</head>
+<body>
+
+<!-- ═══ TOAST ═══ -->
+<div id="toast"></div>
+
+<!-- ═══════════════════════════════════════════════
+     LOGIN SCREEN
+═══════════════════════════════════════════════ -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">JDP Go</div>
+    <div class="login-sub">Admin Control Panel</div>
+
+    <div class="login-label">Admin Password</div>
+    <input class="login-input" type="password" id="loginPw" placeholder="Password daalo..."
+      onkeydown="if(event.key==='Enter')doLogin()">
+
+    <div id="loginErr" class="login-err">❌ Wrong password — phir try karo</div>
+    <div id="loginAttempts" class="login-attempts" style="display:none"></div>
+
+    <button class="login-btn" onclick="doLogin()" style="margin-top:8px">
+      🔓 Login to Dashboard
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     MAIN APP
+═══════════════════════════════════════════════ -->
+<div id="app">
+
+  <!-- Top nav -->
+  <div class="topnav">
+    <div class="nav-logo">JDP Go</div>
+    <div class="nav-badge">ADMIN</div>
+    <div class="nav-live" style="display:none" id="liveIndicator">
+      <div class="live-dot"></div>
+      <span>Live</span>
+    </div>
+    <div class="nav-time mono" id="navTime">--:--</div>
+    <button class="nav-logout" onclick="doLogout()">Logout</button>
+  </div>
+
+  <!-- Tab bar -->
+  <div class="tabbar">
+    <div class="tab active" onclick="switchTab('dashboard')" id="tab-dashboard">📊 Dashboard</div>
+    <div class="tab" onclick="switchTab('drivers')"   id="tab-drivers">🚗 Drivers</div>
+    <div class="tab" onclick="switchTab('riders')"    id="tab-riders">👤 Riders</div>
+    <div class="tab" onclick="switchTab('rides')"     id="tab-rides">📋 Rides</div>
+    <div class="tab" onclick="switchTab('settings')"  id="tab-settings">⚙️ Settings</div>
+    <div class="tab" onclick="switchTab('analytics')" id="tab-analytics">📈 Analytics</div>
+  </div>
+
+  <!-- ═══ PAGE: DASHBOARD ═══ -->
+  <div class="page active" id="page-dashboard">
+
+    <!-- Announcement marquee -->
+    <div class="marquee-wrap" id="announcementBar" style="display:none">
+      <span class="marquee-inner" id="announcementText"></span>
+    </div>
+
+    <!-- Live KPIs -->
+    <div class="section-title">📡 Real-Time</div>
+    <div class="stats-grid" id="liveStatsGrid">
+      <div class="stat-card green">
+        <div class="stat-val text-green" id="kpiOnline">--</div>
+        <div class="stat-lbl">Online Drivers</div>
+        <div class="stat-sub" id="kpiTotalDrivers">-- registered</div>
+      </div>
+      <div class="stat-card yellow">
+        <div class="stat-val text-yellow" id="kpiActive">--</div>
+        <div class="stat-lbl">Active Rides</div>
+        <div class="stat-sub" id="kpiFinding">-- finding</div>
+      </div>
+      <div class="stat-card blue">
+        <div class="stat-val text-blue" id="kpiRevToday">₹--</div>
+        <div class="stat-lbl">Today Revenue</div>
+        <div class="stat-sub" id="kpiRidesToday">-- rides</div>
+      </div>
+      <div class="stat-card purple">
+        <div class="stat-val" style="color:#cc44ff" id="kpiTotalUsers">--</div>
+        <div class="stat-lbl">Total Users</div>
+        <div class="stat-sub" id="kpiNewToday">-- new today</div>
+      </div>
+      <div class="stat-card orange">
+        <div class="stat-val text-green" id="kpiKycPending">--</div>
+        <div class="stat-lbl">KYC Pending</div>
+        <div class="stat-sub">Needs approval</div>
+      </div>
+      <div class="stat-card cyan">
+        <div class="stat-val" style="color:var(--cyan)" id="kpiAvgFare">₹--</div>
+        <div class="stat-lbl">Avg Fare Today</div>
+        <div class="stat-sub">Per completed ride</div>
+      </div>
+    </div>
+
+    <!-- System Health -->
+    <div class="section-title" style="margin-top:4px">⚡ System Health</div>
+    <div class="health-grid">
+      <div class="health-card">
+        <div class="health-icon" style="background:rgba(0,230,118,.1)">🔥</div>
+        <div>
+          <div class="health-name">Firebase</div>
+          <div class="health-val" id="hFirebase">Checking...</div>
+        </div>
+        <div class="badge badge-green" id="hFirebaseBadge" style="margin-left:auto">LIVE</div>
+      </div>
+      <div class="health-card">
+        <div class="health-icon" style="background:rgba(41,121,255,.1)">🌐</div>
+        <div>
+          <div class="health-name">Network</div>
+          <div class="health-val" id="hNetwork">Checking...</div>
+        </div>
+        <div class="badge badge-green" id="hNetworkBadge" style="margin-left:auto">OK</div>
+      </div>
+      <div class="health-card">
+        <div class="health-icon" style="background:rgba(255,214,0,.1)">🔒</div>
+        <div>
+          <div class="health-name">Security</div>
+          <div class="health-val" id="hSecurity">HTTPS + AES</div>
+        </div>
+        <div class="badge badge-green" id="hSecurityBadge" style="margin-left:auto">ON</div>
+      </div>
+      <div class="health-card">
+        <div class="health-icon" style="background:rgba(255,71,87,.1)">📡</div>
+        <div>
+          <div class="health-name">Realtime DB</div>
+          <div class="health-val" id="hRealtime">Listening...</div>
+        </div>
+        <div class="badge badge-green" id="hRealtimeBadge" style="margin-left:auto">SYNC</div>
+      </div>
+    </div>
+
+    <!-- Live active rides -->
+    <div class="section-title">🟢 Live Rides</div>
+    <div id="liveRidesList">
+      <div class="empty-state"><div class="empty-state-icon">🚕</div>No active rides</div>
+    </div>
+
+    <!-- KYC Pending Quick List -->
+    <div class="section-title" style="margin-top:16px">⏳ KYC Pending</div>
+    <div id="kycPendingList">
+      <div class="loading">Loading...</div>
+    </div>
+
+  </div>
+
+  <!-- ═══ PAGE: DRIVERS ═══ -->
+  <div class="page" id="page-drivers">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div class="section-title" style="margin:0">🚗 Driver Management</div>
+      <button class="btn btn-green" onclick="loadDrivers()">🔄 Refresh</button>
+    </div>
+    <div class="search-bar">
+      <span>🔍</span>
+      <input type="text" placeholder="Naam, phone, vehicle no. search..." id="driverSearch" oninput="filterDrivers()">
+    </div>
+    <div class="chips">
+      <div class="chip active" onclick="filterByKyc('all',this)">All</div>
+      <div class="chip" onclick="filterByKyc('pending',this)">⏳ KYC Pending</div>
+      <div class="chip" onclick="filterByKyc('approved',this)">✅ Approved</div>
+      <div class="chip" onclick="filterByKyc('online',this)">🟢 Online</div>
+      <div class="chip" onclick="filterByKyc('banned',this)">🚫 Banned</div>
+    </div>
+    <div id="driversList"><div class="loading">Loading...</div></div>
+  </div>
+
+  <!-- ═══ PAGE: RIDERS ═══ -->
+  <div class="page" id="page-riders">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div class="section-title" style="margin:0">👤 Rider Management</div>
+      <button class="btn btn-green" onclick="loadRiders()">🔄 Refresh</button>
+    </div>
+    <div class="search-bar">
+      <span>🔍</span>
+      <input type="text" placeholder="Naam ya phone search..." id="riderSearch" oninput="filterRiders()">
+    </div>
+    <div id="ridersList"><div class="loading">Loading...</div></div>
+  </div>
+
+  <!-- ═══ PAGE: RIDES ═══ -->
+  <div class="page" id="page-rides">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div class="section-title" style="margin:0">📋 All Rides</div>
+      <button class="btn btn-green" onclick="loadRides(_curRideFilter)">🔄 Refresh</button>
+    </div>
+    <div class="chips" id="rideFilterChips">
+      <div class="chip active" onclick="loadRides('all',this)">All</div>
+      <div class="chip" onclick="loadRides('finding',this)">🔍 Finding</div>
+      <div class="chip" onclick="loadRides('assigned',this)">🔵 Assigned</div>
+      <div class="chip" onclick="loadRides('ongoing',this)">🟢 Ongoing</div>
+      <div class="chip" onclick="loadRides('completed',this)">✅ Completed</div>
+      <div class="chip" onclick="loadRides('cancelled',this)">❌ Cancelled</div>
+    </div>
+    <div id="ridesList"><div class="loading">Loading...</div></div>
+  </div>
+
+  <!-- ═══ PAGE: SETTINGS ═══ -->
+  <div class="page" id="page-settings">
+
+    <div class="section-title">⚡ Quick Controls</div>
+
+    <div class="sw-row">
+      <div class="sw-info">
+        <div class="sw-name">🌧️ Surge Pricing</div>
+        <div class="sw-desc" id="surgeDesc">Festival / baarish mein 1.5x fare</div>
+      </div>
+      <button class="toggle" id="toggleSurge" onclick="toggleSurge()"></button>
+    </div>
+
+    <div class="sw-row">
+      <div class="sw-info">
+        <div class="sw-name">🛑 Maintenance Mode</div>
+        <div class="sw-desc">New bookings temporarily band karo</div>
+      </div>
+      <button class="toggle" id="toggleMaint" onclick="toggleMaint()"></button>
+    </div>
+
+    <div class="sw-row">
+      <div class="sw-info">
+        <div class="sw-name">📣 App Announcements</div>
+        <div class="sw-desc">Riders ko top bar notification</div>
+      </div>
+      <button class="toggle on" id="toggleNotif" onclick="toggleSwitch('toggleNotif')"></button>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-title">💰 Fare Configuration</div>
+
+    <div class="fare-card mb16">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+        <span style="font-size:1.2rem">🛺</span>
+        <span class="fw9" style="font-size:.9rem">Auto Rickshaw</span>
+      </div>
+      <div class="fare-row">
+        <div>
+          <div class="input-label">Base Fare (₹)</div>
+          <input class="fare-input" type="number" id="autoBase" value="20" min="1">
+        </div>
+        <div>
+          <div class="input-label">Per KM (₹)</div>
+          <input class="fare-input" type="number" id="autoKm" value="12" min="1">
+        </div>
+      </div>
+      <div class="fare-row">
+        <div>
+          <div class="input-label">Night Surcharge %</div>
+          <input class="fare-input" type="number" id="autoNight" value="20" min="0">
+        </div>
+        <div>
+          <div class="input-label">Min Fare (₹)</div>
+          <input class="fare-input" type="number" id="autoMin" value="30" min="1">
+        </div>
+      </div>
+    </div>
+
+    <div class="fare-card mb16">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+        <span style="font-size:1.2rem">🚗</span>
+        <span class="fw9" style="font-size:.9rem">Mini Cab</span>
+      </div>
+      <div class="fare-row">
+        <div>
+          <div class="input-label">Base Fare (₹)</div>
+          <input class="fare-input" type="number" id="cabBase" value="40" min="1">
+        </div>
+        <div>
+          <div class="input-label">Per KM (₹)</div>
+          <input class="fare-input" type="number" id="cabKm" value="16" min="1">
+        </div>
+      </div>
+      <div class="fare-row">
+        <div>
+          <div class="input-label">Night Surcharge %</div>
+          <input class="fare-input" type="number" id="cabNight" value="20" min="0">
+        </div>
+        <div>
+          <div class="input-label">Min Fare (₹)</div>
+          <input class="fare-input" type="number" id="cabMin" value="50" min="1">
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-big" onclick="saveFares()">💾 Save Fare Config</button>
+
+    <div class="divider"></div>
+    <div class="section-title">📢 Broadcast Message</div>
+
+    <div class="broadcast-box mb8">
+      <textarea id="broadcastMsg" placeholder="Saare drivers ko message bhejo...&#10;(e.g. Heavy rain — carefully chalao 🌧️)"></textarea>
+    </div>
+    <button class="btn btn-primary btn-big" onclick="sendBroadcast()">📢 Send to All Drivers</button>
+
+    <div class="divider"></div>
+    <div class="section-title">🔑 Admin Password Change</div>
+    <div class="grid-2 mb8">
+      <div>
+        <div class="input-label">New Password</div>
+        <input class="input" type="password" id="newPw" placeholder="New password..." style="margin-bottom:0">
+      </div>
+      <div>
+        <div class="input-label">Confirm</div>
+        <input class="input" type="password" id="newPwConfirm" placeholder="Confirm..." style="margin-bottom:0">
+      </div>
+    </div>
+    <button class="btn btn-yellow btn-big" onclick="changePassword()">🔑 Update Password</button>
+
+    <div class="divider"></div>
+    <div class="section-title">💡 Promo Codes</div>
+    <div class="grid-2 mb8">
+      <div>
+        <div class="input-label">Code</div>
+        <input class="input" id="promoCode" placeholder="e.g. JDPFREE" style="text-transform:uppercase;margin-bottom:0">
+      </div>
+      <div>
+        <div class="input-label">Discount (₹)</div>
+        <input class="input" type="number" id="promoDiscount" placeholder="e.g. 30" style="margin-bottom:0">
+      </div>
+    </div>
+    <button class="btn btn-purple btn-big" onclick="addPromo()">➕ Add Promo Code</button>
+    <div id="promoList" style="margin-top:10px"></div>
+
+  </div>
+
+  <!-- ═══ PAGE: ANALYTICS ═══ -->
+  <div class="page" id="page-analytics">
+    <div class="section-title">📈 Revenue — Last 7 Days</div>
+    <div class="list-card mb16">
+      <div style="padding:16px">
+        <div id="revenueChart" style="display:flex;align-items:flex-end;gap:6px;height:100px;margin-bottom:6px"></div>
+        <div id="revenueChartLabels" class="chart-labels"></div>
+      </div>
+    </div>
+
+    <div class="section-title">📊 Ride Statistics</div>
+    <div class="stats-grid mb16">
+      <div class="stat-card blue">
+        <div class="stat-val text-blue" id="aTotalRides">--</div>
+        <div class="stat-lbl">Total Rides</div>
+        <div class="stat-sub">All time</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-val text-green" id="aCompletedRides">--</div>
+        <div class="stat-lbl">Completed</div>
+        <div class="stat-sub" id="aCompletionRate">-- completion</div>
+      </div>
+      <div class="stat-card red">
+        <div class="stat-val text-red" id="aCancelledRides">--</div>
+        <div class="stat-lbl">Cancelled</div>
+        <div class="stat-sub" id="aCancelRate">-- cancel rate</div>
+      </div>
+      <div class="stat-card yellow">
+        <div class="stat-val text-yellow" id="aAvgFare">--</div>
+        <div class="stat-lbl">Avg Fare</div>
+        <div class="stat-sub">All completed</div>
+      </div>
+      <div class="stat-card orange">
+        <div class="stat-val" style="color:var(--orange)" id="aTotalRevenue">--</div>
+        <div class="stat-lbl">Total Revenue</div>
+        <div class="stat-sub">All time</div>
+      </div>
+      <div class="stat-card cyan">
+        <div class="stat-val" style="color:var(--cyan)" id="aAvgDist">--</div>
+        <div class="stat-lbl">Avg Distance</div>
+        <div class="stat-sub">Per ride (km)</div>
+      </div>
+    </div>
+
+    <div class="section-title">🏆 Top Drivers (Earnings)</div>
+    <div id="topDriversList" class="list-card">
+      <div class="loading">Loading...</div>
+    </div>
+
+    <div class="section-title" style="margin-top:16px">📅 Revenue Breakdown</div>
+    <div class="list-card">
+      <div style="padding:16px" id="revenueBreakdown">
+        <div class="loading">Loading...</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /#app -->
+
+<!-- ═══ DRIVER DETAIL MODAL ═══ -->
+<div class="modal-overlay" id="driverModal">
+  <div class="modal-box">
+    <div class="modal-title">
+      <span id="dModalTitle">Driver Details</span>
+      <button class="modal-close" onclick="closeModal('driverModal')">✕</button>
+    </div>
+    <div id="dModalContent"></div>
+  </div>
+</div>
+
+<!-- ═══ RIDER DETAIL MODAL ═══ -->
+<div class="modal-overlay" id="riderModal">
+  <div class="modal-box">
+    <div class="modal-title">
+      <span id="rModalTitle">Rider Details</span>
+      <button class="modal-close" onclick="closeModal('riderModal')">✕</button>
+    </div>
+    <div id="rModalContent"></div>
+  </div>
+</div>
+
+<!-- ═══ RIDE DETAIL MODAL ═══ -->
+<div class="modal-overlay" id="rideModal">
+  <div class="modal-box">
+    <div class="modal-title">
+      <span id="rideModalTitle">Ride Details</span>
+      <button class="modal-close" onclick="closeModal('rideModal')">✕</button>
+    </div>
+    <div id="rideModalContent"></div>
+  </div>
+</div>
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getFirestore, collection, query, where, orderBy, limit,
+         getDocs, getDoc, doc, updateDoc, addDoc, deleteDoc,
+         onSnapshot, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+// ── Firebase Config (same as JDP Go app) ──
+const firebaseConfig = {
+  apiKey: [66,74,121,98,80,122,65,81,83,85,48,110,108,112,84,113,48,90,69,109,84,53,123,64,101,73,98,114,64,50,97,85,55,78,107,73,110,92,90].map(b=>String.fromCharCode(b^3)).join(''),
+  authDomain: "jdpgo.firebaseapp.com",
+  projectId: "jdpgo",
+  storageBucket: "jdpgo.firebasestorage.app",
+  messagingSenderId: "148264332732",
+  appId: "1:148264332732:web:eed512ac4e685cef97cfb9"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+// ── Expose to global scope ──
+window.FB = { db, collection, query, where, orderBy, limit, getDocs, getDoc, doc,
+              updateDoc, addDoc, deleteDoc, onSnapshot, serverTimestamp };
+window.FB_READY = true;
+
+console.log('[Admin] Firebase connected ✅');
+</script>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// JDP GO ADMIN PANEL — Core Logic
+// ══════════════════════════════════════════════════════════
+
+// ── Config ──
+const ADMIN_PASSWORD_KEY = 'jdp_admin_pw';
+let _adminPassword = localStorage.getItem(ADMIN_PASSWORD_KEY) || 'jdpadmin2024';
+let _loginAttempts = 0;
+let _locked = false;
+let _refreshInterval = null;
+let _liveUnsubscribes = [];
+
+// ── In-memory state ──
+let _allDrivers = [];
+let _driverFilter = 'all';
+let _allRiders  = [];
+let _curRideFilter = 'all';
+let _promoCodes = JSON.parse(localStorage.getItem('jdp_promos') || '[]');
+
+// ══════════════════════════════════════════════════════════
+// LOGIN
+// ══════════════════════════════════════════════════════════
+function doLogin() {
+  if (_locked) { toast('🔒 Bahut zyada attempts — 1 min wait karo'); return; }
+  const pw = document.getElementById('loginPw').value;
+  if (pw === _adminPassword) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('app').classList.add('visible');
+    _onAdminReady();
+    toast('✅ Welcome Admin!');
+  } else {
+    _loginAttempts++;
+    const err = document.getElementById('loginErr');
+    err.style.display = 'block';
+    err.textContent = `❌ Wrong password (${_loginAttempts}/5 attempts)`;
+    if (_loginAttempts >= 5) {
+      _locked = true;
+      document.getElementById('loginAttempts').style.display = 'block';
+      document.getElementById('loginAttempts').textContent = '🔒 Temporarily locked — 60 seconds wait karo';
+      setTimeout(() => { _locked = false; _loginAttempts = 0;
+        document.getElementById('loginAttempts').style.display = 'none';
+        err.style.display = 'none';
+      }, 60000);
+    }
+  }
+}
+
+function doLogout() {
+  document.getElementById('app').classList.remove('visible');
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('loginPw').value = '';
+  _liveUnsubscribes.forEach(fn => { try { fn(); } catch(e) {} });
+  _liveUnsubscribes = [];
+  if (_refreshInterval) clearInterval(_refreshInterval);
+  toast('Logged out');
+}
+
+// ══════════════════════════════════════════════════════════
+// INIT AFTER LOGIN
+// ══════════════════════════════════════════════════════════
+function _onAdminReady() {
+  _startClock();
+  _checkFirebase();
+  loadDashboard();
+  _refreshInterval = setInterval(() => {
+    if (document.getElementById('page-dashboard').classList.contains('active')) {
+      loadDashboard();
+    }
+  }, 15000);
+  loadPromos();
+}
+
+function _startClock() {
+  function _tick() {
+    const el = document.getElementById('navTime');
+    if (el) el.textContent = new Date().toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'});
+  }
+  _tick();
+  setInterval(_tick, 1000);
+}
+
+function _checkFirebase() {
+  const ok = !!window.FB_READY;
+  const liveEl = document.getElementById('liveIndicator');
+  if (liveEl) liveEl.style.display = ok ? 'flex' : 'none';
+  _setHealth('hFirebase', ok ? 'Firestore · Realtime active' : 'Disconnected!', ok ? 'green' : 'red', ok ? 'LIVE' : 'DOWN');
+  _setHealth('hNetwork', navigator.onLine ? 'Connected' : 'Offline!', navigator.onLine ? 'green' : 'red', navigator.onLine ? 'OK' : 'DOWN');
+  const secOk = location.protocol === 'https:' || location.hostname === 'localhost';
+  _setHealth('hSecurity', secOk ? 'HTTPS + Encrypted' : 'HTTP — Insecure!', secOk ? 'green' : 'red', secOk ? 'ON' : 'WARN');
+  _setHealth('hRealtime', ok ? 'Firestore listeners active' : 'Unavailable', ok ? 'green' : 'red', ok ? 'SYNC' : 'OFF');
+}
+
+function _setHealth(id, val, color, badge) {
+  const el = document.getElementById(id); if (el) el.textContent = val;
+  const b = document.getElementById(id + 'Badge');
+  if (b) {
+    b.textContent = badge;
+    b.className = 'badge badge-' + (color === 'green' ? 'green' : color === 'red' ? 'red' : 'yellow');
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+// TAB SWITCHING
+// ══════════════════════════════════════════════════════════
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + name)?.classList.add('active');
+  document.getElementById('page-' + name)?.classList.add('active');
+  if (name === 'drivers')   loadDrivers();
+  if (name === 'riders')    loadRiders();
+  if (name === 'rides')     loadRides('all');
+  if (name === 'analytics') loadAnalytics();
+}
+
+// ══════════════════════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════════════════════
+async function loadDashboard() {
+  if (!window.FB_READY) return;
+  _checkFirebase();
+  try {
+    const [dSnap, rSnap, uSnap] = await Promise.all([
+      window.FB.getDocs(window.FB.query(window.FB.collection(window.FB.db, 'users'), window.FB.where('role','==','driver'))),
+      window.FB.getDocs(window.FB.collection(window.FB.db, 'rides')),
+      window.FB.getDocs(window.FB.query(window.FB.collection(window.FB.db, 'users'), window.FB.where('role','==','rider')))
+    ]);
+
+    // Drivers
+    let online = 0, kycPending = 0, totalDrivers = 0;
+    const driversData = [];
+    dSnap.forEach(d => {
+      const dd = d.data();
+      totalDrivers++;
+      if (dd.isOnline) online++;
+      if (dd.kycStatus === 'pending') kycPending++;
+      driversData.push({ id: d.id, ...dd });
+    });
+    _setText('kpiOnline', online);
+    _setText('kpiTotalDrivers', totalDrivers + ' registered');
+    _setText('kpiKycPending', kycPending);
+
+    // Rides
+    let active = 0, finding = 0, todayRevenue = 0, todayRides = 0;
+    let newToday = 0;
+    let totalFare = 0, completedCount = 0;
+    const todayStart = new Date(); todayStart.setHours(0,0,0,0);
+    const liveRides = [];
+
+    rSnap.forEach(r => {
+      const d = r.data();
+      const ts = d.createdAt?.toDate?.() || new Date(d.createdAt || 0);
+      if (d.status === 'assigned' || d.status === 'ongoing') {
+        active++;
+        liveRides.push({ id: r.id, ...d });
+      }
+      if (d.status === 'finding') finding++;
+      if (ts >= todayStart) newToday++;
+      if (ts >= todayStart && d.status === 'completed') {
+        todayRevenue += (d.fare || 0);
+        todayRides++;
+      }
+      if (d.status === 'completed' && d.fare) {
+        totalFare += d.fare;
+        completedCount++;
+      }
+    });
+
+    _setText('kpiActive', active);
+    _setText('kpiFinding', finding + ' finding');
+    _setText('kpiRevToday', '₹' + todayRevenue.toLocaleString('en-IN'));
+    _setText('kpiRidesToday', todayRides + ' rides');
+    _setText('kpiAvgFare', completedCount > 0 ? '₹' + Math.round(totalFare/completedCount) : '₹--');
+
+    // Users
+    _setText('kpiTotalUsers', uSnap.size + totalDrivers);
+    _setText('kpiNewToday', newToday + ' new today');
+
+    // Live rides
+    _renderLiveRides(liveRides);
+
+    // KYC pending
+    _renderKycPending(driversData.filter(d => d.kycStatus === 'pending' && !d.banned));
+
+  } catch(e) { console.error('[Admin] Dashboard error:', e); }
+}
+
+function _renderLiveRides(rides) {
+  const el = document.getElementById('liveRidesList');
+  if (!el) return;
+  if (!rides.length) {
+    el.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🚕</div>No active rides right now</div>';
+    return;
+  }
+  el.innerHTML = rides.map(r => `
+    <div class="live-ride-card" onclick="showRideDetail('${r.id}')">
+      <div class="live-ride-route">
+        <span style="color:var(--green)">📍</span>
+        <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.pickup || '--'}</span>
+        <span style="color:var(--muted);margin:0 4px">→</span>
+        <span style="color:var(--red)">🔴</span>
+        <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.drop || '--'}</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;font-size:.75rem;color:var(--muted)">
+        <span>👤 ${r.riderName || '--'}  ·  🚗 ${r.driverName || 'No driver'}</span>
+        <span style="display:flex;gap:6px;align-items:center">
+          <span class="badge ${r.status==='ongoing'?'badge-green':'badge-blue'}">${r.status?.toUpperCase()}</span>
+          <span class="fw9 text-green">₹${r.fare || '--'}</span>
+        </span>
+      </div>
+    </div>`).join('');
+}
+
+function _renderKycPending(drivers) {
+  const el = document.getElementById('kycPendingList');
+  if (!el) return;
+  if (!drivers.length) {
+    el.innerHTML = '<div class="empty-state" style="padding:16px"><div style="color:var(--green);font-weight:700;font-size:.82rem">✅ Koi KYC pending nahi hai</div></div>';
+    return;
+  }
+  el.innerHTML = drivers.map(d => `
+    <div class="row" style="background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:8px">
+      <div class="row-icon" style="background:rgba(255,214,0,.1)">${d.vehicleType==='cab'?'🚗':'🛺'}</div>
+      <div class="row-info">
+        <div class="row-name">${d.name || 'Unknown'}</div>
+        <div class="row-sub">📞 ${d.phone || '--'} · ${d.vehicleNo || '--'}</div>
+      </div>
+      <div class="row-actions">
+        <button class="btn btn-green" onclick="approveKyc('${d.id}')">✅ Approve</button>
+        <button class="btn btn-muted" onclick="showDriverDetail('${d.id}')">👁</button>
+      </div>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════════════════
+// DRIVERS
+// ══════════════════════════════════════════════════════════
+async function loadDrivers() {
+  if (!window.FB_READY) return;
+  document.getElementById('driversList').innerHTML = '<div class="loading">Loading drivers...</div>';
+  try {
+    const snap = await window.FB.getDocs(
+      window.FB.query(window.FB.collection(window.FB.db, 'users'), window.FB.where('role','==','driver'))
+    );
+    _allDrivers = [];
+    snap.forEach(d => _allDrivers.push({ id: d.id, ...d.data() }));
+    _renderDrivers(_allDrivers);
+  } catch(e) {
+    document.getElementById('driversList').innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div>Error loading drivers</div>';
+  }
+}
+
+function filterDrivers() {
+  const q = (document.getElementById('driverSearch')?.value || '').toLowerCase();
+  let list = _allDrivers.filter(d =>
+    (d.name||'').toLowerCase().includes(q) || (d.phone||'').includes(q) || (d.vehicleNo||'').toLowerCase().includes(q)
+  );
+  _renderDrivers(list);
+}
+
+function filterByKyc(filter, el) {
+  _driverFilter = filter;
+  document.querySelectorAll('#page-drivers .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  let list = _allDrivers;
+  if (filter === 'pending')  list = list.filter(d => d.kycStatus === 'pending' && !d.banned);
+  if (filter === 'approved') list = list.filter(d => d.kycStatus === 'approved' && !d.banned);
+  if (filter === 'online')   list = list.filter(d => d.isOnline);
+  if (filter === 'banned')   list = list.filter(d => d.banned);
+  _renderDrivers(list);
+}
+
+function _renderDrivers(drivers) {
+  const el = document.getElementById('driversList');
+  if (!el) return;
+  if (!drivers.length) {
+    el.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🚗</div>No drivers found</div>';
+    return;
+  }
+  el.innerHTML = drivers.map(d => {
+    const kyc = d.kycStatus || 'pending';
+    const kycClass = kyc==='approved' ? 'badge-green' : kyc==='pending' ? 'badge-yellow' : 'badge-red';
+    const online = d.isOnline;
+    const banned = d.banned;
+    return `<div class="row" style="background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:8px${banned?';opacity:.55':''}">
+      <div class="row-icon" style="background:rgba(${online?'0,230,118':'255,255,255'},.08)">
+        ${d.vehicleType==='cab'?'🚗':'🛺'}
+      </div>
+      <div class="row-info">
+        <div class="row-name">${d.name || 'Unknown'} ${banned?'<span class="badge badge-red">BANNED</span>':''}</div>
+        <div class="row-sub">📞 ${d.phone||'--'} · 🚗 ${d.vehicleNo||'--'}</div>
+        <div style="display:flex;gap:5px;margin-top:5px">
+          <span class="badge ${online?'badge-green':'badge-muted'}">${online?'🟢 Online':'⚫ Offline'}</span>
+          <span class="badge ${kycClass}">${kyc.toUpperCase()}</span>
+          <span class="badge badge-muted">₹${(d.earnings||0).toLocaleString('en-IN')}</span>
+        </div>
+      </div>
+      <div class="row-actions" style="flex-direction:column">
+        <button class="btn btn-blue" onclick="showDriverDetail('${d.id}')">📋 Details</button>
+        ${kyc==='pending'&&!banned ? `<button class="btn btn-green" onclick="approveKyc('${d.id}')">✅ Approve</button>` : ''}
+        ${!banned ? `<button class="btn btn-red" onclick="banDriver('${d.id}','${(d.name||'').replace(/'/g,'\\\'')}')" style="margin-top:4px">🚫 Ban</button>` : `<button class="btn btn-yellow" onclick="unbanDriver('${d.id}','${(d.name||'').replace(/'/g,'\\\'')}')" style="margin-top:4px">✅ Unban</button>`}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function showDriverDetail(uid) {
+  if (!window.FB_READY) return;
+  try {
+    const snap = await window.FB.getDoc(window.FB.doc(window.FB.db, 'users', uid));
+    if (!snap.exists()) { toast('❌ Driver not found'); return; }
+    const d = snap.data();
+
+    // Count their rides
+    const ridesSnap = await window.FB.getDocs(
+      window.FB.query(window.FB.collection(window.FB.db, 'rides'), window.FB.where('driverId','==',uid))
+    );
+    let dRides = 0, dEarnings = 0;
+    ridesSnap.forEach(r => {
+      const rd = r.data();
+      if (rd.status === 'completed') { dRides++; dEarnings += (rd.fare || 0); }
+    });
+
+    document.getElementById('dModalTitle').textContent = d.name || 'Driver';
+    document.getElementById('dModalContent').innerHTML = `
+      <div style="text-align:center;margin-bottom:18px">
+        <div style="font-size:3rem;margin-bottom:4px">${d.vehicleType==='cab'?'🚗':'🛺'}</div>
+        <div class="fw9" style="font-size:1.1rem">${d.name||'--'}</div>
+        <div style="font-size:.75rem;color:var(--muted);margin-top:2px">📞 ${d.phone||'--'}</div>
+        <div style="display:flex;justify-content:center;gap:8px;margin-top:8px">
+          <span class="badge ${d.isOnline?'badge-green':'badge-muted'}">${d.isOnline?'🟢 Online':'⚫ Offline'}</span>
+          <span class="badge ${d.kycStatus==='approved'?'badge-green':'badge-yellow'}">${(d.kycStatus||'pending').toUpperCase()}</span>
+          ${d.banned?'<span class="badge badge-red">BANNED</span>':''}
+        </div>
+      </div>
+
+      <div class="grid-3 mb16">
+        <div class="rider-stat"><div class="rider-stat-val text-green">${dRides}</div><div class="rider-stat-lbl">Rides</div></div>
+        <div class="rider-stat"><div class="rider-stat-val text-yellow">₹${dEarnings.toLocaleString('en-IN')}</div><div class="rider-stat-lbl">Earned</div></div>
+        <div class="rider-stat"><div class="rider-stat-val" style="color:#cc44ff">${(d.rating||5).toFixed(1)}⭐</div><div class="rider-stat-lbl">Rating</div></div>
+      </div>
+
+      <div class="kyc-section mb16">
+        <div style="font-size:.65rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">🪪 KYC Documents</div>
+        <div class="kyc-field"><span class="kyc-field-label">Aadhaar</span><span class="kyc-field-val mono">${d.aadhaar||'--'}</span></div>
+        <div class="kyc-field"><span class="kyc-field-label">PAN</span><span class="kyc-field-val mono">${d.pan||'--'}</span></div>
+        <div class="kyc-field"><span class="kyc-field-label">DL Number</span><span class="kyc-field-val mono">${d.dl||'--'}</span></div>
+        <div class="kyc-field"><span class="kyc-field-label">Vehicle No</span><span class="kyc-field-val mono">${d.vehicleNo||'--'}</span></div>
+        <div class="kyc-field"><span class="kyc-field-label">Vehicle Type</span><span class="kyc-field-val">${d.vehicleType==='cab'?'🚗 Mini Cab':'🛺 Auto'}</span></div>
+      </div>
+
+      <div class="kyc-section mb16">
+        <div style="font-size:.65rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">🏦 Bank Details</div>
+        <div class="kyc-field"><span class="kyc-field-label">Account Holder</span><span class="kyc-field-val">${d.bank?.accountHolderName||'--'}</span></div>
+        <div class="kyc-field"><span class="kyc-field-label">IFSC</span><span class="kyc-field-val mono">${d.bank?.ifsc||'--'}</span></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        ${d.kycStatus==='pending'?`<button class="btn btn-green btn-big" onclick="approveKyc('${uid}');closeModal('driverModal')">✅ Approve KYC</button>`:''}
+        ${!d.banned?`<button class="btn btn-red btn-big" onclick="banDriver('${uid}','${(d.name||'').replace(/'/g,'\\\')}');closeModal('driverModal')">🚫 Ban Driver</button>`:
+                    `<button class="btn btn-yellow btn-big" onclick="unbanDriver('${uid}','${(d.name||'').replace(/'/g,'\\\')}');closeModal('driverModal')">✅ Unban Driver</button>`}
+      </div>
+    `;
+    openModal('driverModal');
+  } catch(e) { toast('❌ Error loading driver'); }
+}
+
+async function approveKyc(uid) {
+  if (!window.FB_READY) return;
+  try {
+    await window.FB.updateDoc(window.FB.doc(window.FB.db, 'users', uid), { kycStatus: 'approved' });
+    toast('✅ KYC Approved! Driver ab online ho sakta hai');
+    loadDrivers(); loadDashboard();
+  } catch(e) { toast('❌ Approve failed'); }
+}
+
+async function banDriver(uid, name) {
+  if (!confirm(`"${name}" ko ban karo? Woh login nahi kar payega.`)) return;
+  try {
+    await window.FB.updateDoc(window.FB.doc(window.FB.db, 'users', uid), { banned: true, isOnline: false });
+    toast(`🚫 ${name} banned`);
+    loadDrivers(); loadDashboard();
+  } catch(e) { toast('❌ Ban failed'); }
+}
+
+async function unbanDriver(uid, name) {
+  if (!confirm(`"${name}" ka ban hatao?`)) return;
+  try {
+    await window.FB.updateDoc(window.FB.doc(window.FB.db, 'users', uid), { banned: false });
+    toast(`✅ ${name} unbanned`);
+    loadDrivers(); loadDashboard();
+  } catch(e) { toast('❌ Unban failed'); }
+}
+
+// ══════════════════════════════════════════════════════════
+// RIDERS
+// ══════════════════════════════════════════════════════════
+async function loadRiders() {
+  if (!window.FB_READY) return;
+  document.getElementById('ridersList').innerHTML = '<div class="loading">Loading riders...</div>';
+  try {
+    const snap = await window.FB.getDocs(
+      window.FB.query(window.FB.collection(window.FB.db, 'users'), window.FB.where('role','==','rider'))
+    );
+    _allRiders = [];
+    snap.forEach(r => _allRiders.push({ id: r.id, ...r.data() }));
+    _renderRiders(_allRiders);
+  } catch(e) {
+    document.getElementById('ridersList').innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div>Error loading riders</div>';
+  }
+}
+
+function filterRiders() {
+  const q = (document.getElementById('riderSearch')?.value||'').toLowerCase();
+  _renderRiders(_allRiders.filter(r => (r.name||'').toLowerCase().includes(q) || (r.phone||'').includes(q)));
+}
+
+function _renderRiders(riders) {
+  const el = document.getElementById('ridersList');
+  if (!el) return;
+  if (!riders.length) { el.innerHTML = '<div class="empty-state"><div class="empty-state-icon">👤</div>No riders found</div>'; return; }
+  el.innerHTML = riders.map(r => `
+    <div class="row" style="background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:8px${r.banned?';opacity:.55':''}">
+      <div class="row-icon" style="background:rgba(41,121,255,.1)">👤</div>
+      <div class="row-info">
+        <div class="row-name">${r.name||'Unknown'} ${r.banned?'<span class="badge badge-red">BANNED</span>':''}</div>
+        <div class="row-sub">📞 ${r.phone||'--'} · Rides: ${r.ridesCompleted||0}</div>
+        <div style="margin-top:4px">
+          <span class="badge badge-muted">⭐ ${(r.rating||5).toFixed(1)}</span>
+        </div>
+      </div>
+      <div class="row-actions" style="flex-direction:column">
+        <button class="btn btn-blue" onclick="showRiderDetail('${r.id}')">📋 Details</button>
+        ${!r.banned?`<button class="btn btn-red" onclick="banRider('${r.id}','${(r.name||'').replace(/'/g,'\\\'')}')" style="margin-top:4px">🚫 Ban</button>`:
+                    `<button class="btn btn-yellow" onclick="unbanRider('${r.id}','${(r.name||'').replace(/'/g,'\\\'')}')" style="margin-top:4px">✅ Unban</button>`}
+      </div>
+    </div>`).join('');
+}
+
+async function showRiderDetail(uid) {
+  if (!window.FB_READY) return;
+  try {
+    const snap = await window.FB.getDoc(window.FB.doc(window.FB.db, 'users', uid));
+    if (!snap.exists()) { toast('❌ Not found'); return; }
+    const r = snap.data();
+    const ridesSnap = await window.FB.getDocs(
+      window.FB.query(window.FB.collection(window.FB.db, 'rides'), window.FB.where('riderId','==',uid), window.FB.limit(5))
+    );
+    let rideHistory = [];
+    ridesSnap.forEach(d => rideHistory.push({ id: d.id, ...d.data() }));
+
+    document.getElementById('rModalTitle').textContent = r.name || 'Rider';
+    document.getElementById('rModalContent').innerHTML = `
+      <div style="text-align:center;margin-bottom:18px">
+        <div style="font-size:3rem;margin-bottom:4px">👤</div>
+        <div class="fw9" style="font-size:1.1rem">${r.name||'--'}</div>
+        <div style="font-size:.75rem;color:var(--muted)">📞 ${r.phone||'--'}</div>
+        ${r.banned?'<div class="badge badge-red" style="margin-top:8px">BANNED</div>':''}
+      </div>
+      <div class="grid-3 mb16">
+        <div class="rider-stat"><div class="rider-stat-val text-blue">${r.ridesCompleted||0}</div><div class="rider-stat-lbl">Rides</div></div>
+        <div class="rider-stat"><div class="rider-stat-val" style="color:#cc44ff">${(r.rating||5).toFixed(1)}⭐</div><div class="rider-stat-lbl">Rating</div></div>
+        <div class="rider-stat"><div class="rider-stat-val text-green">₹${(r.totalSpent||0).toLocaleString()}</div><div class="rider-stat-lbl">Spent</div></div>
+      </div>
+      ${rideHistory.length ? `
+        <div style="font-size:.65rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Recent Rides</div>
+        ${rideHistory.map(ride => `
+          <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:10px;margin-bottom:6px;font-size:.78rem">
+            <div style="font-weight:700;margin-bottom:3px">${(ride.drop||'--').substring(0,35)}</div>
+            <div style="color:var(--muted)">₹${ride.fare||'--'} · ${ride.distanceKM||'--'}km · <span class="badge ${ride.status==='completed'?'badge-green':'badge-red'}">${ride.status}</span></div>
+          </div>`).join('')}` : ''}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px">
+        ${!r.banned ? `<button class="btn btn-red btn-big" onclick="banRider('${uid}','${(r.name||'').replace(/'/g,'\\\')}');closeModal('riderModal')">🚫 Ban Rider</button>` :
+                      `<button class="btn btn-yellow btn-big" onclick="unbanRider('${uid}','${(r.name||'').replace(/'/g,'\\\')}');closeModal('riderModal')">✅ Unban</button>`}
+        <button class="btn btn-muted btn-big" onclick="closeModal('riderModal')">Close</button>
+      </div>`;
+    openModal('riderModal');
+  } catch(e) { toast('❌ Error'); }
+}
+
+async function banRider(uid, name) {
+  if (!confirm(`"${name}" ko ban karo?`)) return;
+  try {
+    await window.FB.updateDoc(window.FB.doc(window.FB.db, 'users', uid), { banned: true });
+    toast(`🚫 ${name} banned`);
+    loadRiders();
+  } catch(e) { toast('❌ Failed'); }
+}
+async function unbanRider(uid, name) {
+  if (!confirm(`"${name}" ka ban hatao?`)) return;
+  try {
+    await window.FB.updateDoc(window.FB.doc(window.FB.db, 'users', uid), { banned: false });
+    toast(`✅ ${name} unbanned`);
+    loadRiders();
+  } catch(e) { toast('❌ Failed'); }
+}
+
+// ══════════════════════════════════════════════════════════
+// RIDES
+// ══════════════════════════════════════════════════════════
+async function loadRides(filter = 'all', chipEl) {
+  _curRideFilter = filter;
+  if (chipEl) {
+    document.querySelectorAll('#rideFilterChips .chip').forEach(c => c.classList.remove('active'));
+    chipEl.classList.add('active');
+  }
+  if (!window.FB_READY) return;
+  document.getElementById('ridesList').innerHTML = '<div class="loading">Loading rides...</div>';
+  try {
+    let q;
+    if (filter === 'all') {
+      q = window.FB.query(window.FB.collection(window.FB.db, 'rides'), window.FB.orderBy('createdAt','desc'), window.FB.limit(50));
+    } else {
+      q = window.FB.query(window.FB.collection(window.FB.db, 'rides'), window.FB.where('status','==',filter), window.FB.limit(50));
+    }
+    const snap = await window.FB.getDocs(q);
+    const rides = [];
+    snap.forEach(r => rides.push({ id: r.id, ...r.data() }));
+    _renderRides(rides);
+  } catch(e) {
+    document.getElementById('ridesList').innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div>Error — Firestore index check karo</div>';
+  }
+}
+
+function _renderRides(rides) {
+  const el = document.getElementById('ridesList');
+  if (!rides.length) { el.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📋</div>No rides found</div>'; return; }
+  const statusMap = {
+    finding: 'badge-yellow', assigned: 'badge-blue', ongoing: 'badge-green',
+    completed: 'badge-green', cancelled: 'badge-red', cancelled_driver: 'badge-red'
+  };
+  el.innerHTML = rides.map(r => {
+    const ts = r.createdAt?.toDate?.()?.toLocaleString('en-IN', {day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}) || '--';
+    return `
+    <div class="live-ride-card" onclick="showRideDetail('${r.id}')">
+      <div class="live-ride-route">
+        <span style="font-size:.9rem">${r.cabType==='cab'?'🚗':'🛺'}</span>
+        <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.82rem">${r.pickup||'--'}</span>
+        <span style="color:var(--muted);margin:0 4px;font-size:.75rem">→</span>
+        <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.82rem">${r.drop||'--'}</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;font-size:.72rem;color:var(--muted)">
+        <span>👤 ${r.riderName||'--'} · 🚗 ${r.driverName||'Unassigned'}</span>
+        <div style="display:flex;gap:6px;align-items:center">
+          <span class="mono" style="font-size:.7rem">${ts}</span>
+          <span class="badge ${statusMap[r.status]||'badge-muted'}">${(r.status||'--').toUpperCase()}</span>
+          <span class="fw9 text-green">₹${r.fare||'--'}</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function showRideDetail(rideId) {
+  if (!window.FB_READY) return;
+  try {
+    const snap = await window.FB.getDoc(window.FB.doc(window.FB.db, 'rides', rideId));
+    if (!snap.exists()) { toast('❌ Ride not found'); return; }
+    const r = snap.data();
+    const ts = r.createdAt?.toDate?.()?.toLocaleString('en-IN') || '--';
+    const statusMap = { finding: 'badge-yellow', assigned: 'badge-blue', ongoing: 'badge-green', completed: 'badge-green', cancelled: 'badge-red' };
+
+    document.getElementById('rideModalTitle').textContent = 'Ride #' + rideId.slice(-6).toUpperCase();
+    document.getElementById('rideModalContent').innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <span class="badge ${statusMap[r.status]||'badge-muted'}" style="font-size:.75rem;padding:5px 12px">${(r.status||'--').toUpperCase()}</span>
+        <span class="fw9 text-green" style="font-size:1.5rem">₹${r.fare||'--'}</span>
+      </div>
+      <div class="kyc-section mb16">
+        <div class="kyc-field"><span class="kyc-field-label">Rider</span><span class="kyc-field-val">${r.riderName||'--'}</span></div>
+        <div class="kyc-field"><span class="kyc-field-label">Rider Phone</span><span class="kyc-field-val mono">${r.riderPhone||r.phone||'--'}</span></div>
+        <div class="kyc-field"><span class="kyc-field-label">Driver</span><span class="kyc-field-val">${r.driverName||'Not assigned'}</span></div>
+        <div class="kyc-field"><span class="kyc-field-label">Driver Phone</span><span class="kyc-field-val mono">${r.driverPhone||'--'}</span></div>
+        <div class="kyc-field"><span class="kyc-field-label">Vehicle</span><span class="kyc-field-val">${r.driverVehicle||'--'} ${r.cabType==='cab'?'🚗':'🛺'}</span></div>
+      </div>
+      <div class="kyc-section mb16">
+        <div class="kyc-field"><span class="kyc-field-label">Pickup</span><span class="kyc-field-val">${r.pickup||'--'}</span></div>
+        <div class="kyc-field"><span class="kyc-field-label">Drop</span><span class="kyc-field-val">${r.drop||'--'}</span></div>
+        <div class="kyc-field"><span class="kyc-field-label">Distance</span><span class="kyc-field-val">${r.distanceKM||'--'} km</span></div>
+        <div class="kyc-field"><span class="kyc-field-label">Fare</span><span class="kyc-field-val text-green fw9">₹${r.fare||'--'}</span></div>
+        <div class="kyc-field"><span class="kyc-field-label">Payment</span><span class="kyc-field-val">${r.paymentMethod==='upi'?'📱 UPI':'💵 Cash'}</span></div>
+        <div class="kyc-field"><span class="kyc-field-label">OTP</span><span class="kyc-field-val mono">${r.otp||'--'}</span></div>
+        <div class="kyc-field"><span class="kyc-field-label">Booked At</span><span class="kyc-field-val mono" style="font-size:.7rem">${ts}</span></div>
+      </div>
+      ${(r.status==='finding'||r.status==='assigned') ? `
+      <button class="btn btn-red btn-big" onclick="forceCancel('${rideId}');closeModal('rideModal')">❌ Force Cancel Ride</button>` : ''}
+      <button class="btn btn-muted btn-big" onclick="closeModal('rideModal')">Close</button>`;
+    openModal('rideModal');
+  } catch(e) { toast('❌ Error'); }
+}
+
+async function forceCancel(rideId) {
+  if (!confirm('Yeh ride force cancel karo?')) return;
+  try {
+    await window.FB.updateDoc(window.FB.doc(window.FB.db, 'rides', rideId), {
+      status: 'cancelled', cancelledAt: window.FB.serverTimestamp(), cancelledBy: 'admin'
+    });
+    toast('✅ Ride force cancelled');
+    loadRides(_curRideFilter);
+  } catch(e) { toast('❌ Cancel failed'); }
+}
+
+// ══════════════════════════════════════════════════════════
+// SETTINGS
+// ══════════════════════════════════════════════════════════
+let _surgeOn = false;
+let _maintOn = false;
+
+function toggleSurge() {
+  _surgeOn = !_surgeOn;
+  document.getElementById('toggleSurge').className = 'toggle' + (_surgeOn ? ' on' : '');
+  document.getElementById('surgeDesc').textContent = _surgeOn ? '⚡ SURGE ACTIVE — 1.5x fare chal raha hai' : 'Festival / baarish mein 1.5x fare';
+  // Persist to Firebase config
+  if (window.FB_READY) {
+    window.FB.updateDoc(window.FB.doc(window.FB.db, 'config', 'app'), { surgeActive: _surgeOn }).catch(() => {});
+  }
+  toast(_surgeOn ? '⚡ Surge ON — 1.5x fare' : '✅ Surge OFF — Normal fare');
+}
+
+function toggleMaint() {
+  _maintOn = !_maintOn;
+  document.getElementById('toggleMaint').className = 'toggle' + (_maintOn ? ' on' : '');
+  if (window.FB_READY) {
+    window.FB.updateDoc(window.FB.doc(window.FB.db, 'config', 'app'), { maintMode: _maintOn }).catch(() => {});
+  }
+  toast(_maintOn ? '🛑 Maintenance ON — Bookings blocked' : '✅ Maintenance OFF');
+}
+
+function toggleSwitch(id) {
+  const el = document.getElementById(id);
+  if (el) el.className = el.classList.contains('on') ? 'toggle' : 'toggle on';
+}
+
+function saveFares() {
+  const cfg = {
+    autoBase: +document.getElementById('autoBase').value || 20,
+    autoKm:   +document.getElementById('autoKm').value   || 12,
+    autoNight:+document.getElementById('autoNight').value || 20,
+    autoMin:  +document.getElementById('autoMin').value  || 30,
+    cabBase:  +document.getElementById('cabBase').value  || 40,
+    cabKm:    +document.getElementById('cabKm').value    || 16,
+    cabNight: +document.getElementById('cabNight').value || 20,
+    cabMin:   +document.getElementById('cabMin').value   || 50,
+    updatedAt: window.FB_READY ? window.FB.serverTimestamp() : new Date().toISOString()
+  };
+  if (window.FB_READY) {
+    window.FB.updateDoc(window.FB.doc(window.FB.db, 'config', 'fare'), cfg).catch(() => {
+      window.FB.addDoc(window.FB.collection(window.FB.db, 'config'), { ...cfg, _id: 'fare' }).catch(() => {});
+    });
+  }
+  toast(`💾 Fare saved! Auto: ₹${cfg.autoBase}+₹${cfg.autoKm}/km | Cab: ₹${cfg.cabBase}+₹${cfg.cabKm}/km`);
+}
+
+async function sendBroadcast() {
+  const msg = document.getElementById('broadcastMsg')?.value?.trim();
+  if (!msg) { toast('❌ Message khaali hai'); return; }
+  if (!window.FB_READY) return;
+  try {
+    await window.FB.addDoc(window.FB.collection(window.FB.db, 'broadcasts'), {
+      message: msg, sentAt: window.FB.serverTimestamp(), sentBy: 'admin'
+    });
+    toast(`📢 Broadcast sent to all drivers!`);
+    document.getElementById('broadcastMsg').value = '';
+
+    // Show in marquee
+    const bar = document.getElementById('announcementBar');
+    const text = document.getElementById('announcementText');
+    if (bar && text) {
+      text.textContent = '📢 Admin: ' + msg + '  ·  JDP Go Control';
+      bar.style.display = 'block';
+      setTimeout(() => bar.style.display = 'none', 30000);
+    }
+  } catch(e) { toast('❌ Broadcast failed'); }
+}
+
+function changePassword() {
+  const np = document.getElementById('newPw').value;
+  const nc = document.getElementById('newPwConfirm').value;
+  if (!np) { toast('❌ Password khaali hai'); return; }
+  if (np !== nc) { toast('❌ Passwords match nahi kar rahe'); return; }
+  if (np.length < 6) { toast('❌ Minimum 6 characters chahiye'); return; }
+  _adminPassword = np;
+  localStorage.setItem(ADMIN_PASSWORD_KEY, np);
+  document.getElementById('newPw').value = '';
+  document.getElementById('newPwConfirm').value = '';
+  toast('✅ Password changed! Note kar lo: ' + np);
+}
+
+// Promo codes
+function loadPromos() {
+  _promoCodes = JSON.parse(localStorage.getItem('jdp_promos') || '[]');
+  _renderPromos();
+}
+
+function _renderPromos() {
+  const el = document.getElementById('promoList');
+  if (!el) return;
+  if (!_promoCodes.length) {
+    el.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:.78rem;padding:12px">Koi promo code nahi hai</div>';
+    return;
+  }
+  el.innerHTML = _promoCodes.map((p, i) => `
+    <div class="row" style="background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:6px">
+      <div class="row-icon" style="background:rgba(170,0,255,.1);font-size:.9rem;font-family:monospace;font-weight:900;font-size:.7rem;color:#cc44ff;width:auto;min-width:70px;padding:0 8px">
+        ${p.code}
+      </div>
+      <div class="row-info">
+        <div class="row-name">₹${p.discount} off</div>
+        <div class="row-sub">Discount: ₹${p.discount}</div>
+      </div>
+      <button class="btn btn-red" onclick="deletePromo(${i})">🗑</button>
+    </div>`).join('');
+}
+
+function addPromo() {
+  const code = (document.getElementById('promoCode')?.value||'').toUpperCase().trim();
+  const disc = +(document.getElementById('promoDiscount')?.value || 0);
+  if (!code) { toast('❌ Code daalo'); return; }
+  if (!disc || disc < 1) { toast('❌ Discount amount daalo'); return; }
+  if (_promoCodes.find(p => p.code === code)) { toast('❌ Yeh code already exist karta hai'); return; }
+  _promoCodes.push({ code, discount: disc });
+  localStorage.setItem('jdp_promos', JSON.stringify(_promoCodes));
+  // Save to Firebase too
+  if (window.FB_READY) {
+    window.FB.updateDoc(window.FB.doc(window.FB.db, 'config', 'promos'), { codes: _promoCodes })
+      .catch(() => window.FB.addDoc(window.FB.collection(window.FB.db, 'config'), { _id:'promos', codes: _promoCodes }).catch(()=>{}));
+  }
+  document.getElementById('promoCode').value = '';
+  document.getElementById('promoDiscount').value = '';
+  _renderPromos();
+  toast(`✅ Promo "${code}" — ₹${disc} off added`);
+}
+
+function deletePromo(i) {
+  _promoCodes.splice(i, 1);
+  localStorage.setItem('jdp_promos', JSON.stringify(_promoCodes));
+  _renderPromos();
+  toast('🗑 Promo deleted');
+}
+
+// ══════════════════════════════════════════════════════════
+// ANALYTICS
+// ══════════════════════════════════════════════════════════
+async function loadAnalytics() {
+  if (!window.FB_READY) return;
+  try {
+    const snap = await window.FB.getDocs(window.FB.collection(window.FB.db, 'rides'));
+    let total = 0, completed = 0, cancelled = 0, totalFare = 0, totalDist = 0;
+    const dayRevenue = {};
+    const driverEarnings = {};
+
+    const today = new Date();
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(today); d.setDate(d.getDate() - i);
+      const key = d.toLocaleDateString('en-IN', {day:'2-digit',month:'short'});
+      dayRevenue[key] = 0;
+    }
+
+    snap.forEach(r => {
+      const d = r.data();
+      total++;
+      if (d.status === 'completed') {
+        completed++;
+        totalFare += d.fare || 0;
+        totalDist += d.distanceKM || 0;
+        const ts = d.createdAt?.toDate?.() || new Date(0);
+        const key = ts.toLocaleDateString('en-IN', {day:'2-digit',month:'short'});
+        if (key in dayRevenue) dayRevenue[key] += d.fare || 0;
+        if (d.driverName) {
+          if (!driverEarnings[d.driverName]) driverEarnings[d.driverName] = { earnings: 0, rides: 0, driverId: d.driverId };
+          driverEarnings[d.driverName].earnings += d.fare || 0;
+          driverEarnings[d.driverName].rides++;
+        }
+      }
+      if (d.status === 'cancelled' || d.status === 'cancelled_driver') cancelled++;
+    });
+
+    _setText('aTotalRides', total);
+    _setText('aCompletedRides', completed);
+    _setText('aCompletionRate', total > 0 ? Math.round(completed/total*100)+'% completion' : '--');
+    _setText('aCancelledRides', cancelled);
+    _setText('aCancelRate', total > 0 ? Math.round(cancelled/total*100)+'% cancel rate' : '--');
+    _setText('aAvgFare', completed > 0 ? '₹' + Math.round(totalFare/completed) : '₹--');
+    _setText('aTotalRevenue', '₹' + totalFare.toLocaleString('en-IN'));
+    _setText('aAvgDist', completed > 0 ? (totalDist/completed).toFixed(1) + ' km' : '--');
+
+    // Revenue chart
+    _renderRevenueChart(dayRevenue);
+
+    // Revenue breakdown
+    _renderRevenueBreakdown(dayRevenue, totalFare, completed);
+
+    // Top drivers
+    const topDrivers = Object.entries(driverEarnings)
+      .sort((a,b) => b[1].earnings - a[1].earnings).slice(0, 5);
+    _renderTopDrivers(topDrivers);
+
+  } catch(e) { console.error('[Admin] Analytics error:', e); }
+}
+
+function _renderRevenueChart(dayRevenue) {
+  const el = document.getElementById('revenueChart');
+  const labelsEl = document.getElementById('revenueChartLabels');
+  if (!el) return;
+  const days = Object.entries(dayRevenue);
+  const max = Math.max(...days.map(d => d[1]), 1);
+  el.innerHTML = days.map(([day, rev], i) => {
+    const pct = Math.max(4, Math.round(rev/max*100));
+    const isToday = i === days.length - 1;
+    return `<div class="chart-bar ${isToday?'today':''}" style="height:${pct}%" title="₹${rev}"></div>`;
+  }).join('');
+  if (labelsEl) labelsEl.innerHTML = days.map(([day]) => `<span>${day}</span>`).join('');
+}
+
+function _renderRevenueBreakdown(dayRevenue, total, count) {
+  const el = document.getElementById('revenueBreakdown');
+  if (!el) return;
+  const days = Object.entries(dayRevenue);
+  const weekTotal = days.reduce((s, [, v]) => s + v, 0);
+  el.innerHTML = `
+    <div class="revenue-row"><span style="font-weight:700">This Week</span><span class="text-green fw9">₹${weekTotal.toLocaleString('en-IN')}</span></div>
+    <div class="revenue-row"><span style="font-weight:700">All Time</span><span class="text-green fw9">₹${total.toLocaleString('en-IN')}</span></div>
+    <div class="revenue-row"><span>Total Completed Rides</span><span class="fw9">${count}</span></div>
+    <div class="revenue-row"><span>Avg Revenue / Day (week)</span><span class="fw9">₹${Math.round(weekTotal/7).toLocaleString()}</span></div>
+    ${days.map(([d, v]) => `<div class="revenue-row"><span class="mono" style="font-size:.75rem">${d}</span><span style="font-weight:700">₹${v.toLocaleString('en-IN')}</span></div>`).join('')}
+  `;
+}
+
+function _renderTopDrivers(drivers) {
+  const el = document.getElementById('topDriversList');
+  if (!drivers.length) {
+    el.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🏆</div>No data yet</div>';
+    return;
+  }
+  el.innerHTML = drivers.map(([name, data], i) => `
+    <div class="row">
+      <div style="width:28px;height:28px;border-radius:50%;background:${['rgba(255,214,0,.2)','rgba(200,200,200,.15)','rgba(200,120,50,.15)','rgba(255,255,255,.06)','rgba(255,255,255,.06)'][i]};display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.85rem;flex-shrink:0">
+        ${['🥇','🥈','🥉','4','5'][i]}
+      </div>
+      <div class="row-info">
+        <div class="row-name">${name}</div>
+        <div class="row-sub">${data.rides} rides completed</div>
+      </div>
+      <div class="fw9 text-green" style="font-size:1rem">₹${data.earnings.toLocaleString('en-IN')}</div>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════════════════
+// UTILITIES
+// ══════════════════════════════════════════════════════════
+function _setText(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+let _toastTimer = null;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => el.classList.remove('show'), 3200);
+}
+
+function openModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.add('open');
+}
+function closeModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.remove('open');
+}
+
+// Close modal on overlay click
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('open');
+  });
+});
+
+// Wait for Firebase then init if already logged in
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    // Password hint after FB loads
+    document.getElementById('loginPw')?.addEventListener('keydown', e => {
+      if (e.key === 'Enter') doLogin();
+    });
+  }, 500);
+});
+
+// Expose to global
+window.doLogin = doLogin;
+window.doLogout = doLogout;
+window.switchTab = switchTab;
+window.loadDashboard = loadDashboard;
+window.loadDrivers = loadDrivers;
+window.loadRiders = loadRiders;
+window.loadRides = loadRides;
+window.loadAnalytics = loadAnalytics;
+window.filterDrivers = filterDrivers;
+window.filterRiders = filterRiders;
+window.filterByKyc = filterByKyc;
+window.showDriverDetail = showDriverDetail;
+window.showRiderDetail = showRiderDetail;
+window.showRideDetail = showRideDetail;
+window.approveKyc = approveKyc;
+window.banDriver = banDriver;
+window.unbanDriver = unbanDriver;
+window.banRider = banRider;
+window.unbanRider = unbanRider;
+window.forceCancel = forceCancel;
+window.toggleSurge = toggleSurge;
+window.toggleMaint = toggleMaint;
+window.toggleSwitch = toggleSwitch;
+window.saveFares = saveFares;
+window.sendBroadcast = sendBroadcast;
+window.changePassword = changePassword;
+window.addPromo = addPromo;
+window.deletePromo = deletePromo;
+window.openModal = openModal;
+window.closeModal = closeModal;
+</script>
+</body>
+</html>

@@ -1,12 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<style id="init-hide">
+/* ══ INSTANT HIDE — No code flash ══ */
+body { visibility: hidden !important; background: #ffffff !important; }
+#loader { visibility: visible !important; display: flex !important; 
+  position: fixed; inset: 0; z-index: 99999;
+  background: #ffffff; flex-direction: column;
+  align-items: center; justify-content: center; gap: 16px; }
+/* Show loader immediately even before main CSS */
+.ld-box-fast {
+  width: 80px; height: 80px; background: #00b140;
+  border-radius: 20px; display: flex; align-items: center;
+  justify-content: center; font-family: sans-serif;
+  font-size: 1.1rem; font-weight: 900; color: #fff;
+  animation: ldpf 1.6s ease-in-out infinite;
+}
+@keyframes ldpf {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+</style>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>JDP Go — Jagdalpur</title>
 
 <!-- ✅ PWA Meta Tags -->
-<meta name="theme-color" content="#f59e0b">
+<meta name="theme-color" content="#00b140">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -25,7 +45,10 @@
 <meta http-equiv="Permissions-Policy" content="geolocation=(self), camera=(self), microphone=()">
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 <meta name="robots" content="noindex, nofollow">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
 
 <!-- ✅ PERFORMANCE & ERROR BOUNDARY — 50K concurrent users -->
 <script>
@@ -2470,16 +2493,17 @@ body.lm #zoneLegend{background:rgba(255,255,255,.95);color:#000;}
 #loader{position:fixed;inset:0;background:#ffffff;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
 .ld-box{width:82px;height:82px;background:#00b140;border-radius:20px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:1.35rem;font-weight:900;color:#ffffff;animation:ldp 2s infinite;}
 @keyframes ldp{0%,100%{box-shadow:0 0 36px rgba(245,158,11,.45)}50%{box-shadow:0 0 72px rgba(245,158,11,.9)}}
-.ld-t{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:900;letter-spacing:.06em;}
+.ld-t{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:900;letter-spacing:.06em;color:#111111;display:none;}
 .ld-s{font-size:.75rem;color:#717171;text-align:center;}
 .ld-bar-w{width:180px;height:3px;background:#f0f0f0;border-radius:99px;overflow:hidden;}
-.ld-bar{height:100%;width:0%;background:linear-gradient(90deg,#111111,#333333);border-radius:99px;transition:width .25s;}
+.ld-bar{height:100%;width:0%;background:linear-gradient(90deg,#00b140,#34d399);border-radius:99px;transition:width .4s ease;}
+.ld-bar-w{width:200px;height:3px;background:#eeeeee;border-radius:99px;overflow:hidden;margin-top:4px;}
 
 /* ══ AUTH ══ */
 
 /* ══════════════════════ PREMIUM AUTH SCREEN ══════════════════════ */
 #auth{
-  position:fixed;inset:0;z-index:8000;display:flex;flex-direction:column;overflow-y:auto;
+  position:fixed;inset:0;z-index:8000;display:none;flex-direction:column;
   background:#f7f7f7;overflow-y:auto;overflow-x:hidden;
 }
 #auth::-webkit-scrollbar{display:none;}
@@ -2715,7 +2739,7 @@ body.lm .dcard{background:#fff;}
 .lbadge.o .lbd{background:var(--orange);box-shadow:0 0 6px var(--orange);animation:dpulse 1s infinite;}
 
 /* ══ DRIVER DASHBOARD ══ */
-#dTopBar{position:fixed;top:0;left:0;right:0;z-index:500;display:none;padding:11px 15px;background:linear-gradient(to bottom,rgba(255,255,255,.98) 0%,rgba(255,255,255,0) 100%);}
+#dTopBar{position:fixed;top:0;left:0;right:0;z-index:500;display:none;padding:11px 15px;background:linear-gradient(to bottom,rgba(255,255,255,.97) 0%,transparent 100%);}
 .d-nr{display:flex;align-items:center;justify-content:space-between;}
 .d-nm{font-family:'Syne',sans-serif;font-weight:800;font-size:.92rem;color:#111111;}
 .tgsw{position:relative;width:52px;height:27px;cursor:pointer;}
@@ -2803,7 +2827,7 @@ body.lm .rpc{background:#fff;}
 .dava-verified::after{content:'✅';position:absolute;bottom:-2px;right:-4px;font-size:.65rem;background:var(--card);border-radius:50%;padding:1px;}
 
 /* ══ NEW FEATURES CSS ══ */
-#histModal,#ratingModal,#receiptModal,#cancelModal,#msgModal,#promoModal{position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,.55);display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px);}
+#histModal,#ratingModal,#receiptModal,#cancelModal,#msgModal,#promoModal{position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,.82);display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px);}
 #histModal.sh,#ratingModal.sh,#receiptModal.sh,#cancelModal.sh,#msgModal.sh,#promoModal.sh{display:flex;animation:fup .3s ease;}
 .modal-box{background:var(--bg);border-radius:26px 26px 0 0;border-top:1px solid rgba(255,255,255,.1);padding:20px 18px 44px;width:100%;max-width:500px;max-height:88vh;overflow-y:auto;}
 .modal-box::-webkit-scrollbar{display:none;}
@@ -2923,7 +2947,7 @@ body.lm .pickup-strip{background:#f7f7f7;}
   font-size:.72rem;font-weight:700;color:#00b140;}
 
 /* ══ LIVE DISTANCE FLOAT — positioned above sheet ══ */
-#liveDistFloat{background:#111111;color:#ffffff;position:fixed;left:50%;transform:translateX(-50%);
+#liveDistFloat{position:fixed;left:50%;transform:translateX(-50%);
   z-index:420;display:none;pointer-events:none;}
 .ldf-inner{background:rgba(0,0,0,.82);backdrop-filter:blur(12px);
   border:1px solid rgba(0,0,0,.1);border-radius:99px;
@@ -3117,457 +3141,6 @@ body.lm .vrp-box{background:#f0f4fb;}
 #elocBrowseList::-webkit-scrollbar{display:none;}
 #elocSuggestBox::-webkit-scrollbar{display:none;}
 </style>
-<style>
-/* ═══════════════════════════════════════════
-   JDP GO — PREMIUM OLA/UBER LIGHT THEME
-   ═══════════════════════════════════════════ */
-
-/* ── AUTH FORM CARD ── */
-.ab {
-  background: #ffffff !important;
-  border-radius: 28px 28px 0 0 !important;
-  box-shadow: 0 -8px 40px rgba(0,0,0,.1) !important;
-  padding: 22px 18px 70px !important;
-}
-
-/* ── INPUT FIELDS — Ola style ── */
-.fi {
-  background: #f7f8fa !important;
-  border: 1.5px solid #ececec !important;
-  border-radius: 14px !important;
-  padding: 14px 16px !important;
-  font-size: .92rem !important;
-  font-weight: 500 !important;
-  color: #111111 !important;
-  width: 100% !important;
-}
-.fi::placeholder { color: #aaaaaa !important; }
-.fi:focus {
-  border-color: #00b140 !important;
-  background: #ffffff !important;
-  box-shadow: 0 0 0 3px rgba(0,177,64,.1) !important;
-  outline: none !important;
-}
-
-/* ── LABELS ── */
-.fl {
-  font-size: .7rem !important;
-  font-weight: 700 !important;
-  color: #555555 !important;
-  text-transform: uppercase !important;
-  letter-spacing: .06em !important;
-  margin-bottom: 6px !important;
-}
-
-/* ── LOGIN BUTTON — Uber black ── */
-.asub.y {
-  background: #111111 !important;
-  color: #ffffff !important;
-  border-radius: 16px !important;
-  padding: 16px !important;
-  font-size: 1rem !important;
-  font-weight: 900 !important;
-  box-shadow: 0 4px 18px rgba(0,0,0,.18) !important;
-  border: none !important;
-  letter-spacing: .02em !important;
-  transition: transform .1s, box-shadow .2s !important;
-}
-.asub.y:active { transform: scale(.97) !important; }
-
-/* ── REGISTER BUTTON — Ola green ── */
-.asub.g {
-  background: #00b140 !important;
-  color: #ffffff !important;
-  border-radius: 16px !important;
-  padding: 16px !important;
-  font-size: 1rem !important;
-  font-weight: 900 !important;
-  box-shadow: 0 4px 18px rgba(0,177,64,.25) !important;
-  border: none !important;
-}
-
-/* ── ERROR BOX ── */
-.eb {
-  background: #fff5f5 !important;
-  border: 1.5px solid #fecaca !important;
-  border-radius: 12px !important;
-  color: #dc2626 !important;
-  padding: 11px 14px !important;
-  font-weight: 600 !important;
-  font-size: .82rem !important;
-}
-
-/* ── ROLE TOGGLE — Rider/Driver ── */
-.rtog {
-  background: #f5f5f5 !important;
-  border: none !important;
-  border-radius: 16px !important;
-  padding: 5px !important;
-  margin-bottom: 16px !important;
-  gap: 5px !important;
-}
-.rtab {
-  border-radius: 12px !important;
-  padding: 12px !important;
-  font-weight: 700 !important;
-  font-size: .88rem !important;
-  transition: all .2s !important;
-  color: #888888 !important;
-  background: transparent !important;
-  border: none !important;
-}
-.rtab.ar {
-  background: #ffffff !important;
-  color: #111111 !important;
-  box-shadow: 0 2px 12px rgba(0,0,0,.1) !important;
-}
-.rtab.ad {
-  background: #00b140 !important;
-  color: #ffffff !important;
-  box-shadow: 0 2px 12px rgba(0,177,64,.25) !important;
-}
-
-/* ── LOGIN/REGISTER TABS ── */
-.atabs {
-  background: #f5f5f5 !important;
-  border: none !important;
-  border-radius: 14px !important;
-  padding: 5px !important;
-  margin-bottom: 18px !important;
-}
-.atab {
-  border-radius: 10px !important;
-  padding: 11px !important;
-  font-weight: 700 !important;
-  font-size: .88rem !important;
-  color: #888888 !important;
-  background: transparent !important;
-  border: none !important;
-  transition: all .2s !important;
-}
-.atab.on {
-  background: #111111 !important;
-  color: #ffffff !important;
-  box-shadow: 0 2px 10px rgba(0,0,0,.15) !important;
-}
-
-/* ── FIREBASE BADGE ── */
-.fbb {
-  background: #f5f5f5 !important;
-  border: 1px solid #e0e0e0 !important;
-  color: #777777 !important;
-  border-radius: 99px !important;
-  padding: 5px 12px !important;
-  font-size: .65rem !important;
-  font-weight: 700 !important;
-}
-.fbb.ok {
-  background: rgba(0,177,64,.08) !important;
-  border-color: rgba(0,177,64,.2) !important;
-  color: #00b140 !important;
-}
-.fbb.er {
-  background: rgba(220,38,38,.08) !important;
-  border-color: rgba(220,38,38,.2) !important;
-  color: #dc2626 !important;
-}
-
-/* ── DRAG HANDLE ── */
-.hdl { background: #dddddd !important; }
-
-/* ── BOTTOM SHEET ── */
-.sheet {
-  background: #ffffff !important;
-  border-radius: 28px 28px 0 0 !important;
-  border-top: 1px solid #f0f0f0 !important;
-  box-shadow: 0 -4px 24px rgba(0,0,0,.08) !important;
-}
-
-/* ── HOME SCREEN INPUTS (pickup/drop) ── */
-.lb {
-  background: #f7f8fa !important;
-  border: 1.5px solid #ececec !important;
-}
-.lb:last-child:focus-within { border-color: #00b140 !important; }
-
-/* ── FIND RIDE BTN — Uber black ── */
-.mbtn.y {
-  background: #111111 !important;
-  color: #ffffff !important;
-  box-shadow: 0 6px 24px rgba(0,0,0,.18) !important;
-  border-radius: 16px !important;
-  font-size: 1rem !important;
-  font-weight: 900 !important;
-}
-.mbtn.g {
-  background: #00b140 !important;
-  color: #ffffff !important;
-  box-shadow: 0 6px 24px rgba(0,177,64,.3) !important;
-  border-radius: 16px !important;
-}
-
-/* ── QUICK PLACE CHIPS ── */
-.qp-chip {
-  background: #f5f5f5 !important;
-  border: 1px solid #e8e8e8 !important;
-  color: #333333 !important;
-  border-radius: 99px !important;
-}
-.qp-chip:active {
-  background: #111111 !important;
-  color: #ffffff !important;
-  border-color: #111111 !important;
-}
-
-/* ── FARE SCREEN CARDS ── */
-.fare-card {
-  background: #f7f8fa !important;
-  border: 2px solid #ececec !important;
-  border-radius: 16px !important;
-}
-.fare-card.on {
-  border-color: #111111 !important;
-  background: #ffffff !important;
-  box-shadow: 0 4px 16px rgba(0,0,0,.1) !important;
-}
-
-/* ── BOOK BUTTON ── */
-#bookBtn {
-  background: #111111 !important;
-  color: #ffffff !important;
-  border-radius: 16px !important;
-  font-weight: 900 !important;
-  font-size: 1rem !important;
-  box-shadow: 0 6px 24px rgba(0,0,0,.2) !important;
-}
-
-/* ── DRIVER PANEL CARDS ── */
-#dOff, #dOn, #dNav {
-  background: #ffffff !important;
-  border-radius: 28px 28px 0 0 !important;
-  border-top: 1.5px solid #f0f0f0 !important;
-  box-shadow: 0 -4px 24px rgba(0,0,0,.08) !important;
-}
-
-/* ── DRIVER STAT BOXES ── */
-.dst {
-  background: #f7f8fa !important;
-  border: 1px solid #eeeeee !important;
-  border-radius: 14px !important;
-}
-
-/* ── ACCEPT BTN ── */
-#dAccBtn, .accept-btn {
-  background: #00b140 !important;
-  color: #ffffff !important;
-  border-radius: 14px !important;
-  font-weight: 900 !important;
-  box-shadow: 0 4px 18px rgba(0,177,64,.3) !important;
-}
-
-/* ── NAV PANELS ── */
-#rNavRoadKmBar, #rNavMapStatus {
-  background: #f7f8fa !important;
-  color: #111111 !important;
-}
-
-/* ── SUGGESTION DROPDOWN ── */
-#dropSuggest {
-  background: #ffffff !important;
-  border: 1px solid #eeeeee !important;
-  box-shadow: 0 8px 32px rgba(0,0,0,.12) !important;
-}
-.sug-item:hover, .sug-item:active {
-  background: #f5f5f5 !important;
-}
-.sug-icon {
-  background: #f0f0f0 !important;
-}
-
-/* ── MAP CHIPS ── */
-.ms-chip {
-  background: #ffffff !important;
-  border: 1px solid #e8e8e8 !important;
-  color: #333333 !important;
-  box-shadow: 0 2px 10px rgba(0,0,0,.08) !important;
-}
-
-/* ── ADMIN PANEL ── */
-#adminPanel {
-  background: #f7f7f7 !important;
-  border-radius: 28px 28px 0 0 !important;
-}
-.adm-hd {
-  background: #ffffff !important;
-  border-bottom: 1px solid #f0f0f0 !important;
-}
-
-/* ── TOAST ── */
-#toast {
-  background: #111111 !important;
-  color: #ffffff !important;
-  border-radius: 99px !important;
-  box-shadow: 0 4px 20px rgba(0,0,0,.2) !important;
-  font-weight: 600 !important;
-}
-
-/* ── MODALS INNER ── */
-#histModal .modal-inner,
-#ratingModal .modal-inner,
-#cancelModal .modal-inner {
-  background: #ffffff !important;
-  border-radius: 28px 28px 0 0 !important;
-}
-
-/* ── ZONE LEGEND ── */
-#zoneLegend {
-  background: #ffffff !important;
-  border: 1px solid #eeeeee !important;
-  box-shadow: 0 4px 20px rgba(0,0,0,.1) !important;
-}
-
-/* ── SCROLLER ── */
-::-webkit-scrollbar { width: 0; height: 0; }
-
-/* ── HERO IMAGE OVERLAY ── */
-.ah-vid-bg {
-  background:
-    linear-gradient(to bottom, rgba(255,255,255,0) 20%, rgba(255,255,255,1) 100%) !important;
-}
-
-/* ── HERO BRAND ── */
-.ah-brand {
-  font-family: 'Syne', sans-serif !important;
-  font-size: 2.4rem !important;
-  font-weight: 900 !important;
-  color: #111111 !important;
-  background: none !important;
-  -webkit-text-fill-color: #111111 !important;
-  text-shadow: none !important;
-}
-#auth.rider-mode .ah-brand,
-#auth.driver-mode .ah-brand {
-  background: none !important;
-  -webkit-text-fill-color: #111111 !important;
-  color: #111111 !important;
-}
-
-/* ── HERO SUB TEXT ── */
-.ah-sub { color: #555555 !important; font-size: .82rem !important; }
-.ah-tag {
-  background: rgba(0,177,64,.1) !important;
-  color: #00b140 !important;
-  border: 1px solid rgba(0,177,64,.2) !important;
-  border-radius: 99px !important;
-  padding: 4px 12px !important;
-  font-size: .68rem !important;
-  font-weight: 700 !important;
-  display: inline-block !important;
-  margin-bottom: 8px !important;
-}
-
-/* ── LOADER ── */
-#loader { background: #ffffff !important; }
-.ld-box {
-  background: #00b140 !important;
-  color: #ffffff !important;
-  border-radius: 22px !important;
-  box-shadow: 0 8px 32px rgba(0,177,64,.3) !important;
-}
-.ld-s { color: #888888 !important; }
-.ld-bar { background: linear-gradient(90deg, #00b140, #34d399) !important; }
-
-/* ── TOPBAR ── */
-.tb { background: linear-gradient(to bottom, rgba(255,255,255,.98) 0%, transparent 100%) !important; }
-.tbtn {
-  background: #ffffff !important;
-  border: 1px solid #e8e8e8 !important;
-  color: #111111 !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,.08) !important;
-}
-
-/* ── DRIVER ONLINE LABEL ── */
-#onlineLbl { color: #111111 !important; }
-
-/* ── FORGOT PASSWORD ── */
-#forgotPwPanel .fg .fi { background: #f7f8fa !important; }
-
-/* ── SCREEN TRANSITIONS ── */
-.scr.on { animation: slideUp .3s cubic-bezier(.4,0,.2,1) !important; }
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ══ PREMIUM CARD SHADOWS ══ */
-.sheet-fare, .sheet.sheet-fare {
-  box-shadow: 0 -8px 40px rgba(0,0,0,.12) !important;
-}
-
-/* ── NAV INSTRUCTION BAR ── */
-#dNavInstBar {
-  background: linear-gradient(135deg, #00b140, #00963a) !important;
-  border-radius: 20px 20px 0 0 !important;
-}
-
-/* ── RIDER NAV STATUS ── */
-#rNavMapStatus {
-  background: rgba(0,0,0,.6) !important;
-  color: #ffffff !important;
-  border-radius: 99px !important;
-  padding: 5px 12px !important;
-  font-size: .65rem !important;
-  font-weight: 700 !important;
-}
-
-/* ── BOTTOM BOOK STICKY BAR ── */
-div[style*="position:sticky;bottom:0"] {
-  background: #ffffff !important;
-  border-top: 1px solid #f0f0f0 !important;
-  padding: 12px 16px 20px !important;
-  box-shadow: 0 -4px 20px rgba(0,0,0,.08) !important;
-}
-
-/* ── NEARBY COUNT BADGE ── */
-#nearbyCountBadge, [id*="nearby"] {
-  background: #00b140 !important;
-  color: #ffffff !important;
-}
-
-/* ── PROMO/SURGE CHIP ── */
-#surgeChip {
-  background: #fff3cd !important;
-  color: #856404 !important;
-  border: 1px solid #ffc107 !important;
-  border-radius: 99px !important;
-}
-
-/* ── SOS BUTTON ── */
-#sosBtn {
-  background: #dc2626 !important;
-  color: #ffffff !important;
-  box-shadow: 0 4px 18px rgba(220,38,38,.35) !important;
-}
-
-/* ── REQUEST POPUP (Driver receives ride) ── */
-#reqPopup {
-  background: #ffffff !important;
-  border-radius: 24px 24px 0 0 !important;
-  box-shadow: 0 -8px 40px rgba(0,0,0,.15) !important;
-}
-
-/* ── RIDE FOUND SCREEN ── */
-#sAssigned .rp-inner {
-  background: #ffffff !important;
-  border-radius: 20px !important;
-  box-shadow: 0 4px 20px rgba(0,0,0,.1) !important;
-}
-
-/* ── SCRIM OVERLAYS ── */
-#histModal, #ratingModal, #cancelModal, #receiptModal {
-  background: rgba(0,0,0,.5) !important;
-}
-</style>
 </head>
 <body>
 
@@ -3593,14 +3166,13 @@ div[style*="position:sticky;bottom:0"] {
 <div id="liveDistFloat">
   <div class="ldf-inner">
     <div class="ldf-dot"></div>
-    <span id="liveDistText" style="color:#ffffff;font-weight:800;">-- km</span>
+    <span id="liveDistText">-- km</span>
   </div>
 </div>
 
 <!-- LOADER -->
 <div id="loader">
-  <div class="ld-box" style="background:#00b140;color:#fff;border-radius:22px;">JDP</div>
-  <div class="ld-t">CABS</div>
+  <div class="ld-box">JDP<br><span style="font-size:.7em;letter-spacing:.05em">Go</span></div>
   <div class="ld-s">Jagdalpur · Live Ride System<br>Bastar Division</div>
   <div class="ld-bar-w"><div class="ld-bar" id="ldBar"></div></div>
   <div id="ldStatus" style="font-size:.7rem;color:var(--muted);margin-top:4px;">Initializing...</div>
@@ -3655,7 +3227,7 @@ div[style*="position:sticky;bottom:0"] {
 <div id="navETA">
   <div class="eta-row">
     <div>
-      <div class="eta-time" style="color:#00b140;" id="etaTime">-- min</div>
+      <div class="eta-time" id="etaTime">-- min</div>
       <div class="eta-sub" id="etaDist">-- m</div>
       <div class="eta-arrival" id="etaArrival">Arrival: --:--</div>
     </div>
@@ -3711,9 +3283,9 @@ div[style*="position:sticky;bottom:0"] {
     <img id="authHeroImg" src="https://images.unsplash.com/photo-1542296332-2e4473faf563?auto=format&fit=crop&w=900&q=85" alt="">
     <div class="ah-vid-bg" id="authHeroBg"></div>
     <div class="ah-ov">
-      <div class="ah-tag" id="authHeroTag" style="background:rgba(0,177,64,.1);color:#00b140;border:1px solid rgba(0,177,64,.2);border-radius:99px;padding:4px 12px;font-size:.68rem;font-weight:700;display:inline-block;">🗺️ Jagdalpur · Bastar</div>
-      <div class="ah-brand" style="color:#111111;font-size:2.4rem;font-weight:900;font-family:Syne,sans-serif;">JDP Go</div>
-      <div class="ah-sub" id="authHeroSub" style="color:#555555;font-size:.82rem;">India ka sabse smart ride booking — Jagdalpur</div>
+      <div class="ah-tag" id="authHeroTag">🗺️ Jagdalpur · Bastar</div>
+      <div class="ah-brand">JDP Go</div>
+      <div class="ah-sub" id="authHeroSub">India ka sabse smart ride booking — Jagdalpur</div>
     </div>
   </div>
 
@@ -3721,7 +3293,7 @@ div[style*="position:sticky;bottom:0"] {
     <!-- Status badges -->
     <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">
       <div class="fbb" id="fbBadge" style="flex:1">⏳ Connecting...</div>
-      <div id="secBadge" style="font-size:.6rem;background:rgba(0,177,64,.08);border:1px solid rgba(0,177,64,.2);border-radius:99px;padding:4px 12px;color:#00b140;font-weight:700;white-space:nowrap;align-self:center;font-size:.63rem">🔒 Checking...</div>
+      <div id="secBadge" style="font-size:.6rem;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.15);border-radius:99px;padding:3px 10px;color:rgba(16,185,129,.8);font-weight:700;white-space:nowrap;align-self:center">🔒 Checking...</div>
     </div>
 
     <!-- ROLE SELECTOR — Big premium cards -->
@@ -3748,6 +3320,13 @@ div[style*="position:sticky;bottom:0"] {
     <!-- ══ PASSWORD LOGIN — Clean & Simple ══ -->
     <div class="afrm sh" id="loginForm">
       <div id="loginErr" class="eb"></div>
+      <div id="loginHint" style="display:none;background:#f0fdf4;border:1.5px solid #86efac;border-radius:14px;padding:12px 15px;margin-bottom:12px;font-size:.8rem;color:#166534;line-height:1.5;">
+        💡 <strong>Pehli baar use kar rahe ho?</strong><br>
+        <span style="color:#333">Register tab click karo → Account banao → Phir Login karo</span><br>
+        <button onclick="setTab('register')" style="margin-top:8px;background:#00b140;color:#fff;border:none;border-radius:99px;padding:6px 16px;font-size:.75rem;font-weight:800;cursor:pointer;width:100%;">
+          👉 Register Karo (Free)
+        </button>
+      </div>
 
       <!-- Mobile Number -->
       <div class="fg">
@@ -3776,7 +3355,7 @@ div[style*="position:sticky;bottom:0"] {
 
       <!-- Forgot password link -->
       <div style="text-align:center;margin-top:10px">
-        <button onclick="showForgotPassword()" style="font-size:.68rem;font-weight:700;color:#00b140;background:none;border:none;cursor:pointer;text-decoration:underline;font-size:.78rem;font-weight:700">
+        <button onclick="showForgotPassword()" style="font-size:.68rem;font-weight:700;color:#aaaaaa;background:none;border:none;cursor:pointer;">
           Password bhool gaye? Reset karo
         </button>
       </div>
@@ -4104,7 +3683,7 @@ div[style*="position:sticky;bottom:0"] {
       <!-- Bottom badges -->
       <div style="position:absolute;bottom:10px;left:10px;right:10px;display:flex;justify-content:space-between;z-index:10;pointer-events:none">
         <div style="background:rgba(0,0,0,.85);backdrop-filter:blur(10px);border-radius:10px;padding:5px 11px;border:1px solid rgba(59,130,246,.3);font-size:.7rem;font-weight:800;color:#111111">
-          ⏱️ <span id="rNavETA" style="color:#00b140;font-weight:900;font-family:Syne,sans-serif;">-- min</span>
+          ⏱️ <span id="rNavETA">-- min</span>
         </div>
         <div style="background:rgba(59,130,246,.9);border-radius:10px;padding:5px 12px;font-size:.76rem;font-weight:900;color:#111111;box-shadow:0 2px 10px rgba(59,130,246,.4)">
           <span id="rNavRoadKmBadge">-- km</span>
@@ -4282,9 +3861,9 @@ div[style*="position:sticky;bottom:0"] {
       <div id="dNavMap" style="width:100%;height:100%"></div>
       <!-- Turn instruction bar -->
       <div id="dNavInstBar" style="position:absolute;top:0;left:0;right:0;z-index:10;background:linear-gradient(135deg,#064e3b,#065f46);padding:10px 13px;display:flex;align-items:center;gap:10px;box-shadow:0 3px 16px rgba(0,0,0,.5);">
-        <div id="dNavTurnIcon" style="color:#ffffff;font-size:1.3rem;" style="font-size:1.6rem;flex-shrink:0;min-width:32px;text-align:center">🚗</div>
+        <div id="dNavTurnIcon" style="font-size:1.6rem;flex-shrink:0;min-width:32px;text-align:center">🚗</div>
         <div style="flex:1;min-width:0">
-          <div id="dNavInstText" style="color:#ffffff;font-weight:800;" style="font-weight:900;font-size:.84rem;color:#111111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.01em">Route calculate ho raha hai...</div>
+          <div id="dNavInstText" style="font-weight:900;font-size:.84rem;color:#111111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.01em">Route calculate ho raha hai...</div>
           <div id="dNavDistETA" style="font-size:.64rem;color:rgba(255,255,255,.75);margin-top:2px;font-weight:700">-- km · -- min</div>
         </div>
         <button onclick="toggleDriverNavFull()" title="Full Screen" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:10px;color:#111111;font-size:.7rem;font-weight:800;padding:6px 10px;cursor:pointer;flex-shrink:0;backdrop-filter:blur(8px)">⤢</button>
@@ -4296,7 +3875,7 @@ div[style*="position:sticky;bottom:0"] {
           <span id="dNavPhaseLabel" style="font-size:.64rem;font-weight:900;color:#6ee7b7">📍 Pickup</span>
         </div>
         <div style="background:rgba(245,158,11,.95);backdrop-filter:blur(10px);border-radius:10px;padding:5px 12px;font-size:.76rem;font-weight:900;color:#000;box-shadow:0 2px 10px rgba(245,158,11,.4)">
-          <span id="dNavRoadKm" style="color:#111111;font-weight:800;background:#f0f0f0;border-radius:99px;padding:3px 10px;font-size:.75rem;">-- km</span>
+          <span id="dNavRoadKm">-- km</span>
         </div>
       </div>
     </div>
@@ -4533,7 +4112,7 @@ div[style*="position:sticky;bottom:0"] {
   background-clip: text;
 }
 #auth.rider-mode .ah-brand {
-  background: linear-gradient(90deg, #00b140, #34d399);
+  background: linear-gradient(90deg, #f59e0b, #fbbf24);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -4545,12 +4124,12 @@ div[style*="position:sticky;bottom:0"] {
 /* Form card feel */
 .ab {
   background: #ffffff;
-  border-radius: 24px 24px 0 0;
+  border-radius: 28px 28px 0 0;
   margin-top: -24px;
   position: relative;
   z-index: 2;
   padding: 20px 18px 60px;
-  box-shadow: 0 -4px 30px rgba(0,0,0,.08);
+  box-shadow: 0 -6px 30px rgba(0,0,0,.08);
 }
 
 /* Input upgrade */
@@ -4593,8 +4172,8 @@ div[style*="position:sticky;bottom:0"] {
 #themeBtn {
   width: 36px; height: 36px;
   border-radius: 50%;
-  background: #f0f0f0;
-  border: 1px solid #e0e0e0;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; transition: all .2s;
   font-size: 1rem;
@@ -4627,15 +4206,15 @@ div[style*="position:sticky;bottom:0"] {
 #dNavMapFullMap, #rNavMapFullMap { flex:1; width:100%; min-height:0; }
 .jdp-nav-close {
   position:absolute;top:14px;left:14px;z-index:9999;
-  background:#ffffff;backdrop-filter:blur(14px);
-  border:1.5px solid rgba(0,0,0,.12);border-radius:13px;
+  background:rgba(0,0,0,.88);backdrop-filter:blur(14px);
+  border:1.5px solid rgba(255,255,255,.18);border-radius:13px;
   color:#111111;font-size:.82rem;font-weight:900;padding:9px 15px;
   cursor:pointer;letter-spacing:.02em;
 }
 .jdp-nav-hud {
   position:absolute;bottom:0;left:0;right:0;z-index:9999;
   background:rgba(255,255,255,.98);backdrop-filter:blur(18px);
-  border-top:1px solid rgba(0,0,0,.08);
+  border-top:1px solid rgba(255,255,255,.07);
   padding:14px 14px 36px;
 }
 .jdp-speed-ring {
@@ -5529,6 +5108,25 @@ try {
     RecaptchaVerifier, signInWithPhoneNumber, linkWithCredential, PhoneAuthProvider, updatePassword,
     doc, setDoc, getDoc, getDocs, collection, addDoc, updateDoc, deleteDoc, onSnapshot, query, where, orderBy, limit, serverTimestamp, GeoPoint };
   window.FB_READY = true;
+  // ── Test if Email/Password Auth is enabled ──
+  setTimeout(async () => {
+    try {
+      // Quick test with dummy credentials to check if auth method works
+      await signInWithEmailAndPassword(auth, 'test@check.com', 'dummy').catch(e => {
+        if (e.code === 'auth/user-not-found' || e.code === 'auth/invalid-credential' || e.code === 'auth/wrong-password') {
+          // Auth IS working - these are expected errors for non-existent user
+          console.log('[JDPGo] Firebase Auth ✅ working correctly');
+          window._authWorking = true;
+        } else if (e.code === 'auth/operation-not-allowed') {
+          console.error('[JDPGo] ❌ Email/Password Auth NOT enabled in Firebase Console!');
+          toast('⚠️ Firebase Auth setup incomplete — Admin: Enable Email/Password in Firebase Console');
+          window._authWorking = false;
+        } else {
+          window._authWorking = true; // Other errors mean auth is enabled
+        }
+      });
+    } catch(e2) { window._authWorking = true; }
+  }, 2000);
   // Auto-login check on Firebase ready
   onAuthStateChanged(auth, async (user) => {
     if (user && !window.CU) {
@@ -6035,11 +5633,16 @@ const lpInt = setInterval(() => { if(lp<85){lp+=12;document.getElementById('ldBa
 function finishLoad() {
   if (isLoaded) return; isLoaded = true;
   clearInterval(lpInt);
+  if(window._loaderFast) clearInterval(window._loaderFast);
   document.getElementById('ldBar').style.width = '100%';
   safeText('ldStatus','🗺️ Loading OSM Map...');
   setTimeout(() => {
+    // ✅ Reveal body — end of init-hide phase
+    document.body.style.visibility = 'visible';
+    var initStyle = document.getElementById('init-hide');
+    if (initStyle) initStyle.disabled = true;
     document.getElementById('loader').style.display = 'none';
-    if (!CU) { var authEl=document.getElementById('auth'); if(authEl){authEl.style.display='flex';authEl.style.zIndex='8000';} }
+    if (!CU) document.getElementById('auth').style.display = 'flex';
     initMap();
     // Start GPS early — show location on map before login
     setTimeout(function() {
@@ -6050,13 +5653,17 @@ function finishLoad() {
 let fbWait = 0;
 const fbWI = setInterval(function() {
   fbWait++;
-  if (window.FB_READY !== undefined || fbWait > 25) {
+  if (window.FB_READY !== undefined || fbWait > 15) {
     clearInterval(fbWI);
     finishLoad();
   }
-}, 140);
+}, 100); // Check every 100ms (faster than 140ms)
 // Hard timeout — always show app within 4 seconds regardless
-setTimeout(finishLoad, 4000);
+setTimeout(function() {
+  finishLoad();
+  // Safety: always show body within 3s max
+  document.body.style.visibility = 'visible';
+}, 3000);
 // Catch any remaining unhandled errors globally
 // useCapture=true also fires for resource load failures (IMG/SCRIPT 404 etc.)
 // We filter those out and handle real JS errors quietly
@@ -7850,9 +7457,23 @@ function setRole(r) {
   _loginMethod = 'password';
 }
 function setTab(t) {
+  // Auto-fill phone in register if user was trying to login
+  if (t === 'register') {
+    const loginPhone = (document.getElementById('lId')||{}).value||'';
+    if (loginPhone.length === 10) {
+      setTimeout(() => {
+        const rPh = document.getElementById('rPh');
+        if (rPh && !rPh.value) rPh.value = loginPhone;
+        const dPh = document.getElementById('dPh');
+        if (dPh && !dPh.value) dPh.value = loginPhone;
+      }, 100);
+    }
+  }
   document.getElementById('loginTab').className='atab'+(t==='login'?' on':'');
   document.getElementById('regTab').className='atab'+(t==='register'?' on':'');
   ['loginForm','rRegForm','dRegForm'].forEach(id=>document.getElementById(id).classList.remove('sh'));
+  var lh=document.getElementById('loginHint');if(lh)lh.style.display='none';
+  var le=document.getElementById('loginErr');if(le)le.style.display='none';
   if(t==='login') document.getElementById('loginForm').classList.add('sh');
   if(t==='register'&&authRole==='rider') document.getElementById('rRegForm').classList.add('sh');
   if(t==='register'&&authRole==='driver') document.getElementById('dRegForm').classList.add('sh');
@@ -7864,8 +7485,15 @@ function selVeh(type) {
 }
 function showErr(id,msg) {
   const el=document.getElementById(id);
-  el.textContent='⚠️ '+msg; el.style.display='block';
-  setTimeout(()=>el.style.display='none',4000);
+  if(!el) return;
+  // Support HTML in messages (for clickable links)
+  if(msg.includes('<')) el.innerHTML=msg;
+  else el.innerHTML='⚠️ '+msg;
+  el.style.display='block';
+  // Login errors stay longer so user can read
+  const delay = id==='loginErr' ? 12000 : 5000;
+  clearTimeout(el._t);
+  el._t = setTimeout(()=>{ el.style.display='none'; },delay);
 }
 // ═══════════════════════════════════════════════════════════
 // ✅ OTP LOGIN SYSTEM — Firebase Phone Authentication
@@ -8160,31 +7788,69 @@ async function confirmPasswordReset() {
 }
 
 async function doLogin() {
-  if (!window.FB_READY) return toast('Firebase not ready');
-
-  // ✅ SECURITY: Brute force check
-  if (window.LoginGuard.isLocked()) {
-    return showErr('loginErr', `🔒 Too many attempts. Try after ${window.LoginGuard.getRemainingLockMin()} min`);
+  // ── Pre-checks ──
+  if (!window.FB_READY) {
+    showErr('loginErr','⏳ Firebase connect ho raha hai... thoda wait karo aur retry karo');
+    return;
+  }
+  if (window.LoginGuard && window.LoginGuard.isLocked()) {
+    return showErr('loginErr', '🔒 ' + (window.LoginGuard.getRemainingLockMin&&window.LoginGuard.getRemainingLockMin()||30) + ' min baad try karo');
   }
 
-  const id = window.SEC.sanitize(document.getElementById('lId').value.trim());
-  const pw = document.getElementById('lPass').value;
-  if (!id||!pw) return showErr('loginErr','Enter mobile and password');
-  if (!window.SEC.isValidPhone(id)) return showErr('loginErr','Valid 10-digit mobile required (starts with 6-9)');
+  const id = (document.getElementById('lId').value||'').trim().replace(/\D/g,'');
+  const pw  = (document.getElementById('lPass').value||'');
+
+  if (!id) return showErr('loginErr','📱 Mobile number daalo');
+  if (id.length !== 10) return showErr('loginErr','📱 10 digit ka mobile number chahiye');
+  if (!pw)  return showErr('loginErr','🔑 Password daalo');
+
+  const btn = document.getElementById('loginSubmitBtn');
+  if (btn) { btn.disabled=true; btn.innerHTML='<span>⏳</span> Login ho raha hai...'; }
+
+  // Clear previous errors
+  var hint=document.getElementById('loginHint'); if(hint) hint.style.display='none';
+
   try {
-    const c=await window.FB.signInWithEmailAndPassword(window.FB.auth,id+'@jdpgo.in',pw);
-    window.LoginGuard.reset(); // ✅ Success — clear lockout
-    const s=await window.FB.getDoc(window.FB.doc(window.FB.db,'users',c.user.uid));
-    if(s.exists()){CU={uid:c.user.uid,...s.data()};window.SessionGuard.reset();launch();}
-    else showErr('loginErr','Account not found. Register first.');
-  } catch(e){
-    // ✅ SECURITY: Record failed attempt
-    const left = window.LoginGuard.recordFail();
-    const msg = e.code==='auth/wrong-password' ? `Wrong password (${window.LoginGuard.getAttemptsLeft()} attempts left)` :
-                e.code==='auth/user-not-found' ? 'Not registered' :
-                e.code==='auth/network-request-failed' ? 'No internet' : 'Login failed.';
+    const email = id + '@jdpgo.in';
+    const cred  = await window.FB.signInWithEmailAndPassword(window.FB.auth, email, pw);
+    if(window.LoginGuard) window.LoginGuard.reset();
+    const snap  = await window.FB.getDoc(window.FB.doc(window.FB.db, 'users', cred.user.uid));
+    if (btn) { btn.disabled=false; btn.innerHTML='🚀 Login Karo'; }
+    if (snap.exists()) {
+      CU = { uid: cred.user.uid, ...snap.data() };
+      if(window.SessionGuard) window.SessionGuard.reset();
+      launch();
+    } else {
+      showErr('loginErr', '⚠️ Profile nahi mila — Register tab se dobara register karo');
+      if(hint) { hint.style.display='block'; hint.innerHTML='💡 <strong>Account exist nahi karta!</strong> Neeche Register tab click karo → apna naam, mobile, password bharo → account banao → phir login karo'; }
+    }
+  } catch(err) {
+    if(window.LoginGuard) window.LoginGuard.recordFail();
+    if (btn) { btn.disabled=false; btn.innerHTML='🚀 Login Karo'; }
+
+    const code = err.code || '';
+    console.warn('[JDPGo Login]', code, err.message);
+
+    let msg = '';
+    if (code==='auth/invalid-credential'||code==='auth/wrong-password'||code==='auth/user-not-found') {
+      msg = '❌ Account nahi mila! Mobile number se pehle <strong>Register</strong> karo, phir Login karo';
+      if(hint) {
+        hint.style.display='block';
+        hint.innerHTML='<strong>💡 Pehli baar hai?</strong> — Register tab click karo (neeche) → account banao → phir login karo!';
+      }
+    } else if (code==='auth/too-many-requests') {
+      msg = '🔒 Bahut zyada attempts — thodi der baad try karo';
+    } else if (code==='auth/network-request-failed') {
+      msg = '🌐 Internet connection check karo';
+    } else if (code==='auth/user-disabled') {
+      msg = '🚫 Account suspend hai — admin se contact karo';
+    } else if (code==='auth/operation-not-allowed') {
+      msg = '⚙️ Firebase Email/Password Auth enabled nahi hai — admin Firebase Console check karo';
+    } else {
+      msg = '❌ Error: ' + code + ' — Pehle Register karo!';
+      if(hint) { hint.style.display='block'; hint.innerHTML='💡 Register tab click karo → account banao → phir login karo'; }
+    }
     showErr('loginErr', msg);
-    if (window.LoginGuard.isLocked()) showErr('loginErr', '🔒 Account locked for 30 min — too many wrong attempts');
   }
 }
 async function doRiderReg() {
@@ -8204,7 +7870,7 @@ async function doRiderReg() {
     // Password registration
     if(!pw) return showErr('rRegErr','Password zaroori hai — ya OTP se register karo');
     if(pw.length<6) return showErr('rRegErr','Password min 6 characters');
-    if(checkPwStrength(pw) < 1) return showErr('rRegErr','Zyada strong password use karo');
+    // Relaxed: any 6+ char password accepted for ease of use
   }
 
   try{
@@ -8234,7 +7900,18 @@ async function doRiderReg() {
     window.ErrorLogger?.info('AUTH', `Rider registered via ${ud.authMethod}: ${fn}`);
     launch();
   } catch(e) {
-    showErr('rRegErr', e.code==='auth/email-already-in-use' ? '📱 Mobile already registered. Login karo.' : 'Registration failed: '+(e.message||''));
+    const rc = e.code || '';
+    if (rc === 'auth/email-already-in-use') {
+      showErr('rRegErr', '📱 Ye mobile already registered hai! Login tab pe jao aur Login karo.');
+    } else if (rc === 'auth/weak-password') {
+      showErr('rRegErr', '🔑 Password min 6 characters hona chahiye');
+    } else if (rc === 'auth/network-request-failed') {
+      showErr('rRegErr', '🌐 Internet connection check karo');
+    } else if (rc === 'auth/operation-not-allowed') {
+      showErr('rRegErr', '⚠️ Email/password auth Firebase console me enable karo');
+    } else {
+      showErr('rRegErr', '❌ Registration failed: ' + (rc || e.message || 'Unknown'));
+    }
   }
 }
 function fmtAadhar(el) {
@@ -8389,7 +8066,7 @@ function launchRider() {
   document.getElementById('rTop').style.display='flex';
   document.getElementById('mapFade').style.display='block';
   document.getElementById('mapStats').style.display='block';
-  if(CU){var rn=document.getElementById('riderName');if(rn){rn.textContent=CU.name?.toUpperCase()||'RIDER';rn.style.color='#111111';}}
+  if(CU) document.getElementById('riderName').textContent=CU.name?.toUpperCase()||'RIDER';
   // ✅ UBER-STYLE: Start in peek state — map fills screen
   window.SheetMgr.peek();
   loadFavChips();
@@ -8401,7 +8078,7 @@ function launchDriver() {
   document.getElementById('locBtn').style.display='flex';
   document.getElementById('locBtn').style.bottom='280px';
   document.getElementById('mapStats').style.display='block';
-  if(CU) var dn=document.getElementById('dName');if(dn){dn.textContent=CU.name;dn.style.color='#111111';}
+  if(CU) document.getElementById('dName').textContent=CU.name;
   dEarnings=CU.earnings||0; dRides=CU.ridesCompleted||0;
   updateDStats(); showDCard('off');
   if(CU.kycStatus==='pending'){
@@ -8429,7 +8106,6 @@ async function toggleOnline() {
   }
 
   safeText('onlineLbl',isOnline?'ONLINE':'OFFLINE');
-  document.getElementById('onlineLbl').style.color=isOnline?'#00b140':'#999999';
   document.getElementById('onlineLbl').style.color=isOnline?'#00b140':'#999999';
   if(isOnline){
     onlineStart=Date.now();

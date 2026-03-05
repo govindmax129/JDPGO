@@ -2479,7 +2479,7 @@ body.lm #zoneLegend{background:rgba(255,255,255,.95);color:#000;}
 
 /* ══════════════════════ PREMIUM AUTH SCREEN ══════════════════════ */
 #auth{
-  position:fixed;inset:0;z-index:8000;display:none;flex-direction:column;
+  position:fixed;inset:0;z-index:8000;display:flex;flex-direction:column;overflow-y:auto;
   background:#f7f7f7;overflow-y:auto;overflow-x:hidden;
 }
 #auth::-webkit-scrollbar{display:none;}
@@ -2715,7 +2715,7 @@ body.lm .dcard{background:#fff;}
 .lbadge.o .lbd{background:var(--orange);box-shadow:0 0 6px var(--orange);animation:dpulse 1s infinite;}
 
 /* ══ DRIVER DASHBOARD ══ */
-#dTopBar{position:fixed;top:0;left:0;right:0;z-index:500;display:none;padding:11px 15px;background:linear-gradient(to bottom,rgba(0,0,0,.85),transparent);}
+#dTopBar{position:fixed;top:0;left:0;right:0;z-index:500;display:none;padding:11px 15px;background:linear-gradient(to bottom,rgba(255,255,255,.98) 0%,rgba(255,255,255,0) 100%);}
 .d-nr{display:flex;align-items:center;justify-content:space-between;}
 .d-nm{font-family:'Syne',sans-serif;font-weight:800;font-size:.92rem;color:#111111;}
 .tgsw{position:relative;width:52px;height:27px;cursor:pointer;}
@@ -2803,7 +2803,7 @@ body.lm .rpc{background:#fff;}
 .dava-verified::after{content:'✅';position:absolute;bottom:-2px;right:-4px;font-size:.65rem;background:var(--card);border-radius:50%;padding:1px;}
 
 /* ══ NEW FEATURES CSS ══ */
-#histModal,#ratingModal,#receiptModal,#cancelModal,#msgModal,#promoModal{position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,.82);display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px);}
+#histModal,#ratingModal,#receiptModal,#cancelModal,#msgModal,#promoModal{position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,.55);display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px);}
 #histModal.sh,#ratingModal.sh,#receiptModal.sh,#cancelModal.sh,#msgModal.sh,#promoModal.sh{display:flex;animation:fup .3s ease;}
 .modal-box{background:var(--bg);border-radius:26px 26px 0 0;border-top:1px solid rgba(255,255,255,.1);padding:20px 18px 44px;width:100%;max-width:500px;max-height:88vh;overflow-y:auto;}
 .modal-box::-webkit-scrollbar{display:none;}
@@ -2923,7 +2923,7 @@ body.lm .pickup-strip{background:#f7f7f7;}
   font-size:.72rem;font-weight:700;color:#00b140;}
 
 /* ══ LIVE DISTANCE FLOAT — positioned above sheet ══ */
-#liveDistFloat{position:fixed;left:50%;transform:translateX(-50%);
+#liveDistFloat{background:#111111;color:#ffffff;position:fixed;left:50%;transform:translateX(-50%);
   z-index:420;display:none;pointer-events:none;}
 .ldf-inner{background:rgba(0,0,0,.82);backdrop-filter:blur(12px);
   border:1px solid rgba(0,0,0,.1);border-radius:99px;
@@ -3117,6 +3117,457 @@ body.lm .vrp-box{background:#f0f4fb;}
 #elocBrowseList::-webkit-scrollbar{display:none;}
 #elocSuggestBox::-webkit-scrollbar{display:none;}
 </style>
+<style>
+/* ═══════════════════════════════════════════
+   JDP GO — PREMIUM OLA/UBER LIGHT THEME
+   ═══════════════════════════════════════════ */
+
+/* ── AUTH FORM CARD ── */
+.ab {
+  background: #ffffff !important;
+  border-radius: 28px 28px 0 0 !important;
+  box-shadow: 0 -8px 40px rgba(0,0,0,.1) !important;
+  padding: 22px 18px 70px !important;
+}
+
+/* ── INPUT FIELDS — Ola style ── */
+.fi {
+  background: #f7f8fa !important;
+  border: 1.5px solid #ececec !important;
+  border-radius: 14px !important;
+  padding: 14px 16px !important;
+  font-size: .92rem !important;
+  font-weight: 500 !important;
+  color: #111111 !important;
+  width: 100% !important;
+}
+.fi::placeholder { color: #aaaaaa !important; }
+.fi:focus {
+  border-color: #00b140 !important;
+  background: #ffffff !important;
+  box-shadow: 0 0 0 3px rgba(0,177,64,.1) !important;
+  outline: none !important;
+}
+
+/* ── LABELS ── */
+.fl {
+  font-size: .7rem !important;
+  font-weight: 700 !important;
+  color: #555555 !important;
+  text-transform: uppercase !important;
+  letter-spacing: .06em !important;
+  margin-bottom: 6px !important;
+}
+
+/* ── LOGIN BUTTON — Uber black ── */
+.asub.y {
+  background: #111111 !important;
+  color: #ffffff !important;
+  border-radius: 16px !important;
+  padding: 16px !important;
+  font-size: 1rem !important;
+  font-weight: 900 !important;
+  box-shadow: 0 4px 18px rgba(0,0,0,.18) !important;
+  border: none !important;
+  letter-spacing: .02em !important;
+  transition: transform .1s, box-shadow .2s !important;
+}
+.asub.y:active { transform: scale(.97) !important; }
+
+/* ── REGISTER BUTTON — Ola green ── */
+.asub.g {
+  background: #00b140 !important;
+  color: #ffffff !important;
+  border-radius: 16px !important;
+  padding: 16px !important;
+  font-size: 1rem !important;
+  font-weight: 900 !important;
+  box-shadow: 0 4px 18px rgba(0,177,64,.25) !important;
+  border: none !important;
+}
+
+/* ── ERROR BOX ── */
+.eb {
+  background: #fff5f5 !important;
+  border: 1.5px solid #fecaca !important;
+  border-radius: 12px !important;
+  color: #dc2626 !important;
+  padding: 11px 14px !important;
+  font-weight: 600 !important;
+  font-size: .82rem !important;
+}
+
+/* ── ROLE TOGGLE — Rider/Driver ── */
+.rtog {
+  background: #f5f5f5 !important;
+  border: none !important;
+  border-radius: 16px !important;
+  padding: 5px !important;
+  margin-bottom: 16px !important;
+  gap: 5px !important;
+}
+.rtab {
+  border-radius: 12px !important;
+  padding: 12px !important;
+  font-weight: 700 !important;
+  font-size: .88rem !important;
+  transition: all .2s !important;
+  color: #888888 !important;
+  background: transparent !important;
+  border: none !important;
+}
+.rtab.ar {
+  background: #ffffff !important;
+  color: #111111 !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,.1) !important;
+}
+.rtab.ad {
+  background: #00b140 !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 12px rgba(0,177,64,.25) !important;
+}
+
+/* ── LOGIN/REGISTER TABS ── */
+.atabs {
+  background: #f5f5f5 !important;
+  border: none !important;
+  border-radius: 14px !important;
+  padding: 5px !important;
+  margin-bottom: 18px !important;
+}
+.atab {
+  border-radius: 10px !important;
+  padding: 11px !important;
+  font-weight: 700 !important;
+  font-size: .88rem !important;
+  color: #888888 !important;
+  background: transparent !important;
+  border: none !important;
+  transition: all .2s !important;
+}
+.atab.on {
+  background: #111111 !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,.15) !important;
+}
+
+/* ── FIREBASE BADGE ── */
+.fbb {
+  background: #f5f5f5 !important;
+  border: 1px solid #e0e0e0 !important;
+  color: #777777 !important;
+  border-radius: 99px !important;
+  padding: 5px 12px !important;
+  font-size: .65rem !important;
+  font-weight: 700 !important;
+}
+.fbb.ok {
+  background: rgba(0,177,64,.08) !important;
+  border-color: rgba(0,177,64,.2) !important;
+  color: #00b140 !important;
+}
+.fbb.er {
+  background: rgba(220,38,38,.08) !important;
+  border-color: rgba(220,38,38,.2) !important;
+  color: #dc2626 !important;
+}
+
+/* ── DRAG HANDLE ── */
+.hdl { background: #dddddd !important; }
+
+/* ── BOTTOM SHEET ── */
+.sheet {
+  background: #ffffff !important;
+  border-radius: 28px 28px 0 0 !important;
+  border-top: 1px solid #f0f0f0 !important;
+  box-shadow: 0 -4px 24px rgba(0,0,0,.08) !important;
+}
+
+/* ── HOME SCREEN INPUTS (pickup/drop) ── */
+.lb {
+  background: #f7f8fa !important;
+  border: 1.5px solid #ececec !important;
+}
+.lb:last-child:focus-within { border-color: #00b140 !important; }
+
+/* ── FIND RIDE BTN — Uber black ── */
+.mbtn.y {
+  background: #111111 !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 24px rgba(0,0,0,.18) !important;
+  border-radius: 16px !important;
+  font-size: 1rem !important;
+  font-weight: 900 !important;
+}
+.mbtn.g {
+  background: #00b140 !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 24px rgba(0,177,64,.3) !important;
+  border-radius: 16px !important;
+}
+
+/* ── QUICK PLACE CHIPS ── */
+.qp-chip {
+  background: #f5f5f5 !important;
+  border: 1px solid #e8e8e8 !important;
+  color: #333333 !important;
+  border-radius: 99px !important;
+}
+.qp-chip:active {
+  background: #111111 !important;
+  color: #ffffff !important;
+  border-color: #111111 !important;
+}
+
+/* ── FARE SCREEN CARDS ── */
+.fare-card {
+  background: #f7f8fa !important;
+  border: 2px solid #ececec !important;
+  border-radius: 16px !important;
+}
+.fare-card.on {
+  border-color: #111111 !important;
+  background: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,.1) !important;
+}
+
+/* ── BOOK BUTTON ── */
+#bookBtn {
+  background: #111111 !important;
+  color: #ffffff !important;
+  border-radius: 16px !important;
+  font-weight: 900 !important;
+  font-size: 1rem !important;
+  box-shadow: 0 6px 24px rgba(0,0,0,.2) !important;
+}
+
+/* ── DRIVER PANEL CARDS ── */
+#dOff, #dOn, #dNav {
+  background: #ffffff !important;
+  border-radius: 28px 28px 0 0 !important;
+  border-top: 1.5px solid #f0f0f0 !important;
+  box-shadow: 0 -4px 24px rgba(0,0,0,.08) !important;
+}
+
+/* ── DRIVER STAT BOXES ── */
+.dst {
+  background: #f7f8fa !important;
+  border: 1px solid #eeeeee !important;
+  border-radius: 14px !important;
+}
+
+/* ── ACCEPT BTN ── */
+#dAccBtn, .accept-btn {
+  background: #00b140 !important;
+  color: #ffffff !important;
+  border-radius: 14px !important;
+  font-weight: 900 !important;
+  box-shadow: 0 4px 18px rgba(0,177,64,.3) !important;
+}
+
+/* ── NAV PANELS ── */
+#rNavRoadKmBar, #rNavMapStatus {
+  background: #f7f8fa !important;
+  color: #111111 !important;
+}
+
+/* ── SUGGESTION DROPDOWN ── */
+#dropSuggest {
+  background: #ffffff !important;
+  border: 1px solid #eeeeee !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,.12) !important;
+}
+.sug-item:hover, .sug-item:active {
+  background: #f5f5f5 !important;
+}
+.sug-icon {
+  background: #f0f0f0 !important;
+}
+
+/* ── MAP CHIPS ── */
+.ms-chip {
+  background: #ffffff !important;
+  border: 1px solid #e8e8e8 !important;
+  color: #333333 !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,.08) !important;
+}
+
+/* ── ADMIN PANEL ── */
+#adminPanel {
+  background: #f7f7f7 !important;
+  border-radius: 28px 28px 0 0 !important;
+}
+.adm-hd {
+  background: #ffffff !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+}
+
+/* ── TOAST ── */
+#toast {
+  background: #111111 !important;
+  color: #ffffff !important;
+  border-radius: 99px !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,.2) !important;
+  font-weight: 600 !important;
+}
+
+/* ── MODALS INNER ── */
+#histModal .modal-inner,
+#ratingModal .modal-inner,
+#cancelModal .modal-inner {
+  background: #ffffff !important;
+  border-radius: 28px 28px 0 0 !important;
+}
+
+/* ── ZONE LEGEND ── */
+#zoneLegend {
+  background: #ffffff !important;
+  border: 1px solid #eeeeee !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,.1) !important;
+}
+
+/* ── SCROLLER ── */
+::-webkit-scrollbar { width: 0; height: 0; }
+
+/* ── HERO IMAGE OVERLAY ── */
+.ah-vid-bg {
+  background:
+    linear-gradient(to bottom, rgba(255,255,255,0) 20%, rgba(255,255,255,1) 100%) !important;
+}
+
+/* ── HERO BRAND ── */
+.ah-brand {
+  font-family: 'Syne', sans-serif !important;
+  font-size: 2.4rem !important;
+  font-weight: 900 !important;
+  color: #111111 !important;
+  background: none !important;
+  -webkit-text-fill-color: #111111 !important;
+  text-shadow: none !important;
+}
+#auth.rider-mode .ah-brand,
+#auth.driver-mode .ah-brand {
+  background: none !important;
+  -webkit-text-fill-color: #111111 !important;
+  color: #111111 !important;
+}
+
+/* ── HERO SUB TEXT ── */
+.ah-sub { color: #555555 !important; font-size: .82rem !important; }
+.ah-tag {
+  background: rgba(0,177,64,.1) !important;
+  color: #00b140 !important;
+  border: 1px solid rgba(0,177,64,.2) !important;
+  border-radius: 99px !important;
+  padding: 4px 12px !important;
+  font-size: .68rem !important;
+  font-weight: 700 !important;
+  display: inline-block !important;
+  margin-bottom: 8px !important;
+}
+
+/* ── LOADER ── */
+#loader { background: #ffffff !important; }
+.ld-box {
+  background: #00b140 !important;
+  color: #ffffff !important;
+  border-radius: 22px !important;
+  box-shadow: 0 8px 32px rgba(0,177,64,.3) !important;
+}
+.ld-s { color: #888888 !important; }
+.ld-bar { background: linear-gradient(90deg, #00b140, #34d399) !important; }
+
+/* ── TOPBAR ── */
+.tb { background: linear-gradient(to bottom, rgba(255,255,255,.98) 0%, transparent 100%) !important; }
+.tbtn {
+  background: #ffffff !important;
+  border: 1px solid #e8e8e8 !important;
+  color: #111111 !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08) !important;
+}
+
+/* ── DRIVER ONLINE LABEL ── */
+#onlineLbl { color: #111111 !important; }
+
+/* ── FORGOT PASSWORD ── */
+#forgotPwPanel .fg .fi { background: #f7f8fa !important; }
+
+/* ── SCREEN TRANSITIONS ── */
+.scr.on { animation: slideUp .3s cubic-bezier(.4,0,.2,1) !important; }
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ══ PREMIUM CARD SHADOWS ══ */
+.sheet-fare, .sheet.sheet-fare {
+  box-shadow: 0 -8px 40px rgba(0,0,0,.12) !important;
+}
+
+/* ── NAV INSTRUCTION BAR ── */
+#dNavInstBar {
+  background: linear-gradient(135deg, #00b140, #00963a) !important;
+  border-radius: 20px 20px 0 0 !important;
+}
+
+/* ── RIDER NAV STATUS ── */
+#rNavMapStatus {
+  background: rgba(0,0,0,.6) !important;
+  color: #ffffff !important;
+  border-radius: 99px !important;
+  padding: 5px 12px !important;
+  font-size: .65rem !important;
+  font-weight: 700 !important;
+}
+
+/* ── BOTTOM BOOK STICKY BAR ── */
+div[style*="position:sticky;bottom:0"] {
+  background: #ffffff !important;
+  border-top: 1px solid #f0f0f0 !important;
+  padding: 12px 16px 20px !important;
+  box-shadow: 0 -4px 20px rgba(0,0,0,.08) !important;
+}
+
+/* ── NEARBY COUNT BADGE ── */
+#nearbyCountBadge, [id*="nearby"] {
+  background: #00b140 !important;
+  color: #ffffff !important;
+}
+
+/* ── PROMO/SURGE CHIP ── */
+#surgeChip {
+  background: #fff3cd !important;
+  color: #856404 !important;
+  border: 1px solid #ffc107 !important;
+  border-radius: 99px !important;
+}
+
+/* ── SOS BUTTON ── */
+#sosBtn {
+  background: #dc2626 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 18px rgba(220,38,38,.35) !important;
+}
+
+/* ── REQUEST POPUP (Driver receives ride) ── */
+#reqPopup {
+  background: #ffffff !important;
+  border-radius: 24px 24px 0 0 !important;
+  box-shadow: 0 -8px 40px rgba(0,0,0,.15) !important;
+}
+
+/* ── RIDE FOUND SCREEN ── */
+#sAssigned .rp-inner {
+  background: #ffffff !important;
+  border-radius: 20px !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,.1) !important;
+}
+
+/* ── SCRIM OVERLAYS ── */
+#histModal, #ratingModal, #cancelModal, #receiptModal {
+  background: rgba(0,0,0,.5) !important;
+}
+</style>
 </head>
 <body>
 
@@ -3142,13 +3593,13 @@ body.lm .vrp-box{background:#f0f4fb;}
 <div id="liveDistFloat">
   <div class="ldf-inner">
     <div class="ldf-dot"></div>
-    <span id="liveDistText">-- km</span>
+    <span id="liveDistText" style="color:#ffffff;font-weight:800;">-- km</span>
   </div>
 </div>
 
 <!-- LOADER -->
 <div id="loader">
-  <div class="ld-box">JDP</div>
+  <div class="ld-box" style="background:#00b140;color:#fff;border-radius:22px;">JDP</div>
   <div class="ld-t">CABS</div>
   <div class="ld-s">Jagdalpur · Live Ride System<br>Bastar Division</div>
   <div class="ld-bar-w"><div class="ld-bar" id="ldBar"></div></div>
@@ -3204,7 +3655,7 @@ body.lm .vrp-box{background:#f0f4fb;}
 <div id="navETA">
   <div class="eta-row">
     <div>
-      <div class="eta-time" id="etaTime">-- min</div>
+      <div class="eta-time" style="color:#00b140;" id="etaTime">-- min</div>
       <div class="eta-sub" id="etaDist">-- m</div>
       <div class="eta-arrival" id="etaArrival">Arrival: --:--</div>
     </div>
@@ -3260,9 +3711,9 @@ body.lm .vrp-box{background:#f0f4fb;}
     <img id="authHeroImg" src="https://images.unsplash.com/photo-1542296332-2e4473faf563?auto=format&fit=crop&w=900&q=85" alt="">
     <div class="ah-vid-bg" id="authHeroBg"></div>
     <div class="ah-ov">
-      <div class="ah-tag" id="authHeroTag">🗺️ Jagdalpur · Bastar</div>
-      <div class="ah-brand">JDP Go</div>
-      <div class="ah-sub" id="authHeroSub">India ka sabse smart ride booking — Jagdalpur</div>
+      <div class="ah-tag" id="authHeroTag" style="background:rgba(0,177,64,.1);color:#00b140;border:1px solid rgba(0,177,64,.2);border-radius:99px;padding:4px 12px;font-size:.68rem;font-weight:700;display:inline-block;">🗺️ Jagdalpur · Bastar</div>
+      <div class="ah-brand" style="color:#111111;font-size:2.4rem;font-weight:900;font-family:Syne,sans-serif;">JDP Go</div>
+      <div class="ah-sub" id="authHeroSub" style="color:#555555;font-size:.82rem;">India ka sabse smart ride booking — Jagdalpur</div>
     </div>
   </div>
 
@@ -3270,7 +3721,7 @@ body.lm .vrp-box{background:#f0f4fb;}
     <!-- Status badges -->
     <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">
       <div class="fbb" id="fbBadge" style="flex:1">⏳ Connecting...</div>
-      <div id="secBadge" style="font-size:.6rem;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.15);border-radius:99px;padding:3px 10px;color:rgba(16,185,129,.8);font-weight:700;white-space:nowrap;align-self:center">🔒 Checking...</div>
+      <div id="secBadge" style="font-size:.6rem;background:rgba(0,177,64,.08);border:1px solid rgba(0,177,64,.2);border-radius:99px;padding:4px 12px;color:#00b140;font-weight:700;white-space:nowrap;align-self:center;font-size:.63rem">🔒 Checking...</div>
     </div>
 
     <!-- ROLE SELECTOR — Big premium cards -->
@@ -3325,7 +3776,7 @@ body.lm .vrp-box{background:#f0f4fb;}
 
       <!-- Forgot password link -->
       <div style="text-align:center;margin-top:10px">
-        <button onclick="showForgotPassword()" style="font-size:.68rem;font-weight:700;color:rgba(245,158,11,.7);background:none;border:none;cursor:pointer;text-decoration:underline">
+        <button onclick="showForgotPassword()" style="font-size:.68rem;font-weight:700;color:#00b140;background:none;border:none;cursor:pointer;text-decoration:underline;font-size:.78rem;font-weight:700">
           Password bhool gaye? Reset karo
         </button>
       </div>
@@ -3653,7 +4104,7 @@ body.lm .vrp-box{background:#f0f4fb;}
       <!-- Bottom badges -->
       <div style="position:absolute;bottom:10px;left:10px;right:10px;display:flex;justify-content:space-between;z-index:10;pointer-events:none">
         <div style="background:rgba(0,0,0,.85);backdrop-filter:blur(10px);border-radius:10px;padding:5px 11px;border:1px solid rgba(59,130,246,.3);font-size:.7rem;font-weight:800;color:#111111">
-          ⏱️ <span id="rNavETA">-- min</span>
+          ⏱️ <span id="rNavETA" style="color:#00b140;font-weight:900;font-family:Syne,sans-serif;">-- min</span>
         </div>
         <div style="background:rgba(59,130,246,.9);border-radius:10px;padding:5px 12px;font-size:.76rem;font-weight:900;color:#111111;box-shadow:0 2px 10px rgba(59,130,246,.4)">
           <span id="rNavRoadKmBadge">-- km</span>
@@ -3831,9 +4282,9 @@ body.lm .vrp-box{background:#f0f4fb;}
       <div id="dNavMap" style="width:100%;height:100%"></div>
       <!-- Turn instruction bar -->
       <div id="dNavInstBar" style="position:absolute;top:0;left:0;right:0;z-index:10;background:linear-gradient(135deg,#064e3b,#065f46);padding:10px 13px;display:flex;align-items:center;gap:10px;box-shadow:0 3px 16px rgba(0,0,0,.5);">
-        <div id="dNavTurnIcon" style="font-size:1.6rem;flex-shrink:0;min-width:32px;text-align:center">🚗</div>
+        <div id="dNavTurnIcon" style="color:#ffffff;font-size:1.3rem;" style="font-size:1.6rem;flex-shrink:0;min-width:32px;text-align:center">🚗</div>
         <div style="flex:1;min-width:0">
-          <div id="dNavInstText" style="font-weight:900;font-size:.84rem;color:#111111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.01em">Route calculate ho raha hai...</div>
+          <div id="dNavInstText" style="color:#ffffff;font-weight:800;" style="font-weight:900;font-size:.84rem;color:#111111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.01em">Route calculate ho raha hai...</div>
           <div id="dNavDistETA" style="font-size:.64rem;color:rgba(255,255,255,.75);margin-top:2px;font-weight:700">-- km · -- min</div>
         </div>
         <button onclick="toggleDriverNavFull()" title="Full Screen" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:10px;color:#111111;font-size:.7rem;font-weight:800;padding:6px 10px;cursor:pointer;flex-shrink:0;backdrop-filter:blur(8px)">⤢</button>
@@ -3845,7 +4296,7 @@ body.lm .vrp-box{background:#f0f4fb;}
           <span id="dNavPhaseLabel" style="font-size:.64rem;font-weight:900;color:#6ee7b7">📍 Pickup</span>
         </div>
         <div style="background:rgba(245,158,11,.95);backdrop-filter:blur(10px);border-radius:10px;padding:5px 12px;font-size:.76rem;font-weight:900;color:#000;box-shadow:0 2px 10px rgba(245,158,11,.4)">
-          <span id="dNavRoadKm">-- km</span>
+          <span id="dNavRoadKm" style="color:#111111;font-weight:800;background:#f0f0f0;border-radius:99px;padding:3px 10px;font-size:.75rem;">-- km</span>
         </div>
       </div>
     </div>
@@ -4082,7 +4533,7 @@ body.lm .vrp-box{background:#f0f4fb;}
   background-clip: text;
 }
 #auth.rider-mode .ah-brand {
-  background: linear-gradient(90deg, #f59e0b, #fbbf24);
+  background: linear-gradient(90deg, #00b140, #34d399);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -4093,26 +4544,28 @@ body.lm .vrp-box{background:#f0f4fb;}
 
 /* Form card feel */
 .ab {
-  background: linear-gradient(180deg, #050709 0%, #07090f 100%);
+  background: #ffffff;
   border-radius: 24px 24px 0 0;
   margin-top: -24px;
   position: relative;
   z-index: 2;
   padding: 20px 18px 60px;
+  box-shadow: 0 -4px 30px rgba(0,0,0,.08);
 }
 
 /* Input upgrade */
 .fi {
-  background: rgba(255,255,255,.04) !important;
-  border: 1.5px solid rgba(255,255,255,.08) !important;
+  background: #f7f8fa !important;
+  border: 1.5px solid #e8e8e8 !important;
   border-radius: 13px !important;
   padding: 13px 14px !important;
   font-size: .88rem !important;
+  color: #111111 !important;
   transition: border-color .2s, box-shadow .2s;
 }
 .fi:focus {
-  border-color: rgba(245,158,11,.5) !important;
-  box-shadow: 0 0 0 3px rgba(245,158,11,.08) !important;
+  border-color: #00b140 !important;
+  box-shadow: 0 0 0 3px rgba(0,177,64,.1) !important;
   outline: none;
 }
 #auth.driver-mode .fi:focus {
@@ -4130,16 +4583,18 @@ body.lm .vrp-box{background:#f0f4fb;}
   transition: all .2s, transform .1s;
 }
 .asub:active { transform: scale(.97); }
-.asub.y { 
-  box-shadow: 0 4px 20px rgba(245,158,11,.3);
+.asub.y {
+  background: #111111 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,.2);
 }
 
 /* Day/Night button premium */
 #themeBtn {
   width: 36px; height: 36px;
   border-radius: 50%;
-  background: rgba(255,255,255,.08);
-  border: 1px solid rgba(255,255,255,.12);
+  background: #f0f0f0;
+  border: 1px solid #e0e0e0;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; transition: all .2s;
   font-size: 1rem;
@@ -4172,15 +4627,15 @@ body.lm .vrp-box{background:#f0f4fb;}
 #dNavMapFullMap, #rNavMapFullMap { flex:1; width:100%; min-height:0; }
 .jdp-nav-close {
   position:absolute;top:14px;left:14px;z-index:9999;
-  background:rgba(0,0,0,.88);backdrop-filter:blur(14px);
-  border:1.5px solid rgba(255,255,255,.18);border-radius:13px;
+  background:#ffffff;backdrop-filter:blur(14px);
+  border:1.5px solid rgba(0,0,0,.12);border-radius:13px;
   color:#111111;font-size:.82rem;font-weight:900;padding:9px 15px;
   cursor:pointer;letter-spacing:.02em;
 }
 .jdp-nav-hud {
   position:absolute;bottom:0;left:0;right:0;z-index:9999;
-  background:rgba(8,13,20,.95);backdrop-filter:blur(18px);
-  border-top:1px solid rgba(255,255,255,.07);
+  background:rgba(255,255,255,.98);backdrop-filter:blur(18px);
+  border-top:1px solid rgba(0,0,0,.08);
   padding:14px 14px 36px;
 }
 .jdp-speed-ring {
@@ -4290,7 +4745,7 @@ body.lm .ab { background: #f0f4fb; }
 }
 body.lm .hdl { background: rgba(0,0,0,.12); }
 /* ✅ Leaflet OSM fixes */
-.leaflet-container { background: #0a0e16 !important; }
+.leaflet-container { background: #ffffff !important; }
 /* ✅ THUNDERFOREST — Mapbox-quality render */
 .leaflet-tile { filter: none; }
 body.lm .leaflet-tile { filter: brightness(1.05) saturate(1.05); }
@@ -5584,7 +6039,7 @@ function finishLoad() {
   safeText('ldStatus','🗺️ Loading OSM Map...');
   setTimeout(() => {
     document.getElementById('loader').style.display = 'none';
-    if (!CU) document.getElementById('auth').style.display = 'flex';
+    if (!CU) { var authEl=document.getElementById('auth'); if(authEl){authEl.style.display='flex';authEl.style.zIndex='8000';} }
     initMap();
     // Start GPS early — show location on map before login
     setTimeout(function() {
@@ -7934,7 +8389,7 @@ function launchRider() {
   document.getElementById('rTop').style.display='flex';
   document.getElementById('mapFade').style.display='block';
   document.getElementById('mapStats').style.display='block';
-  if(CU) document.getElementById('riderName').textContent=CU.name?.toUpperCase()||'RIDER';
+  if(CU){var rn=document.getElementById('riderName');if(rn){rn.textContent=CU.name?.toUpperCase()||'RIDER';rn.style.color='#111111';}}
   // ✅ UBER-STYLE: Start in peek state — map fills screen
   window.SheetMgr.peek();
   loadFavChips();
@@ -7946,7 +8401,7 @@ function launchDriver() {
   document.getElementById('locBtn').style.display='flex';
   document.getElementById('locBtn').style.bottom='280px';
   document.getElementById('mapStats').style.display='block';
-  if(CU) document.getElementById('dName').textContent=CU.name;
+  if(CU) var dn=document.getElementById('dName');if(dn){dn.textContent=CU.name;dn.style.color='#111111';}
   dEarnings=CU.earnings||0; dRides=CU.ridesCompleted||0;
   updateDStats(); showDCard('off');
   if(CU.kycStatus==='pending'){
@@ -7974,7 +8429,8 @@ async function toggleOnline() {
   }
 
   safeText('onlineLbl',isOnline?'ONLINE':'OFFLINE');
-  document.getElementById('onlineLbl').style.color=isOnline?'#10b981':'rgba(255,255,255,.55)';
+  document.getElementById('onlineLbl').style.color=isOnline?'#00b140':'#999999';
+  document.getElementById('onlineLbl').style.color=isOnline?'#00b140':'#999999';
   if(isOnline){
     onlineStart=Date.now();
     showDCard('on');
@@ -11160,7 +11616,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
       start_url: "./",
       display: "standalone",
       orientation: "portrait",
-      background_color: "#07090f",
+      background_color: "#ffffff",
       theme_color: "#f59e0b",
       icons: [
         { src: "icon-192.png", sizes: "192x192", type: "image/png", purpose: "any maskable" },

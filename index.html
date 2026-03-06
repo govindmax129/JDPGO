@@ -1969,7 +1969,7 @@ const _origScaleCheck = setInterval(() => {
 // ✅ API KEYS
 (function(){
   // Mappls REST key (obfuscated XOR-7)
-  window.MAPPLS_KEY = [108,112,125,109,104,119,125,106,127,115,96,106,117,102,98,117,127,126,127,119,116,117,118,118,117,127,111,99,110,113,108,126,100,118,105,100].map(function(c){return String.fromCharCode(c^7);}).join('');
+  window.MAPPLS_KEY = 'kwzjopzmxtgmraerxyxpsrqqrxhdivkycqnc'; // ✅ Mappls India Official API Key
   window._TF = null; // Thunderforest removed
   window._TFTILE = function() { return ''; }; // No-op
 })();
@@ -2674,6 +2674,386 @@ body.lm .lb{background:#f7f7f7;}
 .qp-label{font-size:.6rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px;}
 .qp-scroll{display:flex;gap:7px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px;}
 .qp-scroll::-webkit-scrollbar{display:none;}
+/* ╔═══════════════════════════════════════════════════╗
+   ║  🚘 JDP GO — RENTAL CARS PREMIUM MODULE          ║
+   ║  Ola/Uber Style · Professional · Unique          ║
+   ╚═══════════════════════════════════════════════════╝ */
+
+/* ── Rental Home Button ── */
+.jdp-rental-btn {
+  display:flex; align-items:center; gap:12px;
+  width:100%; margin-top:11px;
+  background:linear-gradient(135deg,#111827 0%,#1f2d40 100%);
+  border:1.5px solid rgba(245,158,11,.3);
+  border-radius:18px; padding:14px 16px;
+  cursor:pointer; position:relative; overflow:hidden;
+  transition:transform .15s,box-shadow .2s;
+  box-shadow:0 4px 20px rgba(0,0,0,.3);
+}
+.jdp-rental-btn::after {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(90deg,transparent,rgba(245,158,11,.07),transparent);
+  transform:translateX(-100%); transition:.6s;
+}
+.jdp-rental-btn:active{transform:scale(.98);}
+.jdp-rental-btn:hover::after{transform:translateX(100%);}
+.jrb-icon {
+  width:44px;height:44px;flex-shrink:0;
+  background:linear-gradient(135deg,#f59e0b,#f97316);
+  border-radius:13px;display:flex;align-items:center;
+  justify-content:center;font-size:1.3rem;
+  box-shadow:0 4px 14px rgba(245,158,11,.45);
+}
+.jrb-text{flex:1;text-align:left;}
+.jrb-title{font-family:'Syne',sans-serif;font-weight:900;font-size:.9rem;color:#fff;letter-spacing:.01em;}
+.jrb-sub{font-size:.62rem;color:rgba(255,255,255,.45);margin-top:2px;font-weight:600;}
+.jrb-arrow{font-size:1rem;color:rgba(245,158,11,.7);}
+.jrb-new{
+  position:absolute;top:10px;right:40px;
+  background:linear-gradient(135deg,#f59e0b,#f97316);
+  color:#000;font-size:.48rem;font-weight:900;
+  padding:2px 8px;border-radius:99px;
+  text-transform:uppercase;letter-spacing:.06em;
+}
+
+/* ── Modal Overlay ── */
+#jdpRentalModal {
+  display:none;position:fixed;inset:0;z-index:99998;
+  background:rgba(0,0,0,.9);
+  align-items:flex-end;justify-content:center;
+  backdrop-filter:blur(10px);
+}
+#jdpRentalModal.open{display:flex;animation:jRise .35s cubic-bezier(.25,.8,.25,1);}
+@keyframes jRise{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Modal Box ── */
+.jrm-box {
+  background:#0d1117;
+  border-radius:26px 26px 0 0;
+  width:100%;max-width:540px;
+  max-height:94vh;overflow-y:auto;
+  border-top:1px solid rgba(245,158,11,.2);
+}
+.jrm-box::-webkit-scrollbar{display:none;}
+
+/* ── Header ── */
+.jrm-header{
+  position:sticky;top:0;z-index:10;
+  background:#0d1117;
+  padding:14px 18px 10px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.jrm-drag{width:36px;height:4px;background:rgba(255,255,255,.15);border-radius:99px;margin:0 auto 13px;}
+.jrm-title-row{display:flex;align-items:flex-start;justify-content:space-between;}
+.jrm-title{font-family:'Syne',sans-serif;font-weight:900;font-size:1.2rem;color:#fff;}
+.jrm-subtitle{font-size:.63rem;color:rgba(245,158,11,.75);font-weight:700;margin-top:2px;}
+.jrm-close{
+  width:33px;height:33px;background:rgba(255,255,255,.07);
+  border:none;border-radius:99px;color:rgba(255,255,255,.7);
+  font-size:.9rem;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s;
+}
+.jrm-close:hover{background:rgba(255,255,255,.12);}
+
+/* ── Tab Bar ── */
+.jrm-tabs{display:flex;gap:6px;padding:12px 18px 0;}
+.jrm-tab{
+  flex:1;border:1.5px solid rgba(255,255,255,.09);
+  border-radius:14px;cursor:pointer;
+  text-align:center;padding:10px 4px;
+  background:transparent;transition:all .2s;
+}
+.jrm-tab.active{
+  background:linear-gradient(135deg,#f59e0b,#f97316);
+  border-color:transparent;
+  box-shadow:0 4px 14px rgba(245,158,11,.3);
+}
+.jrm-tab-ico{font-size:1.25rem;margin-bottom:3px;}
+.jrm-tab-lbl{font-size:.62rem;font-weight:800;color:rgba(255,255,255,.5);}
+.jrm-tab.active .jrm-tab-lbl{color:#000;}
+
+/* ── Section ── */
+.jrm-section{padding:14px 18px 0;}
+.jrm-label{
+  font-size:.58rem;font-weight:800;
+  color:rgba(255,255,255,.35);
+  text-transform:uppercase;letter-spacing:.09em;margin-bottom:7px;
+}
+
+/* ── Inputs ── */
+.jrm-input{
+  width:100%;box-sizing:border-box;
+  background:rgba(255,255,255,.05);
+  border:1.5px solid rgba(255,255,255,.09);
+  border-radius:14px;padding:13px 14px;
+  color:#fff;font-family:'DM Sans',sans-serif;
+  font-size:.87rem;font-weight:600;
+  outline:none;margin-bottom:9px;
+  transition:border-color .2s;
+}
+.jrm-input:focus{border-color:rgba(245,158,11,.55);}
+.jrm-input::placeholder{color:rgba(255,255,255,.25);}
+.jrm-row{display:flex;gap:8px;}
+.jrm-row .jrm-input{margin-bottom:0;flex:1;}
+
+/* ── Trip Type Buttons ── */
+.jrm-trip-row{display:flex;gap:8px;margin-bottom:10px;}
+.jrm-trip-btn{
+  flex:1;padding:9px 6px;border-radius:12px;
+  border:1.5px solid rgba(255,255,255,.1);
+  background:transparent;color:rgba(255,255,255,.35);
+  font-weight:800;font-size:.73rem;cursor:pointer;
+  transition:all .2s;
+}
+.jrm-trip-btn.on{
+  border-color:#f59e0b;background:rgba(245,158,11,.12);color:#f59e0b;
+}
+
+/* ── Vehicle Cards ── */
+.jrm-vehicles{display:flex;flex-direction:column;gap:9px;margin-top:2px;}
+.jrm-vcard{
+  background:rgba(255,255,255,.04);
+  border:1.5px solid rgba(255,255,255,.07);
+  border-radius:18px;padding:13px 14px;
+  cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;gap:11px;
+  position:relative;overflow:hidden;
+}
+.jrm-vcard:active{transform:scale(.99);}
+.jrm-vcard.sel{border-color:#f59e0b;background:rgba(245,158,11,.07);box-shadow:0 0 0 1px rgba(245,158,11,.25);}
+.jrm-vcard.gold{border-color:rgba(255,215,0,.22);background:linear-gradient(135deg,rgba(255,215,0,.04),rgba(245,158,11,.05));}
+.jvc-emo{font-size:2.3rem;flex-shrink:0;line-height:1;}
+.jvc-info{flex:1;min-width:0;}
+.jvc-name{font-family:'Syne',sans-serif;font-weight:900;font-size:.9rem;color:#fff;}
+.jvc-spec{font-size:.62rem;color:rgba(255,255,255,.38);margin-top:1px;}
+.jvc-tags{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap;}
+.jvc-tag{font-size:.54rem;font-weight:800;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);padding:2px 7px;border-radius:99px;}
+.jvc-price{text-align:right;flex-shrink:0;}
+.jvc-rate{font-family:'Syne',sans-serif;font-weight:900;font-size:1.05rem;color:#f59e0b;}
+.jvc-runit{font-size:.57rem;color:rgba(255,255,255,.3);margin-top:1px;}
+.jvc-badge{position:absolute;top:10px;right:11px;font-size:.48rem;font-weight:900;background:linear-gradient(135deg,#f59e0b,#f97316);color:#000;padding:2px 8px;border-radius:99px;text-transform:uppercase;}
+
+/* ── Hourly Packages ── */
+.jrm-pkgs{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.jrm-pkg{
+  background:rgba(255,255,255,.04);
+  border:1.5px solid rgba(255,255,255,.07);
+  border-radius:14px;padding:13px 10px;
+  cursor:pointer;transition:all .2s;text-align:center;
+}
+.jrm-pkg.sel{border-color:#f59e0b;background:rgba(245,158,11,.08);}
+.jrm-pkg-ico{font-size:1.5rem;margin-bottom:4px;}
+.jrm-pkg-name{font-weight:900;font-size:.8rem;color:#fff;}
+.jrm-pkg-km{font-size:.61rem;color:rgba(255,255,255,.38);margin-top:2px;}
+.jrm-pkg-price{font-family:'Syne',sans-serif;font-weight:900;font-size:1.02rem;color:#f59e0b;margin-top:5px;}
+
+/* ── Vehicle Type Pills (Hourly) ── */
+.jrm-vtypes{display:flex;gap:7px;margin-bottom:10px;}
+.jrm-vtype{
+  flex:1;padding:10px 4px;border-radius:12px;
+  border:1.5px solid rgba(255,255,255,.09);
+  background:transparent;color:rgba(255,255,255,.35);
+  font-weight:800;font-size:.7rem;cursor:pointer;transition:all .2s;
+}
+.jrm-vtype.on{border-color:#f59e0b;background:rgba(245,158,11,.1);color:#f59e0b;}
+
+/* ── Summary Box ── */
+.jrm-summary{
+  background:rgba(245,158,11,.05);
+  border:1px solid rgba(245,158,11,.18);
+  border-radius:16px;padding:13px 14px;margin-top:12px;
+}
+.jrm-sum-title{font-size:.68rem;font-weight:800;color:#f59e0b;margin-bottom:8px;}
+.jrm-sum-row{
+  display:flex;justify-content:space-between;
+  align-items:center;font-size:.73rem;
+  padding:4px 0;border-bottom:1px solid rgba(255,255,255,.05);
+}
+.jrm-sum-row:last-child{border:none;padding-top:8px;}
+.jrm-sum-lbl{color:rgba(255,255,255,.4);}
+.jrm-sum-val{color:#fff;font-weight:700;}
+.jrm-sum-total{color:#f59e0b;font-size:.92rem;font-weight:900;font-family:'Syne',sans-serif;}
+
+/* ── Info Chips ── */
+.jrm-infos{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;}
+.jrm-info{
+  font-size:.57rem;font-weight:700;
+  background:rgba(16,185,129,.07);
+  border:1px solid rgba(16,185,129,.18);
+  color:#10b981;padding:3px 9px;border-radius:99px;
+}
+
+/* ── Book Button ── */
+.jrm-book{
+  width:100%;border:none;border-radius:16px;
+  padding:16px;cursor:pointer;margin-top:13px;
+  font-family:'Syne',sans-serif;font-weight:900;
+  font-size:1rem;letter-spacing:.02em;
+  background:linear-gradient(135deg,#f59e0b,#f97316);
+  color:#000;box-shadow:0 8px 24px rgba(245,158,11,.32);
+  transition:transform .15s,box-shadow .15s;
+}
+.jrm-book:active{transform:scale(.98);box-shadow:0 4px 12px rgba(245,158,11,.2);}
+.jrm-hint{text-align:center;font-size:.58rem;color:rgba(255,255,255,.22);margin-top:7px;}
+/* ══════════════════════════════════════════════════
+   🗺️  RENTAL MAPPLS MAP NAVIGATION — Premium Style
+══════════════════════════════════════════════════ */
+
+/* Map container inside rental modal */
+.jrm-map-wrap {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  height: 220px;
+  margin: 10px 0 12px;
+  border: 1.5px solid rgba(245,158,11,.2);
+  box-shadow: 0 4px 20px rgba(0,0,0,.5);
+  background: #1a2332;
+}
+.jrm-map-wrap #jrRentalMap { width:100%; height:100%; }
+
+/* Map Loading Overlay */
+.jrm-map-loading {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: #0d1117; z-index: 10;
+  gap: 10px;
+}
+.jrm-map-loading-spin {
+  width: 36px; height: 36px;
+  border: 3px solid rgba(245,158,11,.2);
+  border-top-color: #f59e0b;
+  border-radius: 50%;
+  animation: jrMapSpin 1s linear infinite;
+}
+@keyframes jrMapSpin { to { transform: rotate(360deg); } }
+.jrm-map-loading-txt {
+  font-size: .68rem; font-weight: 700;
+  color: rgba(245,158,11,.8);
+}
+
+/* Route Info Bar (above map) */
+.jrm-route-bar {
+  display: none;
+  background: rgba(245,158,11,.08);
+  border: 1px solid rgba(245,158,11,.2);
+  border-radius: 14px;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  gap: 0;
+}
+.jrm-route-bar.visible { display: flex; align-items: center; gap: 10px; }
+.jrm-route-icon { font-size: 1.4rem; flex-shrink: 0; }
+.jrm-route-details { flex: 1; }
+.jrm-route-km {
+  font-family: 'Syne', sans-serif;
+  font-weight: 900; font-size: .95rem; color: #f59e0b;
+}
+.jrm-route-time { font-size: .62rem; color: rgba(255,255,255,.45); margin-top: 1px; }
+.jrm-route-est {
+  text-align: right; flex-shrink: 0;
+}
+.jrm-route-fare {
+  font-family: 'Syne', sans-serif;
+  font-weight: 900; font-size: 1.05rem; color: #fff;
+}
+.jrm-route-fare-lbl { font-size: .56rem; color: rgba(255,255,255,.35); }
+
+/* Turn-by-turn step strip */
+.jrm-nav-steps {
+  display: none;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 14px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  max-height: 130px;
+  overflow-y: auto;
+}
+.jrm-nav-steps.visible { display: block; }
+.jrm-nav-steps::-webkit-scrollbar { display: none; }
+.jrm-nav-step {
+  display: flex; align-items: center; gap: 9px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  font-size: .7rem; color: rgba(255,255,255,.65);
+}
+.jrm-nav-step:last-child { border: none; }
+.jrm-nav-step-ico {
+  width: 26px; height: 26px; flex-shrink: 0;
+  background: rgba(245,158,11,.1);
+  border: 1px solid rgba(245,158,11,.2);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .75rem;
+}
+.jrm-nav-step-txt { flex: 1; line-height: 1.35; }
+.jrm-nav-step-dist { font-size: .58rem; color: rgba(245,158,11,.7); font-weight: 700; white-space: nowrap; }
+
+/* Map controls overlay */
+.jrm-map-controls {
+  position: absolute; top: 8px; right: 8px; z-index: 20;
+  display: flex; flex-direction: column; gap: 5px;
+}
+.jrm-map-ctrl-btn {
+  width: 32px; height: 32px;
+  background: rgba(13,17,23,.85);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 9px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .9rem; color: #fff;
+  backdrop-filter: blur(8px);
+  transition: background .2s;
+}
+.jrm-map-ctrl-btn:hover { background: rgba(245,158,11,.2); }
+
+/* Mappls powered badge */
+.jrm-map-brand {
+  position: absolute; bottom: 7px; left: 8px; z-index: 20;
+  background: rgba(13,17,23,.75);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 6px; padding: 2px 7px;
+  font-size: .52rem; font-weight: 800;
+  color: rgba(255,255,255,.6);
+  backdrop-filter: blur(6px);
+}
+
+/* Route quality badge */
+.jrm-route-badge {
+  position: absolute; top: 8px; left: 8px; z-index: 20;
+  border-radius: 7px; padding: 3px 8px;
+  font-size: .55rem; font-weight: 800;
+  display: none;
+}
+.jrm-route-badge.mappls {
+  display: block;
+  background: rgba(0,200,83,.15);
+  border: 1px solid rgba(0,200,83,.3);
+  color: #00C853;
+}
+.jrm-route-badge.approx {
+  display: block;
+  background: rgba(245,158,11,.15);
+  border: 1px solid rgba(245,158,11,.3);
+  color: #f59e0b;
+}
+
+
+/* ── Tour Cards ── */
+.jrm-tours{display:flex;flex-direction:column;gap:9px;}
+.jrm-tour{
+  background:rgba(255,255,255,.04);
+  border:1.5px solid rgba(255,255,255,.07);
+  border-radius:18px;padding:13px 14px;
+  cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;gap:11px;
+  position:relative;overflow:hidden;
+}
+.jrm-tour:active{transform:scale(.99);}
+.jrm-tour.gold{border-color:rgba(255,215,0,.2);background:linear-gradient(135deg,rgba(255,215,0,.03),rgba(245,158,11,.05));}
+
 .qp-chip{flex-shrink:0;background:#f7f7f7;border:1px solid var(--border);border-radius:10px;padding:7px 11px;font-size:.74rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s;}
 .qp-chip:active{background:rgba(245,158,11,.12);border-color:#111111;}
 body.lm .qp-chip{background:#f1f5f9;}
@@ -3354,6 +3734,7 @@ body.lm .vrp-box{background:#f0f4fb;}
       </div>
 
       <!-- Login Button -->
+      <div style="font-size:.6rem;color:#888;text-align:center;margin-bottom:8px">Login karke aap hamari <span onclick="openTerms(1)" style="color:#00b140;font-weight:800;cursor:pointer;text-decoration:underline">Terms of Service</span> aur <span onclick="openTerms(2)" style="color:#00b140;font-weight:800;cursor:pointer;text-decoration:underline">Privacy Policy</span> se agree karte hain</div>
       <button class="asub y" id="loginSubmitBtn" onclick="doLogin()" style="font-size:.95rem;padding:14px;letter-spacing:.02em">
         🚀 Login Karo
       </button>
@@ -3548,6 +3929,25 @@ body.lm .vrp-box{background:#f0f4fb;}
 
     <div id="homeErr" class="eb"></div>
     <button class="mbtn y" onclick="calcFare()" style="margin-top:4px">Find Ride 🚗</button>
+
+    <!-- ✅ MORE SERVICES DIVIDER -->
+    <div style="display:flex;align-items:center;gap:8px;margin:12px 0 8px">
+      <div style="flex:1;height:1px;background:rgba(255,255,255,.07)"></div>
+      <div style="font-size:.56rem;font-weight:800;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.1em;white-space:nowrap">More Services</div>
+      <div style="flex:1;height:1px;background:rgba(255,255,255,.07)"></div>
+    </div>
+
+    <!-- ✅ RENTAL CARS BUTTON — Premium -->
+    <button class="jdp-rental-btn" onclick="jdpRentalOpen()">
+      <div class="jrb-icon">🚘</div>
+      <div class="jrb-text">
+        <div class="jrb-title">Rental Cars & Outstation</div>
+        <div class="jrb-sub">Hourly · Day trips · Bastar Tourism Package</div>
+      </div>
+      <div class="jrb-arrow">›</div>
+      <div class="jrb-new">NEW</div>
+    </button>
+
   </div>
 
   <!-- FARE / SELECT RIDE SCREEN -->
@@ -3573,7 +3973,7 @@ body.lm .vrp-box{background:#f0f4fb;}
         </div>
       </div>
     </div>
-    <div id="surgeChip" style="display:none;" class="surge-chip">⚡ 1.5x Surge — High demand</div>
+    <div id="surgeChip" style="display:none;" class="surge-chip">⚡ 1.5x Surge — High demand · <span onclick="openTerms(1)" style="text-decoration:underline;cursor:pointer">Know more</span></div>
     <!-- KM + MINS + FARE chips -->
     <div style="display:flex;gap:5px;margin-bottom:6px">
       <div style="flex:1;text-align:center;background:#f7f7f7;border:1px solid var(--border);border-radius:11px;padding:9px 5px">
@@ -3780,7 +4180,7 @@ body.lm .vrp-box{background:#f0f4fb;}
       <div style="height:4px;background:#f0f0f0;border-radius:99px;overflow:hidden;margin-top:4px">
         <div id="liveFareBar" style="height:100%;width:0%;background:#10b981;border-radius:99px;transition:width .8s ease,background .5s"></div>
       </div>
-      <div style="font-size:.58rem;color:var(--muted);margin-top:5px;text-align:center">Estimated fare — final amount may vary</div>
+      <div style="font-size:.58rem;color:var(--muted);margin-top:5px;text-align:center">Estimated fare · 5% GST included · Final amount may vary</div>
     </div>
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px">
@@ -5244,10 +5644,11 @@ function safeVal(id, val) {
 // ═══════════════════════════════════════════════════════
 // ✅ JAGDALPUR CONFIG — City coordinates & zones
 // ═══════════════════════════════════════════════════════
-const JDPGO = { lat: 19.0760, lng: 82.0150 };  // Jagdalpur city center
-const ZONE_CORE   = 3;   // km — City core (Green)
-const ZONE_CITY   = 8;   // km — City zone (Blue) — main service area
-const ZONE_OUTER  = 15;  // km — Outer area (Yellow)
+const JDPGO = { lat: 19.0760, lng: 82.0150 };  // Jagdalpur city center — Bastar, Chhattisgarh
+// ✅ JDP Go Service Zones — Jagdalpur / Bastar (Ola/Uber style)
+const ZONE_CORE   = 4;   // km — City Core: Jagdalpur city center (Green)
+const ZONE_CITY   = 12;  // km — City Zone: Main service area (Blue)
+const ZONE_OUTER  = 25;  // km — Bastar Zone: Outer Jagdalpur + villages (Yellow)
 const MATCH_RADIUS_1 = 5; // km — First try matching within 5km
 const MATCH_RADIUS_2 = 8; // km — Then expand to 8km
 
@@ -5844,9 +6245,9 @@ async function startNavigation(destLat, destLng, destName) {
   }
 }
 
-// ✅ OSRM Navigation Route (No API key, OSM data)
+// ✅ Mappls Navigation Route — JDP Go India
 async function fetchNavRoute(fLat, fLng, tLat, tLng) {
-  // METHOD 1: OSRM with full steps (primary — free, OSM)
+  // METHOD 1: Mappls route_adv with full steps (primary)
   try {
     const r = await fetchWithTimeout(
       'https://apis.mappls.com/advancedmaps/v1/' + window.MAPPLS_KEY + '/route_adv/driving/' + fLng + ',' + fLat + ';' + tLng + ',' + tLat + '?steps=true&geometries=geojson&overview=full',
@@ -5870,32 +6271,7 @@ async function fetchNavRoute(fLat, fLng, tLat, tLng) {
     }
   } catch(e) { console.log('[JDP Nav] OSRM failed:', e.message); }
   
-  // METHOD 2: OpenRouteService (free, 2000/day)
-  try {
-    const r2 = await fetchWithTimeout(
-      'https://api.openrouteservice.org/v2/directions/driving-car/geojson',
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': '5b3ce3597851110001cf6248e18a1c13e3b74f3fa4a09a1d7e4c12fa' },
-        body: JSON.stringify({ coordinates: [[fLng, fLat], [tLng, tLat]] })
-      }, 8000
-    );
-    if (r2.ok) {
-      const d2 = await r2.json();
-      const feat = d2 && d2.features && d2.features[0];
-      if (feat) {
-        NAV.totalDist = feat.properties && feat.properties.summary && feat.properties.summary.distance || 0;
-        NAV.totalTime = feat.properties && feat.properties.summary && feat.properties.summary.duration || 0;
-        NAV.steps = (feat.properties && feat.properties.segments && feat.properties.segments[0] && feat.properties.segments[0].steps) || [];
-        drawNavRoute(feat.geometry);
-        updateNavUI();
-        buildStepList();
-        return;
-      }
-    }
-  } catch(e) { console.log('[JDP Nav] ORS failed:', e.message); }
-
-  // METHOD 3: Straight line fallback
+  // METHOD 2: Straight line fallback (Mappls failed)
   NAV.totalDist = distKmCalc(fLat, fLng, tLat, tLng) * 1350;
   NAV.totalTime = (NAV.totalDist / 1000 / 25) * 3600;
   NAV.steps = [{ maneuver: { type:'depart', modifier:'straight' }, name:'Head toward destination', distance: NAV.totalDist, duration: NAV.totalTime }];
@@ -6304,10 +6680,10 @@ function zoomOut() { if(leafMap) leafMap.zoomOut(1, {animate:true}); }
 // ✅ THUNDERFOREST MULTI-STYLE MAP SWITCHER — 8 styles
 // ═══════════════════════════════════════════════════════
 var MAP_STYLES = [
-  { id:'transport',      label:'Roads',      icon:'🗺️',  tf:true,  url:null },
-  { id:'transport-dark', label:'Dark',       icon:'🌙',  tf:true,  url:null },
-  { id:'cycle',          label:'Cycling',    icon:'🚴',  tf:true,  url:null },
-  { id:'outdoors',       label:'Outdoors',   icon:'🌿',  tf:true,  url:null },
+  { id:'standard',       label:'Standard',   icon:'🗺️',  tf:false, url:null },
+  { id:'grey',           label:'Grey',       icon:'🌫️',  tf:false, url:null },
+  { id:'night',          label:'Night',      icon:'🌙',  tf:false, url:null },
+  { id:'default',        label:'Default',    icon:'🌿',  tf:false, url:null },
   { id:'landscape',      label:'Terrain',    icon:'🏔️',  tf:true,  url:null },
   { id:'spinal-map',     label:'Spinal',     icon:'🩺',  tf:true,  url:null },
   { id:'pioneer',        label:'Pioneer',    icon:'🧭',  tf:true,  url:null },
@@ -6409,39 +6785,46 @@ function updateLiveDistChip(distKm) {
 
 // ═══════════════════════════════════════════════════════
 // ✅ JAGDALPUR CITY ZONES — 3 concentric circles
-// Like Uber surge zones but for Jagdalpur
+// ✅ Ola/Uber style Jagdalpur-Bastar zones
 // ═══════════════════════════════════════════════════════
 function drawCityZones() {
   if (!leafMap) return;
   clearZones();
   try {
-    // Outer zone 15km — yellow
+    // ── Bastar Outer Zone 25km — Yellow (Ola/Uber outer ring) ──
     window._zoneOuter = L.circle([JDPGO.lat, JDPGO.lng], {
-      radius: ZONE_OUTER * 1000, color:'#f59e0b', weight:2, opacity:0.4,
-      fillColor:'#f59e0b', fillOpacity:0.03
+      radius: ZONE_OUTER * 1000, color:'#f59e0b', weight:1.5, opacity:0.5,
+      fillColor:'#fef3c7', fillOpacity:0.04, dashArray:'8,6'
     }).addTo(leafMap);
-    // City zone 8km — blue
+    // ── City Zone 12km — Blue (Ola/Uber service zone) ──
     window._zoneCity = L.circle([JDPGO.lat, JDPGO.lng], {
-      radius: ZONE_CITY * 1000, color:'#3b82f6', weight:2.5, opacity:0.55,
-      fillColor:'#3b82f6', fillOpacity:0.04
+      radius: ZONE_CITY * 1000, color:'#3b82f6', weight:2, opacity:0.6,
+      fillColor:'#eff6ff', fillOpacity:0.05, dashArray:'6,4'
     }).addTo(leafMap);
-    // Core zone 3km — green
+    // ── Core Zone 4km — Green (Ola/Uber city core) ──
     window._zoneCore = L.circle([JDPGO.lat, JDPGO.lng], {
-      radius: ZONE_CORE * 1000, color:'#10b981', weight:3, opacity:0.65,
-      fillColor:'#10b981', fillOpacity:0.07
+      radius: ZONE_CORE * 1000, color:'#00b140', weight:2.5, opacity:0.7,
+      fillColor:'#00b140', fillOpacity:0.06
     }).addTo(leafMap);
-    // Center dot
+    // ── Center marker — JDP Go Hub ──
     var centerIcon = L.divIcon({
-      html: '<div style="background:rgba(245,158,11,.85);border:2.5px solid white;width:12px;height:12px;border-radius:50%;box-shadow:0 0 18px rgba(245,158,11,1);transform:translate(-6px,-6px)"></div>',
+      html: '<div style="background:#00b140;border:3px solid white;width:14px;height:14px;border-radius:50%;box-shadow:0 0 20px rgba(0,177,64,.9),0 2px 8px rgba(0,0,0,.3);transform:translate(-7px,-7px)"></div>',
       className: '', iconSize: [0, 0]
     });
     window._centerDot = L.marker([JDPGO.lat, JDPGO.lng], { icon: centerIcon })
-      .bindPopup('<b>📍 Jagdalpur City Center</b><br><small>JDP Go Service Hub</small>')
+      .bindPopup('<div style="font-family:sans-serif;min-width:160px"><b style="color:#00b140">📍 Jagdalpur City Center</b><br><small style="color:#555">JDP Go Service Hub · Bastar, CG</small><br><div style="margin-top:6px;font-size:.72rem"><span style="color:#00b140">● Core Zone</span> 0-4km · Best rates<br><span style="color:#3b82f6">● City Zone</span> 4-12km · Normal<br><span style="color:#f59e0b">● Bastar Zone</span> 12-25km · Outer</div></div>')
       .addTo(leafMap);
+    // ── Zone labels at edges ──
+    var labelCore = L.divIcon({ html: '<div style="color:#00b140;font-size:.6rem;font-weight:800;background:rgba(255,255,255,.9);padding:2px 6px;border-radius:99px;border:1px solid #00b140;white-space:nowrap">City Core 4km</div>', className:'', iconSize:[0,0] });
+    var labelCity = L.divIcon({ html: '<div style="color:#3b82f6;font-size:.6rem;font-weight:800;background:rgba(255,255,255,.9);padding:2px 6px;border-radius:99px;border:1px solid #3b82f6;white-space:nowrap">City Zone 12km</div>', className:'', iconSize:[0,0] });
+    var labelOuter = L.divIcon({ html: '<div style="color:#f59e0b;font-size:.6rem;font-weight:800;background:rgba(255,255,255,.9);padding:2px 6px;border-radius:99px;border:1px solid #f59e0b;white-space:nowrap">Bastar Zone 25km</div>', className:'', iconSize:[0,0] });
+    window._zoneLabel1 = L.marker([JDPGO.lat, JDPGO.lng + ZONE_CORE/111], { icon: labelCore, interactive:false }).addTo(leafMap);
+    window._zoneLabel2 = L.marker([JDPGO.lat, JDPGO.lng + ZONE_CITY/111], { icon: labelCity, interactive:false }).addTo(leafMap);
+    window._zoneLabel3 = L.marker([JDPGO.lat, JDPGO.lng + ZONE_OUTER/111], { icon: labelOuter, interactive:false }).addTo(leafMap);
   } catch(e) { console.warn('[JDP] Zone draw error:', e); }
 }
 function clearZones() {
-  ['_zoneOuter','_zoneCity','_zoneCore','_centerDot'].forEach(function(k) {
+  ['_zoneOuter','_zoneCity','_zoneCore','_centerDot','_zoneLabel1','_zoneLabel2','_zoneLabel3'].forEach(function(k) {
     if (window[k]) {
       try { leafMap && leafMap.removeLayer(window[k]); } catch(e) {}
       window[k] = null;
@@ -6763,21 +7146,7 @@ async function geocodeAddress(address) {
     } catch(mapplsErr) { console.warn('[Mappls]', mapplsErr.message); }
   }
 
-  // STEP 3: Nominatim OSM search (fallback)
-  try {
-    const q = encodeURIComponent(address + ', Jagdalpur, Chhattisgarh, India');
-    const r = await fetchWithTimeout(
-      'https://nominatim.openstreetmap.org/search?q=' + q + '&format=json&limit=3&countrycodes=in',
-      { headers: { 'User-Agent': 'JDPGo/2.0 jdpgo@bastar.in' } }, 7000
-    );
-    if (r.ok) {
-      const results = await r.json();
-      if (results && results[0]) {
-        const lat = parseFloat(results[0].lat), lng = parseFloat(results[0].lon);
-        if (lat > 0 && lng > 0) return { lat, lng, name: results[0].display_name || address, source: 'osm' };
-      }
-    }
-  } catch(e) { console.log('[JDP Geo] Nominatim failed:', e.message); }
+  // STEP 3: Jagdalpur center fallback
 
   // STEP 3: Coordinate-based Jagdalpur fuzzy match (nearest landmark)
   const bestLm = JAGDALPUR_LANDMARKS.reduce(function(best, lm2) {
@@ -6816,37 +7185,40 @@ async function showSuggest(query) {
     (lm.cat && lm.cat.includes(lc))
   ).slice(0, 6);
 
-  // ── B. Nominatim OSM search ──
-  let osmResults = [];
-  try {
-    const q = encodeURIComponent(query + ' Jagdalpur Chhattisgarh');
-    const r = await fetchWithTimeout(
-      'https://nominatim.openstreetmap.org/search?q=' + q + '&format=json&limit=5&countrycodes=in&addressdetails=1',
-      { headers: { 'User-Agent': 'JDPGo/2.0' } }, 5000
-    );
-    if (r.ok) {
-      const d = await r.json();
-      osmResults = (d || []).slice(0, 5).map(function(s) {
-        var lat = parseFloat(s.lat), lng = parseFloat(s.lon);
-        return {
-          name: (s.display_name || query).split(',').slice(0, 2).join(', '),
-          info: s.display_name || 'Jagdalpur',
-          lat: lat, lng: lng,
-          fromOSM: true,
-          dist: myLat ? distKmCalc(myLat, myLng, lat, lng).toFixed(1) + 'km' : ''
-        };
-      }).filter(function(s) { return s.lat > 0; });
-    }
-  } catch(e) {}
+  // ── B. Mappls place search ──
+  let mapplsResults = [];
+  if (window.MAPPLS_KEY) {
+    try {
+      const mq = encodeURIComponent(query + ' Jagdalpur Bastar Chhattisgarh');
+      const mr = await fetchWithTimeout(
+        'https://atlas.mappls.com/api/places/search/json?query=' + mq + '&region=IND&location=' + (myLat||19.076) + ',' + (myLng||82.015) + '&zoom=12',
+        { headers: { 'Authorization': 'bearer ' + window.MAPPLS_KEY } }, 5000
+      );
+      if (mr.ok) {
+        const md = await mr.json();
+        (md && md.suggestedLocations || []).slice(0, 5).forEach(function(s) {
+          var lat = parseFloat(s.latitude), lng = parseFloat(s.longitude);
+          if (lat > 0 && lng > 0) {
+            mapplsResults.push({
+              name: s.placeName || query,
+              info: s.placeAddress || 'Jagdalpur',
+              lat: lat, lng: lng,
+              dist: myLat ? distKmCalc(myLat, myLng, lat, lng).toFixed(1) + 'km' : ''
+            });
+          }
+        });
+      }
+    } catch(e) {}
+  }
 
-  // ── Merge results — local first, then OSM ──
+  // ── Merge results — local first, then Mappls ──
   const combined = [
     ...localMatches.map(function(lm) { return {
       name: lm.name, info: lm.info, lat: lm.lat, lng: lm.lng,
       icon: lm.icon, cat: lm.cat,
       dist: myLat ? distKmCalc(myLat, myLng, lm.lat, lm.lng).toFixed(1) + 'km' : ''
     }; }),
-    ...osmResults.filter(function(m) { return !localMatches.some(function(lm) {
+    ...mapplsResults.filter(function(m) { return !localMatches.some(function(lm) {
       return lm.name.toLowerCase() === (m.name || '').toLowerCase();
     }); })
   ].slice(0, 8);
@@ -6917,7 +7289,7 @@ function selectSuggest(lat, lng, name) {
 // ================================================================
 // ⚡ JDP Go — PRECISION ROUTING ENGINE v3.0
 // Google Maps-level accuracy for Jagdalpur roads
-// 5-layer routing: OSRM → Mappls v1 → Mappls Matrix → ORS → Haversine
+// ✅ Mappls-only routing — JDP Go India
 // ================================================================
 
 // Route quality indicator
@@ -6925,11 +7297,8 @@ function showRouteAccuracy(source, isFallback) {
   const badge = document.getElementById('routeAccBadge');
   if (!badge) return;
   const config = {
-    'osrm':    { icon:'🛣️', label:'Real Road Route', color:'#10b981' },
-    'mappls':  { icon:'🗺️', label:'Mappls Accurate',  color:'#3b82f6' },
-    'matrix':  { icon:'📏', label:'Road Distance',    color:'#8b5cf6' },
-    'ors':     { icon:'🌐', label:'ORS Route',        color:'#10b981' },
-    'approx':  { icon:'⚠️', label:'Approximate ×1.4', color:'#f59e0b' },
+    'mappls':  { icon:'🗺️', label:'Mappls Road Route', color:'#10b981' },
+    'approx':  { icon:'⚠️', label:'Approximate',       color:'#f59e0b' },
   };
   const c = config[source] || config['approx'];
   badge.innerHTML = `<span style="color:${c.color}">${c.icon} ${c.label}</span>`;
@@ -6953,89 +7322,33 @@ async function fetchWithTimeout(url, opts={}, timeoutMs=6000) {
 // Main routing function — tries 5 methods in priority order
 async function getOSRMRoute(fLat, fLng, tLat, tLng) {
   // ╔══════════════════════════════════════╗
-  // ║  METHOD 1 — OSRM (Primary, fastest)  ║
-  // ║  Real Indian road routing. Free.      ║
-  // ╚══════════════════════════════════════╝
+  // ║  METHOD 1 — Mappls route_adv (Primary) ║
+  // ║  Official India road routing.           ║
+  // ╚════════════════════════════════════════╝
   try {
     const r = await fetchWithTimeout(
-      `https://apis.mappls.com/advancedmaps/v1/'+window.MAPPLS_KEY+'/route_adv/driving/${fLng},${fLat};${tLng},${tLat}?overview=full&geometries=geojson&steps=true`,
-      {}, 7000
+      'https://apis.mappls.com/advancedmaps/v1/' + window.MAPPLS_KEY + '/route_adv/driving/' + fLng + ',' + fLat + ';' + tLng + ',' + tLat + '?overview=full&geometries=geojson&steps=true',
+      {}, 8000
     );
     if (r.ok) {
       const d = await r.json();
-      const rt = d?.routes?.[0];
-      if (rt && rt.distance > 50) { // >50m = valid route
-        showRouteAccuracy('osrm');
+      const rt = d && d.routes && d.routes[0];
+      if (rt && rt.distance > 50) {
+        showRouteAccuracy('mappls');
         return {
           distKM: parseFloat((rt.distance/1000).toFixed(2)),
           durationMin: Math.ceil(rt.duration/60),
           geometry: rt.geometry,
-          steps: rt.legs?.[0]?.steps || [],
-          source: 'osrm'
+          steps: (rt.legs && rt.legs[0] && rt.legs[0].steps) || [],
+          source: 'mappls'
         };
       }
     }
-  } catch(e) { console.log('[JDP Route] OSRM failed:', e.message); }
-
-  // ╔══════════════════════════════════════════════╗
-  // ║  METHOD 2 — OpenRouteService (OSM, 2000/day) ║
-  // ║  India road data, no API key setup needed     ║
-  // ╚══════════════════════════════════════════════╝
-  try {
-    const r = await fetchWithTimeout(
-      'https://api.openrouteservice.org/v2/directions/driving-car/geojson',
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': '5b3ce3597851110001cf6248e18a1c13e3b74f3fa4a09a1d7e4c12fa' },
-        body: JSON.stringify({ coordinates: [[fLng, fLat], [tLng, tLat]] })
-      }, 7000
-    );
-    if (r.ok) {
-      const d = await r.json();
-      const feat = d && d.features && d.features[0];
-      const rt = feat && feat.properties && feat.properties.summary;
-      if (rt && rt.distance > 50) {
-        showRouteAccuracy('ors');
-        return {
-          distKM: parseFloat((rt.distance / 1000).toFixed(2)),
-          durationMin: Math.ceil(rt.duration / 60),
-          geometry: feat.geometry,
-          steps: (feat.properties.segments && feat.properties.segments[0] && feat.properties.segments[0].steps) || [],
-          source: 'ors'
-        };
-      }
-    }
-  } catch(e) { console.log('[JDP Route] ORS failed:', e.message); }
-
-  // ╔═════════════════════════════════════════════════╗
-  // ║  METHOD 4 — OpenRouteService (Free, 2000/day)   ║
-  // ║  Backup real routing engine                      ║
-  // ╚═════════════════════════════════════════════════╝
-  try {
-    const r = await fetchWithTimeout(
-      `https://api.openrouteservice.org/v2/directions/driving-car?api_key=5b3ce3597851110001cf6248a826289a3f04463da7fe6e5e3a7cbb47&start=${fLng},${fLat}&end=${tLng},${tLat}`,
-      {}, 7000
-    );
-    if (r.ok) {
-      const d = await r.json();
-      const rt = d?.features?.[0];
-      const props = rt?.properties?.summary;
-      if (props?.distance > 50) {
-        showRouteAccuracy('ors');
-        return {
-          distKM: parseFloat((props.distance/1000).toFixed(2)),
-          durationMin: Math.ceil(props.duration/60),
-          geometry: rt.geometry,
-          steps: rt.properties?.segments?.[0]?.steps || [],
-          source: 'ors'
-        };
-      }
-    }
-  } catch(e) { console.log('[JDP Route] ORS failed:', e.message); }
+  } catch(e) { console.log('[JDP Route] Mappls failed:', e.message); }
 
   // ╔══════════════════════════════════════════════════════╗
-  // ║  METHOD 5 — Precision Haversine × Jagdalpur factor   ║
-  // ║  Road-winding multiplier calibrated for Bastar roads  ║
+  // ║  METHOD 2 — Haversine × Jagdalpur road factor        ║
+  // ║  Bastar road-winding multiplier fallback             ║
   // ╚══════════════════════════════════════════════════════╝
   const straightKm = distKmCalc(fLat, fLng, tLat, tLng);
   // ✅ Bastar/Jagdalpur road factors — calibrated for actual roads
@@ -9820,6 +10133,9 @@ function showReceipt(data) {
     <div class="rcpt-row"><span style="color:var(--muted)">Base Fare</span><span>₹${data.originalFare||data.fare||'--'}</span></div>
     ${discount ? `<div class="rcpt-row"><span style="color:#00b140">Promo (${data.promoCode||''})</span><span style="color:#00b140">-₹${discount}</span></div>` : ''}
     ${discount ? `<div class="rcpt-row"><span style="font-weight:800">Final Fare</span><span style="font-weight:800;color:#111111">₹${data.fare||'--'}</span></div>` : ''}
+    <div class="rcpt-row" style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--border)"><span style="color:var(--muted);font-size:.65rem">GST (5%)</span><span style="font-size:.65rem;color:var(--muted)">Included in fare</span></div>
+    <div class="rcpt-row"><span style="color:var(--muted);font-size:.62rem">Payment</span><span style="font-size:.62rem">${data.paymentMethod==='upi'?'📱 UPI':'💵 Cash'}</span></div>
+    <div style="font-size:.58rem;color:#aaa;text-align:center;margin-top:8px;line-height:1.5">JDP Go · Jagdalpur, Bastar, CG<br>GST incl. as per Motor Vehicles Aggregator Guidelines 2020<br>Grievance: jdpgo@bastar.in · +91 70247 35997</div>
   `;
   document.getElementById('rcptShareBtns').innerHTML = `
     <a class="wa-btn" href="https://wa.me/?text=${encodeURIComponent(`JDP Go Receipt 🚖\nPickup: ${data.pickup}\nDrop: ${data.drop}\nFare: ₹${data.fare}\nDate: ${ts.toLocaleDateString()}\n\nBook: jdpgo.web.app`)}" target="_blank">
@@ -10200,7 +10516,7 @@ async function lookupELoc() {
   // Try Nominatim with eLoc code as query
   try {
     const r = await fetchWithTimeout(
-      'https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(code+' Jagdalpur Chhattisgarh India')+'&format=json&limit=1&countrycodes=in',
+      'https://atlas.mappls.com/api/places/geocode?address=' + encodeURIComponent(code + ' Jagdalpur Chhattisgarh') + '&api_key=' + window.MAPPLS_KEY,
       { headers: { 'User-Agent': 'JDPGo/3.0 jdpgo@bastar.in' } }, 6000
     );
     if (r.ok) {
@@ -10461,37 +10777,23 @@ async function revGeo(lat, lng) {
     return baseName + ', Jagdalpur';
   }
 
-  // Nominatim reverse geocode (OSM — free, no API key)
-  try {
-    const acceptLang = currentLang === 'hi' ? 'hi,en' : (currentLang || 'en') + ',en';
-    const r = await fetchWithTimeout(
-      'https://nominatim.openstreetmap.org/reverse?lat=' + lat + '&lon=' + lng + '&format=json&zoom=18&accept-language=' + acceptLang,
-      { headers: { 'User-Agent': 'JDPGo/2.0 jdpgo@bastar.in', 'Accept-Language': acceptLang } }, 6000
-    );
-    if (r.ok) {
-      const d = await r.json();
-      if (d && d.display_name) {
-        const parts = d.display_name.split(', ').slice(0, 4).join(', ');
-        if (parts) return parts;
+  // Mappls reverse geocode — Official India map API
+  if (window.MAPPLS_KEY) {
+    try {
+      const r = await fetchWithTimeout(
+        'https://apis.mappls.com/advancedmaps/v1/' + window.MAPPLS_KEY + '/rev_geocode?lat=' + lat + '&lng=' + lng,
+        {}, 6000
+      );
+      if (r.ok) {
+        const d = await r.json();
+        if (d && d.results && d.results[0]) {
+          const res = d.results[0];
+          const parts = [res.locality, res.city, res.state].filter(Boolean).join(', ');
+          if (parts) return parts;
+        }
       }
-    }
-  } catch(e) {}
-
-  // Nominatim fallback
-  try {
-    const acceptLang = currentLang === 'hi' ? 'hi,en' : currentLang + ',en';
-    const r = await fetchWithTimeout(
-      `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&zoom=18&accept-language=${acceptLang}`,
-      { headers: { 'User-Agent': 'JDPGo/2.0 jdpgo@bastar.in', 'Accept-Language': acceptLang } }, 5000
-    );
-    if (r.ok) {
-      const d = await r.json();
-      if (d?.display_name) {
-        const parts = d.display_name.split(', ').slice(0, 4).join(', ');
-        return parts;
-      }
-    }
-  } catch(e) {}
+    } catch(e) { console.log('[JDP RevGeo] Mappls failed:', e.message); }
+  }
 
   // Nearest landmark fallback
   if (nearLM) {
@@ -10565,7 +10867,7 @@ function updateMyMarkerWithSnap(lat, lng) {
 const VEHICLE_PROFILES = {
   cab:  { name: 'Cab',   emoji: '🚗', profile: 'driving-car', avgSpeedKmh: 35, factor: 1.0,  minFare: 50,  perKm: 12, icon: '🚗' },
   auto: { name: 'Auto',  emoji: '🛺', profile: 'driving-car', avgSpeedKmh: 25, factor: 1.12, minFare: 30,  perKm: 10, icon: '🛺' },
-  bike: { name: 'Bike',  emoji: '🏍️', profile: 'cycling',      avgSpeedKmh: 40, factor: 0.85, minFare: 20,  perKm: 8,  icon: '🏍️' },
+  // bike taxi removed — banned in Chhattisgarh (Motor Vehicles Act)
 };
 
 let activeVehicleProfile = 'auto'; // default JDP is auto
@@ -10576,7 +10878,7 @@ function setVehicleProfile(type) {
   toast(`${VEHICLE_PROFILES[type].emoji} ${VEHICLE_PROFILES[type].name} profile selected`);
   // Recolor any existing route
   if (routePolyline) {
-    const colors = { cab: '#3b82f6', auto: '#f59e0b', bike: '#10b981' };
+    const colors = { cab: '#3b82f6', auto: '#f59e0b' };
     try { if (routePolyline && routePolyline.setStyle) { routePolyline.setStyle({ color: colors[type] }); } } catch(e) {}
   }
   // Update fare cards if visible
@@ -10607,7 +10909,7 @@ async function getVehicleRoute(fLat, fLng, tLat, tLng) {
   try {
     const orsProfile = profile.profile;
     const r = await fetchWithTimeout(
-      `https://api.openrouteservice.org/v2/directions/${orsProfile}?api_key=5b3ce3597851110001cf6248a826289a3f04463da7fe6e5e3a7cbb47&start=${fLng},${fLat}&end=${tLng},${tLat}`, {}, 6000
+      'https://apis.mappls.com/advancedmaps/v1/' + window.MAPPLS_KEY + '/route_adv/driving/' + fLng + ',' + fLat + ';' + tLng + ',' + tLat + '?overview=full&geometries=geojson&steps=true', {}, 8000
     );
     if (r.ok) {
       const d = await r.json();
@@ -13369,5 +13671,1012 @@ function admStopTrack(clearMap) {
 console.log('[JDP Go] Admin Track System loaded ✅');
 </script>
 
-</body>
-</html>
+
+<!-- ════════════════════════════════════════════════════
+     ✅ PRIVACY POLICY & TERMS MODAL — IT Act 2000 Compliant
+     Digital Personal Data Protection Act 2023
+════════════════════════════════════════════════════ -->
+<div id="termsModal" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.85);align-items:flex-end;justify-content:center;backdrop-filter:blur(6px)" onclick="if(event.target===this)document.getElementById('termsModal').style.display='none'">
+  <div style="background:var(--bg,#fff);border-radius:24px 24px 0 0;padding:20px 18px 36px;max-height:88vh;overflow-y:auto;width:100%;max-width:520px;font-family:'DM Sans',sans-serif">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div style="font-family:'Syne',sans-serif;font-weight:900;font-size:1.1rem">📋 Terms & Privacy Policy</div>
+      <button onclick="document.getElementById('termsModal').style.display='none'" style="background:rgba(0,0,0,.07);border:none;border-radius:99px;width:32px;height:32px;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
+    </div>
+
+    <!-- TAB SWITCHER -->
+    <div style="display:flex;background:rgba(0,0,0,.05);border-radius:12px;padding:3px;margin-bottom:16px">
+      <button id="tTab1" onclick="switchTermsTab(1)" style="flex:1;border:none;border-radius:10px;padding:8px;font-size:.75rem;font-weight:800;cursor:pointer;background:#111111;color:#fff;transition:.2s">Terms of Service</button>
+      <button id="tTab2" onclick="switchTermsTab(2)" style="flex:1;border:none;border-radius:10px;padding:8px;font-size:.75rem;font-weight:800;cursor:pointer;background:transparent;color:#666;transition:.2s">Privacy Policy</button>
+      <button id="tTab3" onclick="switchTermsTab(3)" style="flex:1;border:none;border-radius:10px;padding:8px;font-size:.75rem;font-weight:800;cursor:pointer;background:transparent;color:#666;transition:.2s">Refund Policy</button>
+    </div>
+
+    <!-- TERMS OF SERVICE -->
+    <div id="termsTab1">
+      <div style="font-size:.75rem;font-weight:800;color:#111;margin-bottom:6px">🏢 About JDP Go</div>
+      <div style="font-size:.72rem;color:#555;line-height:1.7;margin-bottom:12px">JDP Go ek ride-booking platform hai jo Jagdalpur, Bastar, Chhattisgarh mein kaam karta hai. Yeh ek cab aggregator service hai jo riders ko registered drivers se connect karta hai.</div>
+
+      <div style="font-size:.75rem;font-weight:800;color:#111;margin-bottom:6px">🚗 Eligibility</div>
+      <div style="font-size:.72rem;color:#555;line-height:1.7;margin-bottom:12px">• App use karne ke liye minimum 18 saal ki umar honi chahiye.<br>• Drivers ke paas valid driving licence aur vehicle permit hona zaroori hai.<br>• Chhattisgarh mein bike taxi service available nahi hai (Motor Vehicles Act).</div>
+
+      <div style="font-size:.75rem;font-weight:800;color:#111;margin-bottom:6px">💰 Fare & Payments</div>
+      <div style="font-size:.72rem;color:#555;line-height:1.7;margin-bottom:12px">• Sab fares mein 5% GST shamil hai (Motor Vehicles Aggregator Guidelines 2020).<br>• Surge pricing applicable hai during peak hours / festivals — advance notification diya jayega.<br>• Cash aur UPI dono payment methods accepted hain.<br>• Fare estimate approximate hai — actual fare vary kar sakta hai traffic/route ke hisab se.</div>
+
+      <div style="font-size:.75rem;font-weight:800;color:#111;margin-bottom:6px">❌ Cancellation Policy</div>
+      <div style="font-size:.72rem;color:#555;line-height:1.7;margin-bottom:12px">• Driver accept karne ke baad cancel karne par ₹10 cancellation charge applicable ho sakta hai.<br>• Agar driver 10 min mein nahi pahuncha toh free cancellation allowed hai.<br>• Refund 3-5 business days mein process hoga (UPI payments).</div>
+
+      <div style="font-size:.75rem;font-weight:800;color:#111;margin-bottom:6px">⚖️ Governing Law</div>
+      <div style="font-size:.72rem;color:#555;line-height:1.7;margin-bottom:12px">Yeh terms Chhattisgarh state laws, Motor Vehicles Act 1988, aur IT Act 2000 ke under governed hote hain. Disputes ke liye Jagdalpur courts ka jurisdiction hoga.</div>
+    </div>
+
+    <!-- PRIVACY POLICY -->
+    <div id="termsTab2" style="display:none">
+      <div style="font-size:.75rem;font-weight:800;color:#111;margin-bottom:6px">📊 Data Hum Collect Karte Hain</div>
+      <div style="font-size:.72rem;color:#555;line-height:1.7;margin-bottom:12px">• <b>Personal Info:</b> Naam, mobile number, profile photo.<br>• <b>Location Data:</b> GPS coordinates ride ke dauran (sirf active ride mein).<br>• <b>Driver KYC:</b> Aadhaar, PAN, DL — AES-256 encryption ke saath secure store hota hai.<br>• <b>Ride History:</b> Pickup/drop locations, fare, date/time.</div>
+
+      <div style="font-size:.75rem;font-weight:800;color:#111;margin-bottom:6px">🔒 Data Protection</div>
+      <div style="font-size:.72rem;color:#555;line-height:1.7;margin-bottom:12px">• Digital Personal Data Protection Act 2023 ke hisab se data protect kiya jaata hai.<br>• KYC data AES-GCM encryption se secure hai — koi bhi admin plaintext nahi dekh sakta.<br>• Location data sirf active ride ke dauran use hota hai, baad mein store nahi hota.<br>• Humara data kisi third party ko NAHI becha jaata.</div>
+
+      <div style="font-size:.75rem;font-weight:800;color:#111;margin-bottom:6px">🗑️ Data Deletion</div>
+      <div style="font-size:.72rem;color:#555;line-height:1.7;margin-bottom:12px">Account delete karne ke liye: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d6bcb2a6b1b996b4b7a5a2b7a4f8bfb8">[email&#160;protected]</a> par email karo. 30 din mein data delete ho jayega.</div>
+
+      <div style="font-size:.75rem;font-weight:800;color:#111;margin-bottom:6px">👤 Grievance Officer</div>
+      <div style="font-size:.72rem;color:#555;line-height:1.7;margin-bottom:12px"><b>IT Act 2000, Section 5(9) ke under:</b><br>Naam: JDP Go Support<br>📧 <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bfd5dbcfd8d0ffdddecccbdecd91d6d1">[email&#160;protected]</a><br>📞 +91 70247 35997<br>Response time: 72 hours</div>
+    </div>
+
+    <!-- REFUND POLICY -->
+    <div id="termsTab3" style="display:none">
+      <div style="font-size:.75rem;font-weight:800;color:#111;margin-bottom:6px">💸 Refund Eligible Cases</div>
+      <div style="font-size:.72rem;color:#555;line-height:1.7;margin-bottom:12px">• Driver ne ride complete nahi ki but fare charge hua → Full refund.<br>• App error ki wajah se double charge → Full refund.<br>• Driver ne wrong route liya aur fare zyada liya → Partial refund review pe.</div>
+
+      <div style="font-size:.75rem;font-weight:800;color:#111;margin-bottom:6px">❌ Non-Refundable</div>
+      <div style="font-size:.72rem;color:#555;line-height:1.7;margin-bottom:12px">• Rider ne bina valid reason ke cancel kiya → No refund.<br>• Cash payments → Refund not applicable (directly driver se resolve karo).<br>• Completed rides — satisfaction ke liye grievance officer se contact karo.</div>
+
+      <div style="font-size:.75rem;font-weight:800;color:#111;margin-bottom:6px">⏱️ Refund Timeline</div>
+      <div style="font-size:.72rem;color:#555;line-height:1.7;margin-bottom:12px">UPI refunds: 3-5 working days.<br>Complaint darz karne ke liye: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9ff5fbeff8f0dffdfeecebfeedb1f6f1">[email&#160;protected]</a></div>
+    </div>
+
+    <div style="margin-top:18px;padding:12px;background:rgba(0,177,64,.07);border:1px solid rgba(0,177,64,.2);border-radius:12px;font-size:.66rem;color:#555;text-align:center;line-height:1.6">
+      🏛️ JDP Go · Jagdalpur, Bastar, Chhattisgarh<br>
+      Motor Vehicles Aggregator · IT Act 2000 · DPDP Act 2023 Compliant<br>
+      Last Updated: January 2025
+    </div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+function openTerms(tab) {
+  document.getElem
+
+<!-- ╔═══════════════════════════════════════════════════════════╗
+     ║  🚘 JDP GO — RENTAL CARS COMPLETE MODULE                ║
+     ║  Outstation | Hourly | Bus | Bastar Tour                ║
+     ║  Professional Ola/Uber Style — Unique Design            ║
+     ╚═══════════════════════════════════════════════════════════╝ -->
+<div id="jdpRentalModal" onclick="if(event.target===this)jdpRentalClose()">
+  <div class="jrm-box">
+
+    <!-- HEADER -->
+    <div class="jrm-header">
+      <div class="jrm-drag"></div>
+      <div class="jrm-title-row">
+        <div>
+          <div class="jrm-title">🚘 Rental Cars</div>
+          <div class="jrm-subtitle">⭐ JDP Go Premium · Jagdalpur · Bastar</div>
+        </div>
+        <button class="jrm-close" onclick="jdpRentalClose()">✕</button>
+      </div>
+
+      <!-- TAB BAR -->
+      <div class="jrm-tabs" style="margin-top:13px">
+        <button class="jrm-tab active" id="jrtab_out" onclick="jrSwitchTab('out')">
+          <div class="jrm-tab-ico">🛣️</div>
+          <div class="jrm-tab-lbl">Outstation</div>
+        </button>
+        <button class="jrm-tab" id="jrtab_hour" onclick="jrSwitchTab('hour')">
+          <div class="jrm-tab-ico">⏱️</div>
+          <div class="jrm-tab-lbl">Hourly</div>
+        </button>
+        <button class="jrm-tab" id="jrtab_tour" onclick="jrSwitchTab('tour')">
+          <div class="jrm-tab-ico">🌿</div>
+          <div class="jrm-tab-lbl">Bastar Tour</div>
+        </button>
+      </div>
+    </div>
+
+    <!-- ══════════ PANE 1: OUTSTATION ══════════ -->
+    <div id="jrPane_out" class="jrm-section">
+      <div class="jrm-label" style="margin-top:10px">📍 Pickup</div>
+      <input class="jrm-input" id="jr_pickup" placeholder="Jagdalpur (auto-detected)" readonly>
+
+      <div class="jrm-label">🗺️ Destination City</div>
+      <input class="jrm-input" id="jr_drop" placeholder="Raipur, Hyderabad, Nagpur..." oninput="jrCitySuggest(this.value)" onfocus="jrCitySuggest(this.value)">
+      <div id="jrCityBox" style="display:none;background:#1a2332;border:1px solid rgba(255,255,255,.09);border-radius:12px;overflow:hidden;margin-top:-5px;margin-bottom:8px;"></div>
+
+      <!-- ✅ MAPPLS ROUTE INFO BAR — appears after destination selected -->
+      <div class="jrm-route-bar" id="jrRouteBar">
+        <div class="jrm-route-icon">🗺️</div>
+        <div class="jrm-route-details">
+          <div class="jrm-route-km" id="jrRouteKm">-- km</div>
+          <div class="jrm-route-time" id="jrRouteTime">via Mappls India road map</div>
+        </div>
+        <div class="jrm-route-est">
+          <div class="jrm-route-fare" id="jrRouteFare">₹--</div>
+          <div class="jrm-route-fare-lbl">estimated</div>
+        </div>
+      </div>
+
+      <!-- ✅ MAPPLS MAP — Full Navigation Preview -->
+      <div class="jrm-map-wrap" id="jrMapWrap">
+        <!-- Loading state -->
+        <div class="jrm-map-loading" id="jrMapLoading">
+          <div class="jrm-map-loading-spin"></div>
+          <div class="jrm-map-loading-txt">Mappls Map load ho raha hai...</div>
+        </div>
+        <!-- Actual Mappls map container -->
+        <div id="jrRentalMap" style="width:100%;height:100%"></div>
+        <!-- Map controls -->
+        <div class="jrm-map-controls">
+          <button class="jrm-map-ctrl-btn" onclick="jrMapZoomIn()" title="Zoom In">+</button>
+          <button class="jrm-map-ctrl-btn" onclick="jrMapZoomOut()" title="Zoom Out">−</button>
+          <button class="jrm-map-ctrl-btn" onclick="jrMapFitRoute()" title="Fit Route">⊞</button>
+        </div>
+        <!-- Route quality badge -->
+        <div class="jrm-route-badge mappls" id="jrRouteBadge">📡 Mappls Route</div>
+        <!-- Brand -->
+        <div class="jrm-map-brand">Powered by Mappls India</div>
+      </div>
+
+      <!-- ✅ TURN-BY-TURN STEPS -->
+      <div class="jrm-nav-steps" id="jrNavSteps"></div>
+
+      <div class="jrm-label">📅 Date & Time</div>
+      <div class="jrm-row" style="margin-bottom:9px">
+        <input type="date" class="jrm-input" id="jr_date">
+        <input type="time" class="jrm-input" id="jr_time">
+      </div>
+
+      <div class="jrm-label">🔄 Trip Type</div>
+      <div class="jrm-trip-row">
+        <button class="jrm-trip-btn on" id="jr_oneway" onclick="jrTripType('one')">➡️ One Way</button>
+        <button class="jrm-trip-btn" id="jr_round" onclick="jrTripType('round')">🔄 Round Trip</button>
+      </div>
+      <div id="jr_returnWrap" style="display:none;margin-bottom:9px">
+        <div class="jrm-label">Return Date</div>
+        <input type="date" class="jrm-input" id="jr_returnDate">
+      </div>
+
+      <div class="jrm-label">🚗 Select Vehicle</div>
+      <div class="jrm-vehicles">
+
+        <div class="jrm-vcard" id="jrv_sedan" onclick="jrSelectCar('sedan','Sedan','🚗',12,1200)">
+          <div class="jvc-emo">🚗</div>
+          <div class="jvc-info">
+            <div class="jvc-name">Sedan</div>
+            <div class="jvc-spec">AC · 4 Seater · Dzire / Swift / Etios</div>
+            <div class="jvc-tags">
+              <span class="jvc-tag">✓ AC</span>
+              <span class="jvc-tag">✓ Boot</span>
+              <span class="jvc-tag">✓ Music</span>
+              <span class="jvc-tag">✓ Charging</span>
+            </div>
+          </div>
+          <div class="jvc-price">
+            <div class="jvc-rate">₹12<span style="font-size:.58rem;color:rgba(255,255,255,.3)">/km</span></div>
+            <div class="jvc-runit">Min ₹1,200</div>
+          </div>
+        </div>
+
+        <div class="jrm-vcard" id="jrv_suv" onclick="jrSelectCar('suv','SUV / Innova','🚙',16,2000)">
+          <div class="jvc-badge">Popular</div>
+          <div class="jvc-emo">🚙</div>
+          <div class="jvc-info">
+            <div class="jvc-name">SUV / Innova Crysta</div>
+            <div class="jvc-spec">AC · 6 Seater · Crysta / Ertiga / Safari</div>
+            <div class="jvc-tags">
+              <span class="jvc-tag">✓ AC</span>
+              <span class="jvc-tag">✓ Big Boot</span>
+              <span class="jvc-tag">✓ Charging</span>
+              <span class="jvc-tag">✓ Recliner</span>
+            </div>
+          </div>
+          <div class="jvc-price">
+            <div class="jvc-rate">₹16<span style="font-size:.58rem;color:rgba(255,255,255,.3)">/km</span></div>
+            <div class="jvc-runit">Min ₹2,000</div>
+          </div>
+        </div>
+
+        <div class="jrm-vcard gold" id="jrv_luxury" onclick="jrSelectCar('luxury','Fortuner / Luxury','👑',22,3500)">
+          <div class="jvc-badge">Premium</div>
+          <div class="jvc-emo">👑</div>
+          <div class="jvc-info">
+            <div class="jvc-name">Fortuner / XUV700</div>
+            <div class="jvc-spec">AC · 7 Seater · Fortuner / XUV700 / Hector</div>
+            <div class="jvc-tags">
+              <span class="jvc-tag">✓ Premium AC</span>
+              <span class="jvc-tag">✓ Leather</span>
+              <span class="jvc-tag">✓ WiFi</span>
+            </div>
+          </div>
+          <div class="jvc-price">
+            <div class="jvc-rate">₹22<span style="font-size:.58rem;color:rgba(255,255,255,.3)">/km</span></div>
+            <div class="jvc-runit">Min ₹3,500</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="jrm-infos">
+        <div class="jrm-info">✅ Driver included</div>
+        <div class="jrm-info">✅ Fuel included</div>
+        <div class="jrm-info">⚠️ Toll extra</div>
+        <div class="jrm-info">✅ 5% GST incl.</div>
+      </div>
+
+      <div class="jrm-summary" id="jrOutSummary" style="display:none">
+        <div class="jrm-sum-title">📋 Booking Summary</div>
+        <div class="jrm-sum-row"><span class="jrm-sum-lbl">Vehicle</span><span class="jrm-sum-val" id="jrs_car">--</span></div>
+        <div class="jrm-sum-row"><span class="jrm-sum-lbl">Route</span><span class="jrm-sum-val" id="jrs_route">--</span></div>
+        <div class="jrm-sum-row"><span class="jrm-sum-lbl">Date</span><span class="jrm-sum-val" id="jrs_date">--</span></div>
+        <div class="jrm-sum-row"><span class="jrm-sum-lbl" style="color:#fff;font-weight:800">Min Estimate</span><span class="jrm-sum-total" id="jrs_total">₹--</span></div>
+      </div>
+
+      <button class="jrm-book" onclick="jrBookOutstation()">📞 Book Now — WhatsApp Confirm</button>
+      <div class="jrm-hint">Advance payment nahi · Driver 2-4 hrs mein call karega</div>
+    </div>
+
+    <!-- ══════════ PANE 2: HOURLY ══════════ -->
+    <div id="jrPane_hour" class="jrm-section" style="display:none">
+      <div class="jrm-label" style="margin-top:10px">📍 Pickup — Jagdalpur City</div>
+      <input class="jrm-input" id="jrh_pickup" placeholder="Pickup location" readonly>
+
+      <!-- ✅ HOURLY MAPPLS MAP — Shows Jagdalpur + nearby zones -->
+      <div class="jrm-map-wrap" id="jrHourMapWrap" style="height:180px">
+        <div class="jrm-map-loading" id="jrHourMapLoading">
+          <div class="jrm-map-loading-spin"></div>
+          <div class="jrm-map-loading-txt">Jagdalpur map load ho raha hai...</div>
+        </div>
+        <div id="jrHourlyMap" style="width:100%;height:100%"></div>
+        <div class="jrm-map-controls">
+          <button class="jrm-map-ctrl-btn" onclick="jrHourMapZoom(1)">+</button>
+          <button class="jrm-map-ctrl-btn" onclick="jrHourMapZoom(-1)">−</button>
+        </div>
+        <div class="jrm-map-brand">Mappls India · Jagdalpur</div>
+      </div>
+
+      <div class="jrm-label">📅 Date & Time</div>
+      <div class="jrm-row" style="margin-bottom:12px">
+        <input type="date" class="jrm-input" id="jrh_date">
+        <input type="time" class="jrm-input" id="jrh_time">
+      </div>
+
+      <div class="jrm-label">⏱️ Package Select Karo</div>
+      <div class="jrm-pkgs" id="jrPkgGrid">
+        <div class="jrm-pkg" id="jrpkg_1h" onclick="jrSelectPkg('1h','1 Hour','10 km','₹249')">
+          <div class="jrm-pkg-ico">⏱️</div>
+          <div class="jrm-pkg-name">1 Hour</div>
+          <div class="jrm-pkg-km">10 km included</div>
+          <div class="jrm-pkg-price">₹249</div>
+        </div>
+        <div class="jrm-pkg" id="jrpkg_2h" onclick="jrSelectPkg('2h','2 Hours','20 km','₹449')">
+          <div class="jrm-pkg-ico">⏰</div>
+          <div class="jrm-pkg-name">2 Hours</div>
+          <div class="jrm-pkg-km">20 km included</div>
+          <div class="jrm-pkg-price">₹449</div>
+        </div>
+        <div class="jrm-pkg" id="jrpkg_4h" onclick="jrSelectPkg('4h','4 Hours','40 km','₹799')">
+          <div class="jrm-pkg-ico">🕓</div>
+          <div class="jrm-pkg-name">4 Hours</div>
+          <div class="jrm-pkg-km">40 km included</div>
+          <div class="jrm-pkg-price">₹799</div>
+        </div>
+        <div class="jrm-pkg" id="jrpkg_8h" onclick="jrSelectPkg('8h','Full Day 8 Hrs','80 km','₹1,399')">
+          <div class="jrm-pkg-ico">📅</div>
+          <div class="jrm-pkg-name">Full Day</div>
+          <div class="jrm-pkg-km">80 km included</div>
+          <div class="jrm-pkg-price">₹1,399</div>
+        </div>
+      </div>
+
+      <div class="jrm-label" style="margin-top:12px">🚗 Vehicle Type</div>
+      <div class="jrm-vtypes">
+        <button class="jrm-vtype on" id="jrhv_sedan" onclick="jrHourlyCar('sedan')">🚗 Sedan</button>
+        <button class="jrm-vtype" id="jrhv_suv" onclick="jrHourlyCar('suv')">🚙 SUV</button>
+      </div>
+
+      <div class="jrm-infos">
+        <div class="jrm-info">✅ Multiple stops</div>
+        <div class="jrm-info">✅ Driver waits</div>
+        <div class="jrm-info">✅ Extra km ₹12</div>
+        <div class="jrm-info">✅ City only</div>
+      </div>
+
+      <div class="jrm-summary" id="jrHourSummary" style="display:none">
+        <div class="jrm-sum-title">📋 Package Summary</div>
+        <div class="jrm-sum-row"><span class="jrm-sum-lbl">Package</span><span class="jrm-sum-val" id="jrhs_pkg">--</span></div>
+        <div class="jrm-sum-row"><span class="jrm-sum-lbl">Vehicle</span><span class="jrm-sum-val" id="jrhs_car">--</span></div>
+        <div class="jrm-sum-row"><span class="jrm-sum-lbl">Date & Time</span><span class="jrm-sum-val" id="jrhs_dt">--</span></div>
+        <div class="jrm-sum-row"><span class="jrm-sum-lbl" style="color:#fff;font-weight:800">Package Price</span><span class="jrm-sum-total" id="jrhs_price">₹--</span></div>
+      </div>
+
+      <button class="jrm-book" onclick="jrBookHourly()">📞 Book Hourly Rental</button>
+      <div class="jrm-hint">Extra km ₹12/km · Driver confirm karega</div>
+    </div>
+
+    <!-- ══════════ PANE 4: BASTAR TOUR ══════════ -->
+    <div id="jrPane_tour" class="jrm-section" style="display:none">
+      <div style="text-align:center;padding:8px 0 16px">
+        <div style="font-size:2.2rem;margin-bottom:5px">🌿</div>
+        <div style="font-family:'Syne',sans-serif;font-weight:900;font-size:1.05rem;color:#fff">Bastar Tourism Packages</div>
+        <div style="font-size:.65rem;color:rgba(255,255,255,.35);margin-top:3px">Car + Driver + Local Guide — All inclusive</div>
+      </div>
+
+      <div class="jrm-tours">
+        <div class="jrm-tour" onclick="jrBookTour('chitrakote','Chitrakote Falls Day Trip',1800)">
+          <div class="jvc-emo">🌊</div>
+          <div class="jvc-info">
+            <div class="jvc-name">Chitrakote Falls</div>
+            <div class="jvc-spec">38 km · Full Day · India's Niagara Falls</div>
+            <div class="jvc-tags"><span class="jvc-tag">✓ Car</span><span class="jvc-tag">✓ Guide</span><span class="jvc-tag">✓ 8 hrs</span></div>
+          </div>
+          <div class="jvc-price"><div class="jvc-rate">₹1,800</div><div class="jvc-runit">per trip</div></div>
+        </div>
+
+        <div class="jrm-tour" onclick="jrBookTour('kanger','Kanger Valley Tour',2200)">
+          <div class="jvc-badge">Popular</div>
+          <div class="jvc-emo">🌿</div>
+          <div class="jvc-info">
+            <div class="jvc-name">Kanger Valley</div>
+            <div class="jvc-spec">35 km · National Park + Kutumsar Cave</div>
+            <div class="jvc-tags"><span class="jvc-tag">✓ Car</span><span class="jvc-tag">✓ Guide</span><span class="jvc-tag">✓ All day</span></div>
+          </div>
+          <div class="jvc-price"><div class="jvc-rate">₹2,200</div><div class="jvc-runit">per trip</div></div>
+        </div>
+
+        <div class="jrm-tour" onclick="jrBookTour('tiratgarh','Tiratgarh Waterfall',1400)">
+          <div class="jvc-emo">💧</div>
+          <div class="jvc-info">
+            <div class="jvc-name">Tiratgarh Waterfall</div>
+            <div class="jvc-spec">35 km · Half Day · Beautiful falls</div>
+            <div class="jvc-tags"><span class="jvc-tag">✓ Car</span><span class="jvc-tag">✓ Guide</span><span class="jvc-tag">✓ 5 hrs</span></div>
+          </div>
+          <div class="jvc-price"><div class="jvc-rate">₹1,400</div><div class="jvc-runit">per trip</div></div>
+        </div>
+
+        <div class="jrm-tour" onclick="jrBookTour('bastar3','Bastar 3-Day Package',8500)">
+          <div class="jvc-emo">🏞️</div>
+          <div class="jvc-info">
+            <div class="jvc-name">Bastar 3-Day Package</div>
+            <div class="jvc-spec">Chitrakote · Kanger · Tirathgarh · Dantewada</div>
+            <div class="jvc-tags"><span class="jvc-tag">✓ Car 3 days</span><span class="jvc-tag">✓ Guide</span><span class="jvc-tag">✓ Fuel</span></div>
+          </div>
+          <div class="jvc-price"><div class="jvc-rate">₹8,500</div><div class="jvc-runit">3 days</div></div>
+        </div>
+
+        <div class="jrm-tour gold" onclick="jrBookTour('bastar7','Complete Bastar Darshan 7 Days',18000)">
+          <div class="jvc-badge">Best Value</div>
+          <div class="jvc-emo">⭐</div>
+          <div class="jvc-info">
+            <div class="jvc-name">Complete Bastar Darshan</div>
+            <div class="jvc-spec">7 Days · 15+ places · SUV · Expert Guide</div>
+            <div class="jvc-tags"><span class="jvc-tag">✓ SUV</span><span class="jvc-tag">✓ Expert Guide</span><span class="jvc-tag">✓ 7 Days</span></div>
+          </div>
+          <div class="jvc-price"><div class="jvc-rate">₹18,000</div><div class="jvc-runit">7 days</div></div>
+        </div>
+      </div>
+
+      <button class="jrm-book" onclick="jrBookTour('custom','Custom Tour',0)" style="margin-top:14px">📞 Custom Tour Banao — Call Karo</button>
+      <div class="jrm-hint">+91 70247 35997 · 24/7 Bastar Tourism Support</div>
+    </div>
+
+  </div><!-- /jrm-box -->
+</div><!-- /jdpRentalModal -->
+
+
+<!-- ╔══════════════════════════════════════════════════════════╗
+     ║   🚘 RENTAL MAPPLS NAVIGATION ENGINE — v4.0 Premium   ║
+     ║   Full Mappls Route · Turn-by-Turn · Live Map          ║
+     ╚══════════════════════════════════════════════════════════╝ -->
+<script>
+(function() {
+  // ── Core State ──
+  var _tab      = 'out';
+  var _car      = null, _carRate = 0, _carMin = 0;
+  var _pkg      = null, _pkgPrice = '';
+  var _hvCar    = 'sedan';
+  var _tripType = 'one';
+
+  // ── Map State ──
+  var _jrMap       = null;   // Outstation Mappls map instance
+  var _jrHourMap   = null;   // Hourly Mappls map instance
+  var _jrRouteLayer= null;   // Route polyline layer
+  var _jrPickMark  = null;   // Pickup marker
+  var _jrDropMark  = null;   // Drop marker
+  var _jrMapReady  = false;
+  var _jrRouteKm   = 0;
+  var _jrRouteMin  = 0;
+
+  // Jagdalpur center
+  var JDPLAT = 19.0760, JDPLNG = 82.0150;
+
+  // Known city coords for instant route preview
+  var CITY_COORDS = {
+    'raipur':       { lat:21.2514, lng:81.6296 },
+    'durg':         { lat:21.1904, lng:81.2849 },
+    'bilaspur':     { lat:22.0797, lng:82.1391 },
+    'korba':        { lat:22.3595, lng:82.7501 },
+    'ambikapur':    { lat:23.1170, lng:83.1966 },
+    'jagdalpur airport':{ lat:19.0600, lng:82.0580 },
+    'dantewada':    { lat:18.8956, lng:81.3472 },
+    'kondagaon':    { lat:19.5970, lng:81.6624 },
+    'narayanpur':   { lat:19.6944, lng:81.2457 },
+    'kanker':       { lat:20.2721, lng:81.4912 },
+    'sukma':        { lat:18.3914, lng:81.6635 },
+    'bijapur':      { lat:18.8313, lng:80.8095 },
+    'hyderabad':    { lat:17.3850, lng:78.4867 },
+    'vizag':        { lat:17.6868, lng:83.2185 },
+    'nagpur':       { lat:21.1458, lng:79.0882 },
+    'bhopal':       { lat:23.2599, lng:77.4126 },
+    'indore':       { lat:22.7196, lng:75.8577 },
+    'mumbai':       { lat:19.0760, lng:72.8777 },
+    'pune':         { lat:18.5204, lng:73.8567 },
+    'bengaluru':    { lat:12.9716, lng:77.5946 }
+  };
+
+  // Popular outstation cities
+  var CITIES = ['Raipur','Durg','Bilaspur','Korba','Ambikapur',
+    'Jagdalpur Airport','Dantewada','Kondagaon','Narayanpur',
+    'Kanker','Sukma','Bijapur','Hyderabad','Vizag','Nagpur',
+    'Bhopal','Indore','Mumbai','Pune','Bengaluru'];
+
+  // Road factor for Bastar terrain
+  function roadFactor(km) {
+    if (km < 20)  return 1.3;
+    if (km < 60)  return 1.5;
+    if (km < 150) return 1.8;
+    return 2.0;
+  }
+
+  function haverDist(lat1,lng1,lat2,lng2) {
+    var R=6371, dLat=(lat2-lat1)*Math.PI/180, dLng=(lng2-lng1)*Math.PI/180;
+    var a=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)*Math.sin(dLng/2);
+    return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+  }
+
+  // ── Mappls Map Initialiser ──
+  function initJrMap(containerId, lat, lng, zoom, cb) {
+    var el = document.getElementById(containerId);
+    if (!el) { if(cb) cb(null); return; }
+
+    // Wait for Mappls SDK
+    var tries = 0;
+    function tryInit() {
+      tries++;
+      if (window.mappls && typeof mappls.Map === 'function') {
+        try {
+          var m = new mappls.Map(containerId, {
+            center: { lat: lat, lng: lng },
+            zoom: zoom || 11,
+            zoomControl: false,
+            fullscreenControl: false,
+            search: false
+          });
+          m.on('load', function() {
+            var loadEl = document.getElementById(containerId.replace('Map','MapLoading').replace('Rental','Map'));
+            // try multiple id patterns
+            ['jrMapLoading','jrHourMapLoading'].forEach(function(id){
+              var le = document.getElementById(id);
+              if(le && le.parentElement && le.parentElement.contains(el)) le.style.display='none';
+            });
+            if(cb) cb(m);
+          });
+          return m;
+        } catch(e) {
+          console.warn('[JDPRental] Mappls init err:', e);
+          if(cb) cb(null); return;
+        }
+      }
+      // Fallback to Leaflet if already loaded
+      if (window.L && window.leafMap) {
+        var loadEls = document.querySelectorAll('.jrm-map-loading');
+        loadEls.forEach(function(le){le.style.display='none';});
+        if(cb) cb('leaflet');
+        return;
+      }
+      if (tries < 20) setTimeout(tryInit, 400);
+      else {
+        var loadEls2 = document.querySelectorAll('.jrm-map-loading');
+        loadEls2.forEach(function(le){le.innerHTML='<div style="color:rgba(255,255,255,.3);font-size:.65rem;padding:10px">Map load nahi hua — GPS se route calculate hoga</div>';});
+        if(cb) cb(null);
+      }
+    }
+    return tryInit();
+  }
+
+  // ── Mappls Marker ──
+  function addJrMarker(map, lat, lng, color, label) {
+    if (!map || map === 'leaflet') return null;
+    try {
+      var mk = new mappls.Marker({
+        map: map,
+        position: { lat: lat, lng: lng },
+        icon: {
+          url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
+            '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36" viewBox="0 0 28 36">' +
+            '<path d="M14 0C6.27 0 0 6.27 0 14c0 10.5 14 22 14 22S28 24.5 28 14C28 6.27 21.73 0 14 0z" fill="' + color + '"/>' +
+            '<circle cx="14" cy="14" r="6" fill="white"/>' +
+            '<text x="14" y="18" text-anchor="middle" font-size="8" fill="' + color + '" font-weight="900">' + (label||'') + '</text>' +
+            '</svg>'
+          ),
+          size: { width: 28, height: 36 },
+          anchor: { x: 14, y: 36 }
+        }
+      });
+      return mk;
+    } catch(e) { return null; }
+  }
+
+  // ── Draw Mappls Route ──
+  function drawJrRoute(map, coords, cb) {
+    if (!map || map === 'leaflet' || !coords) { if(cb) cb(); return; }
+    if (_jrRouteLayer) {
+      try { _jrRouteLayer.remove(); } catch(e){}
+      _jrRouteLayer = null;
+    }
+    try {
+      _jrRouteLayer = new mappls.Polyline({
+        map: map,
+        path: coords,
+        strokeColor: '#f59e0b',
+        strokeOpacity: 0.92,
+        strokeWeight: 5,
+        lineJoin: 'round',
+        lineCap: 'round'
+      });
+      if(cb) cb();
+    } catch(e) {
+      // Fallback: draw as L.polyline
+      try {
+        var lCoords = coords.map(function(c){ return [c.lat, c.lng]; });
+        var pl = L.polyline(lCoords, { color:'#f59e0b', weight:5, opacity:.9 });
+        if(window.leafMap) pl.addTo(window.leafMap);
+        _jrRouteLayer = pl;
+      } catch(e2){}
+      if(cb) cb();
+    }
+  }
+
+  // ── Fit Route on Map ──
+  function fitJrRoute(map, lat1,lng1,lat2,lng2) {
+    if (!map || map === 'leaflet') return;
+    try {
+      var bounds = [[Math.min(lat1,lat2)-0.05, Math.min(lng1,lng2)-0.05],
+                    [Math.max(lat1,lat2)+0.05, Math.max(lng1,lng2)+0.05]];
+      map.fitBounds(bounds, { padding: [30,30] });
+    } catch(e){}
+  }
+
+  // ── Fetch Mappls Route ──
+  async function fetchJrRoute(fromLat, fromLng, toLat, toLng, carRate, carMin, onDone) {
+    var key = window.MAPPLS_KEY;
+    if (!key) { onDone && onDone(null); return; }
+
+    // Show route badge as loading
+    var badge = document.getElementById('jrRouteBadge');
+
+    try {
+      var url = 'https://apis.mappls.com/advancedmaps/v1/' + key +
+        '/route_adv/driving/' + fromLng + ',' + fromLat + ';' + toLng + ',' + toLat +
+        '?steps=true&geometries=geojson&overview=full';
+
+      var controller = new AbortController();
+      var timer = setTimeout(function(){ controller.abort(); }, 9000);
+      var resp = await fetch(url, { signal: controller.signal });
+      clearTimeout(timer);
+
+      if (resp.ok) {
+        var data = await resp.json();
+        var route = data && data.routes && data.routes[0];
+        if (route) {
+          var distKm = Math.round(route.distance / 100) / 10;
+          var mins   = Math.round(route.duration / 60);
+          var coords = (route.geometry.coordinates || []).map(function(c){ return { lat:c[1], lng:c[0] }; });
+          var estFare = Math.max(carMin || 0, Math.round(distKm * (carRate || 12)));
+          if (badge) { badge.className='jrm-route-badge mappls'; badge.textContent='📡 Mappls Route'; }
+          // Build turn steps
+          var steps = [];
+          (route.legs || []).forEach(function(leg){
+            (leg.steps || []).forEach(function(s){ steps.push(s); });
+          });
+          onDone && onDone({ distKm:distKm, mins:mins, coords:coords, estFare:estFare, steps:steps, source:'mappls' });
+          return;
+        }
+      }
+    } catch(e) { console.log('[JDPRental] Mappls route err:', e.message || e); }
+
+    // ── Fallback: Haversine + road factor ──
+    var straightKm = haverDist(fromLat, fromLng, toLat, toLng);
+    var distKm     = Math.round(straightKm * roadFactor(straightKm) * 10) / 10;
+    var mins       = Math.round(distKm / 40 * 60); // avg 40 km/h
+    var estFare    = Math.max(carMin || 0, Math.round(distKm * (carRate || 12)));
+    if (badge) { badge.className='jrm-route-badge approx'; badge.textContent='📐 Approx Route'; }
+    onDone && onDone({
+      distKm: distKm, mins: mins,
+      coords: [{ lat:fromLat, lng:fromLng }, { lat:toLat, lng:toLng }],
+      estFare: estFare, steps: [], source: 'approx'
+    });
+  }
+
+  // ── Build Turn Steps HTML ──
+  function buildJrSteps(steps, container) {
+    if (!container) return;
+    if (!steps || !steps.length) { container.classList.remove('visible'); return; }
+    var icons = {
+      'turn-left':'↰', 'turn-right':'↱', 'turn-sharp-left':'⬅', 'turn-sharp-right':'➡',
+      'straight':'↑', 'depart':'📍', 'arrive':'🏁', 'roundabout':'🔄',
+      'exit-roundabout':'🔄', 'merge':'↗', 'fork':'⑂', 'continue':'↑'
+    };
+    var html = steps.slice(0, 10).map(function(s) {
+      var type = (s.maneuver && s.maneuver.type) || 'straight';
+      var mod  = (s.maneuver && s.maneuver.modifier) || '';
+      var key  = mod ? (type + '-' + mod) : type;
+      var ico  = icons[key] || icons[type] || '↑';
+      var name = s.name || s.ref || 'Road pe chalo';
+      var dist = s.distance > 1000
+        ? (Math.round(s.distance/100)/10) + ' km'
+        : Math.round(s.distance) + ' m';
+      return '<div class="jrm-nav-step">' +
+        '<div class="jrm-nav-step-ico">' + ico + '</div>' +
+        '<div class="jrm-nav-step-txt">' + name + '</div>' +
+        '<div class="jrm-nav-step-dist">' + dist + '</div>' +
+        '</div>';
+    }).join('');
+    container.innerHTML = html;
+    container.classList.add('visible');
+  }
+
+  // ── Update Route UI ──
+  function updateJrRouteUI(result) {
+    var bar   = document.getElementById('jrRouteBar');
+    var kmEl  = document.getElementById('jrRouteKm');
+    var tmEl  = document.getElementById('jrRouteTime');
+    var fareEl= document.getElementById('jrRouteFare');
+    var steps = document.getElementById('jrNavSteps');
+    if (!result) { if(bar) bar.classList.remove('visible'); return; }
+    if (bar)   bar.classList.add('visible');
+    if (kmEl)  kmEl.textContent = result.distKm + ' km';
+    if (tmEl)  {
+      var h = Math.floor(result.mins / 60), m = result.mins % 60;
+      tmEl.textContent = (h ? h + ' hr ' : '') + m + ' min' + (result.source === 'mappls' ? ' · via Mappls' : ' · approx');
+    }
+    if (fareEl) fareEl.textContent = '₹' + result.estFare + '+';
+    buildJrSteps(result.steps || [], steps);
+    // Update summary
+    jrUpdateOutSummary(result.distKm, result.estFare);
+  }
+
+  // ── Route on Destination Select ──
+  function jrRunRoute(cityName) {
+    var key = cityName.toLowerCase().trim();
+    var coords = CITY_COORDS[key];
+    if (!coords) {
+      // Try partial match
+      for (var k in CITY_COORDS) {
+        if (k.includes(key) || key.includes(k)) { coords = CITY_COORDS[k]; break; }
+      }
+    }
+    if (!coords) {
+      // Geocode via Mappls
+      jrGeocode(cityName, function(lat, lng) {
+        if (lat && lng) jrDrawRouteToPoint(lat, lng, cityName);
+      });
+      return;
+    }
+    jrDrawRouteToPoint(coords.lat, coords.lng, cityName);
+  }
+
+  function jrGeocode(query, cb) {
+    var key = window.MAPPLS_KEY;
+    if (!key) { cb(null,null); return; }
+    fetch('https://atlas.mappls.com/api/places/geocode?address=' + encodeURIComponent(query + ' India') + '&api_key=' + key)
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        var res = d && d.copResults && d.copResults[0];
+        if (res) cb(parseFloat(res.latitude), parseFloat(res.longitude));
+        else cb(null,null);
+      })
+      .catch(function(){ cb(null,null); });
+  }
+
+  function jrDrawRouteToPoint(toLat, toLng, cityName) {
+    // Remove old markers
+    if (_jrPickMark) { try{ _jrPickMark.remove(); }catch(e){} _jrPickMark=null; }
+    if (_jrDropMark) { try{ _jrDropMark.remove(); }catch(e){} _jrDropMark=null; }
+
+    // Use current GPS or default Jagdalpur
+    var fromLat = (window.myLat && window.myLat !== 0) ? window.myLat : JDPLAT;
+    var fromLng = (window.myLng && window.myLng !== 0) ? window.myLng : JDPLNG;
+    var rate = _carRate || 12, min = _carMin || 1200;
+
+    function doRoute(map) {
+      fetchJrRoute(fromLat, fromLng, toLat, toLng, rate, min, function(result) {
+        if (map && map !== 'leaflet') {
+          // Add markers
+          _jrPickMark = addJrMarker(map, fromLat, fromLng, '#00C853', 'A');
+          _jrDropMark = addJrMarker(map, toLat, toLng, '#f59e0b', 'B');
+          // Draw route
+          if (result && result.coords && result.coords.length > 1) {
+            drawJrRoute(map, result.coords, function() {
+              fitJrRoute(map, fromLat, fromLng, toLat, toLng);
+            });
+          } else {
+            fitJrRoute(map, fromLat, fromLng, toLat, toLng);
+          }
+        }
+        updateJrRouteUI(result);
+      });
+    }
+
+    if (_jrMap) {
+      doRoute(_jrMap);
+    } else {
+      // Init map first
+      var loading = document.getElementById('jrMapLoading');
+      if (loading) loading.style.display = 'flex';
+      initJrMap('jrRentalMap', fromLat, fromLng, 10, function(map) {
+        _jrMap = map;
+        _jrMapReady = true;
+        if (loading) loading.style.display = 'none';
+        doRoute(map);
+      });
+    }
+  }
+
+  // ══════════════════════════════════════════
+  // Open / Close
+  // ══════════════════════════════════════════
+  window.jdpRentalOpen = function() {
+    var m = document.getElementById('jdpRentalModal');
+    if (!m) return;
+    m.classList.add('open');
+
+    // Pre-fill pickup
+    var addr = (document.getElementById('pAddr') || {}).textContent || '';
+    if (addr && addr !== 'Detecting location...') {
+      ['jr_pickup','jrh_pickup'].forEach(function(id){
+        var el = document.getElementById(id); if(el) el.value = addr;
+      });
+    }
+
+    // Set today / now
+    var today = new Date().toISOString().split('T')[0];
+    var now   = new Date().toTimeString().slice(0,5);
+    ['jr_date','jr_time','jrh_date','jrh_time'].forEach(function(id){
+      var el = document.getElementById(id);
+      if (el && !el.value) el.value = id.includes('date') ? today : now;
+    });
+
+    // Bind city suggest + route trigger
+    var dropEl = document.getElementById('jr_drop');
+    if (dropEl && !dropEl._jrBound) {
+      dropEl.addEventListener('input', function() { jrCitySuggest(this.value); });
+      dropEl._jrBound = true;
+    }
+
+    // Init outstation map eagerly (background)
+    if (!_jrMap && !_jrMapReady) {
+      setTimeout(function() {
+        initJrMap('jrRentalMap', JDPLAT, JDPLNG, 11, function(map) {
+          _jrMap = map; _jrMapReady = true;
+          var loading = document.getElementById('jrMapLoading');
+          if (loading) loading.style.display = 'none';
+        });
+      }, 400);
+    }
+
+    // Init hourly map
+    if (!_jrHourMap) {
+      setTimeout(function() {
+        initJrMap('jrHourlyMap', JDPLAT, JDPLNG, 12, function(map) {
+          _jrHourMap = map;
+          // Add Jagdalpur center marker
+          if (map && map !== 'leaflet') {
+            addJrMarker(map, JDPLAT, JDPLNG, '#f59e0b', '📍');
+          }
+          var loading = document.getElementById('jrHourMapLoading');
+          if (loading) loading.style.display = 'none';
+        });
+      }, 600);
+    }
+  };
+
+  window.jdpRentalClose = function() {
+    var m = document.getElementById('jdpRentalModal');
+    if (m) m.classList.remove('open');
+  };
+
+  // ══════════════════════════════════════════
+  // Tab Switcher
+  // ══════════════════════════════════════════
+  window.jrSwitchTab = function(tab) {
+    _tab = tab;
+    ['out','hour','tour'].forEach(function(t) {
+      var btn  = document.getElementById('jrtab_' + t);
+      var pane = document.getElementById('jrPane_' + t);
+      if (btn)  btn.classList.toggle('active', t === tab);
+      if (pane) pane.style.display = t === tab ? 'block' : 'none';
+    });
+    // Refresh maps when tab switches
+    if (tab === 'out' && _jrMap) {
+      setTimeout(function(){ try{ _jrMap.resize && _jrMap.resize(); }catch(e){} }, 100);
+    }
+    if (tab === 'hour' && _jrHourMap) {
+      setTimeout(function(){ try{ _jrHourMap.resize && _jrHourMap.resize(); }catch(e){} }, 100);
+    }
+  };
+
+  // ══════════════════════════════════════════
+  // Map Controls
+  // ══════════════════════════════════════════
+  window.jrMapZoomIn  = function() { if(_jrMap && _jrMap !== 'leaflet') try{_jrMap.zoomIn();}catch(e){} };
+  window.jrMapZoomOut = function() { if(_jrMap && _jrMap !== 'leaflet') try{_jrMap.zoomOut();}catch(e){} };
+  window.jrMapFitRoute= function() {
+    if (!_jrPickMark || !_jrDropMark) return;
+    var fromLat = (window.myLat && window.myLat !== 0) ? window.myLat : JDPLAT;
+    var fromLng = (window.myLng && window.myLng !== 0) ? window.myLng : JDPLNG;
+    fitJrRoute(_jrMap, fromLat, fromLng, fromLat+1, fromLng+1); // rough fit
+  };
+  window.jrHourMapZoom= function(dir) { if(_jrHourMap && _jrHourMap !== 'leaflet') try{ dir>0 ? _jrHourMap.zoomIn() : _jrHourMap.zoomOut(); }catch(e){} };
+
+  // ══════════════════════════════════════════
+  // Trip Type
+  // ══════════════════════════════════════════
+  window.jrTripType = function(type) {
+    _tripType = type;
+    ['jr_oneway','jr_round'].forEach(function(id) {
+      var btn = document.getElementById(id);
+      if (btn) btn.classList.toggle('on', id.includes(type === 'one' ? 'oneway' : 'round'));
+    });
+    var wrap = document.getElementById('jr_returnWrap');
+    if (wrap) wrap.style.display = type === 'round' ? 'block' : 'none';
+    jrUpdateOutSummary();
+  };
+
+  // ══════════════════════════════════════════
+  // Select Car (Outstation)
+  // ══════════════════════════════════════════
+  window.jrSelectCar = function(id, name, emoji, rate, min) {
+    _car = name; _carRate = rate; _carMin = min;
+    document.querySelectorAll('#jrPane_out .jrm-vcard').forEach(function(c){ c.classList.remove('sel'); });
+    var el = document.getElementById('jrv_' + id);
+    if (el) el.classList.add('sel');
+    // Re-run route with new rate if destination already set
+    var drop = (document.getElementById('jr_drop')||{}).value||'';
+    if (drop) jrRunRoute(drop);
+    else jrUpdateOutSummary();
+  };
+
+  function jrUpdateOutSummary(distKm, estFare) {
+    var drop = (document.getElementById('jr_drop')||{}).value||'';
+    var date = (document.getElementById('jr_date')||{}).value||'';
+    var s = document.getElementById('jrOutSummary');
+    if (!_car || !drop) { if(s) s.style.display='none'; return; }
+    if (s) s.style.display='block';
+    var el=function(id,v){var e=document.getElementById(id);if(e)e.textContent=v;};
+    el('jrs_car',   _car);
+    el('jrs_route', 'Jagdalpur → ' + drop + (_tripType==='round' ? ' → Jagdalpur' : ''));
+    el('jrs_date',  date || '--');
+    el('jrs_total', estFare
+      ? '₹' + estFare + '+ (₹' + _carRate + '/km)'
+      : '₹' + _carMin + '+ (₹' + _carRate + '/km)');
+  }
+  window.jrUpdateOutSummary = jrUpdateOutSummary;
+
+  // ══════════════════════════════════════════
+  // City Suggest + Route Trigger
+  // ══════════════════════════════════════════
+  window.jrCitySuggest = function(val) {
+    var box = document.getElementById('jrCityBox');
+    if (!box) return;
+    if (!val || val.length < 1) { box.style.display='none'; return; }
+    var lc = val.toLowerCase();
+    var matches = CITIES.filter(function(c){ return c.toLowerCase().includes(lc); });
+    if (!matches.length) { box.style.display='none'; return; }
+    box.style.display = 'block';
+    box.innerHTML = matches.slice(0,6).map(function(c){
+      return '<div onclick="jrSelectCity('' + c + '')" ' +
+        'style="padding:11px 14px;font-size:.82rem;color:#fff;border-bottom:1px solid rgba(255,255,255,.05);cursor:pointer;font-weight:600;display:flex;align-items:center;gap:8px">' +
+        '<span>📍</span>' + c + '</div>';
+    }).join('');
+  };
+
+  window.jrSelectCity = function(city) {
+    var inp = document.getElementById('jr_drop');
+    var box = document.getElementById('jrCityBox');
+    if (inp) inp.value = city;
+    if (box) box.style.display = 'none';
+    // Trigger full Mappls route
+    jrRunRoute(city);
+  };
+
+  // ══════════════════════════════════════════
+  // Hourly Package + Car
+  // ══════════════════════════════════════════
+  window.jrSelectPkg = function(id, name, km, price) {
+    _pkg = name; _pkgPrice = price;
+    document.querySelectorAll('.jrm-pkg').forEach(function(c){ c.classList.remove('sel'); });
+    var el = document.getElementById('jrpkg_' + id);
+    if (el) el.classList.add('sel');
+    jrUpdateHourlySummary();
+  };
+
+  window.jrHourlyCar = function(type) {
+    _hvCar = type;
+    ['sedan','suv'].forEach(function(t){
+      var btn = document.getElementById('jrhv_' + t);
+      if (btn) btn.classList.toggle('on', t === type);
+    });
+    jrUpdateHourlySummary();
+  };
+
+  function jrUpdateHourlySummary() {
+    var s = document.getElementById('jrHourSummary');
+    if (!_pkg) { if(s) s.style.display='none'; return; }
+    if (s) s.style.display='block';
+    var names = { sedan:'🚗 Sedan', suv:'🚙 SUV' };
+    var date = (document.getElementById('jrh_date')||{}).value||'';
+    var time = (document.getElementById('jrh_time')||{}).value||'';
+    var el=function(id,v){var e=document.getElementById(id);if(e)e.textContent=v;};
+    el('jrhs_pkg',   _pkg);
+    el('jrhs_car',   names[_hvCar] || _hvCar);
+    el('jrhs_dt',    (date&&time) ? date+' '+time : '--');
+    el('jrhs_price', _pkgPrice);
+  }
+
+  // ══════════════════════════════════════════
+  // Booking via WhatsApp
+  // ══════════════════════════════════════════
+  window.jrBookOutstation = function() {
+    var drop = (document.getElementById('jr_drop')||{}).value||'';
+    var date = (document.getElementById('jr_date')||{}).value||'';
+    if (!drop) { if(typeof toast==='function') toast('⚠️ Destination city daalo'); return; }
+    if (!_car)  { if(typeof toast==='function') toast('⚠️ Vehicle select karo'); return; }
+    var distTxt = _jrRouteKm ? _jrRouteKm + ' km' : 'Calculate hoga';
+    var msg = 'JDP+Go+Rental+Booking%0A' +
+      '🚗+Vehicle:+' + encodeURIComponent(_car) + '%0A' +
+      '🗺️+Route:+Jagdalpur+→+' + encodeURIComponent(drop) + '%0A' +
+      '📏+Distance:+' + distTxt + '%0A' +
+      '🔄+Trip:+' + (_tripType==='round'?'Round+Trip':'One+Way') + '%0A' +
+      '📅+Date:+' + date + '%0A' +
+      '💰+Rate:+₹' + _carRate + '/km+(Min+₹' + _carMin + ')%0A' +
+      '📱+App:+jdpgo.vercel.app';
+    window.open('https://wa.me/917024735997?text=' + msg, '_blank');
+    if (typeof toast==='function') toast('✅ WhatsApp khul raha hai!');
+  };
+
+  window.jrBookHourly = function() {
+    if (!_pkg) { if(typeof toast==='function') toast('⚠️ Package select karo'); return; }
+    var names = { sedan:'Sedan', suv:'SUV' };
+    var dt = (document.getElementById('jrh_date')||{}).value||'';
+    var tm = (document.getElementById('jrh_time')||{}).value||'';
+    var msg = 'JDP+Go+Hourly+Rental%0A' +
+      '⏱️+Package:+' + encodeURIComponent(_pkg) + '%0A' +
+      '🚗+Vehicle:+' + (names[_hvCar]||_hvCar) + '%0A' +
+      '💰+Price:+' + _pkgPrice + '%0A' +
+      '📅+Date/Time:+' + dt + '+' + tm;
+    window.open('https://wa.me/917024735997?text=' + msg, '_blank');
+    if (typeof toast==='function') toast('✅ WhatsApp se confirm karo!');
+  };
+
+  window.jrBookTour = function(id, name, price) {
+    if (id === 'custom') { window.open('tel:+917024735997'); return; }
+    var msg = 'JDP+Go+Bastar+Tour%0A' +
+      '🌿+Package:+' + encodeURIComponent(name) + '%0A' +
+      '💰+Price:+₹' + price + '%0A' +
+      '📱+App:+jdpgo.vercel.app';
+    window.open('https://wa.me/917024735997?text=' + msg, '_blank');
+    if (typeof toast==='function') toast('✅ Tour booking WhatsApp pe confirm karo!');
+  };
+
+  console.log('[JDP Rental] ✅ Mappls Navigation Engine v4.0 loaded');
+})();
+</script>
